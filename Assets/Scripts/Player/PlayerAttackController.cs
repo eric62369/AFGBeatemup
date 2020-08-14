@@ -13,16 +13,24 @@ public class PlayerAttackController : MonoBehaviour {
     
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+    }
+    public void GroundedAttackFlags(string attackName)
+    {
+        if (player.isGrounded)
         {
-            player.AnimationSetBool("5B", true);
             isAttacking = true;
+            player.isRunning = false;
+            player.AnimationSetBool(attackName, true);
+            player.AnimationSetBool("IsRunning", false);
         }
-        else if (Input.GetButtonDown("Fire2"))
-        {
-            player.AnimationSetBool("5C", true);
-            isAttacking = true;
-        }
+    }
+    public void Attack5B()
+    {
+        GroundedAttackFlags("5B");
+    }
+    public void Attack5C()
+    {
+        GroundedAttackFlags("5C");
     }
 
     public void Startup()
@@ -65,7 +73,6 @@ public class PlayerAttackController : MonoBehaviour {
         Vector2 oldVelocity = player.rb2d.velocity;
         player.rb2d.velocity = new Vector2(0f, 0f);
         // TODO: Do we need to be able to interrupt hitstop? Probably
-        Debug.Log("YEET");
         await Task.Delay(AttackData.GetHitStop());
         player.animator.enabled=true;
         player.rb2d.bodyType = RigidbodyType2D.Dynamic;
