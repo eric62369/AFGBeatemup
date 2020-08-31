@@ -7,19 +7,25 @@ public class PlayerMovementController : MonoBehaviour {
 
     public float WalkSpeed;
     public float InitialDashSpeed;
+    public float AirDashSpeed;
+    public float ForwardAirDashDuration;
+    public float BackwardAirDashDuration;
     public float HorizontalJumpSpeed;
     public float JumpForce;
     public float RunForce;
     public float MaxRunSpeed;
     public bool isRunning;
+    public bool isAirDashing;
     public int MaxAirActions;
-    public int AirActionsLeft;
+    private int AirActionsLeft;
+    public float GravityScale;
 
     public Transform groundCheck;
     public float groundCheckRadius;
     public LayerMask groundLayers;
     public bool isGrounded;
     public bool isHoldingJump;
+    private bool hasDashMomentum;
 
     public Rigidbody2D rb2d;
     public Animator animator;
@@ -34,20 +40,24 @@ public class PlayerMovementController : MonoBehaviour {
         animator = GetComponent<Animator>();
         attackController = GetComponent<PlayerAttackController>();
         playerInput = GetComponent<PlayerInputManager>();
+        rb2d.gravityScale = GravityScale;
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
     void FixedUpdate()
     {
-        bool newGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayers);
-        if (newGrounded != isGrounded && newGrounded == true)
+        if (!isAirDashing)
         {
-            // Landed!
-            animator.SetBool("IsJumping", false);
-            isHoldingJump = false;
-            AirActionsLeft = MaxAirActions;
+            bool newGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayers);
+            if (newGrounded != isGrounded && newGrounded == true)
+            {
+                // Landed!
+                animator.SetBool("IsJumping", false);
+                isHoldingJump = false;
+                AirActionsLeft = MaxAirActions;
+            }
+            isGrounded = newGrounded;
         }
-        isGrounded = newGrounded;
     }
 
     public void Walk(Numpad direction)
@@ -74,11 +84,47 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new ArgumentException(direction + " is not the forward direction");
         }
+        if (!isGrounded)
+        {
+            throw new InvalidProgramException("Tried to Dash while airborne!");
+        }
         if (isGrounded && !attackController.isAttacking) {
             rb2d.velocity = new Vector2(InitialDashSpeed, 0f);
         }
         isRunning = true;
+        hasDashMomentum = true;
         animator.SetBool("IsRunning", true);
+    }
+    public void AirDash(bool isForward)
+    {
+        if (!isGrounded)
+        {
+            isAirDashing = true;
+            rb2d.gravityScale = 0f;
+            Debug.Log("1");
+            IEnumerator coroutine;
+            if (isForward)
+            {
+                Debug.Log("Forward");
+                rb2d.velocity = new Vector2(AirDashSpeed, 0f);
+                coroutine = StopAirDashCoroutine(ForwardAirDashDuration);
+            }
+            else
+            {
+                rb2d.velocity = new Vector2(-AirDashSpeed, 0f);
+                coroutine = StopAirDashCoroutine(BackwardAirDashDuration);
+            }
+            AirActionsLeft--;
+            StartCoroutine(coroutine);
+        }
+    }
+
+    private IEnumerator StopAirDashCoroutine(float duration)
+    {
+        Debug.Log("Going");
+        yield return new WaitForSeconds(duration);
+        rb2d.gravityScale = GravityScale;
+        isAirDashing = false;
     }
     public void Run(Numpad direction)
     {
@@ -91,7 +137,6 @@ public class PlayerMovementController : MonoBehaviour {
             rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
             if (rb2d.velocity.x > MaxRunSpeed)
             {
-                Debug.Log("Max Speed!");
                 rb2d.velocity = new Vector2(MaxRunSpeed, 0f);
             }
         }
@@ -115,11 +160,10 @@ public class PlayerMovementController : MonoBehaviour {
             throw new ArgumentException(direction + " is not an upwards direction");
         }
         // TODO: can you fix this later?
-        bool canJump = (isGrounded && !attackController.isAttacking && !isHoldingJump) ||
-            (!isGrounded && !attackController.isAttacking && !isHoldingJump && AirActionsLeft > 0);
+        bool canJump = !attackController.isAttacking && !isHoldingJump && AirActionsLeft > 0;
         if (canJump) {
             float horizontalVelocity = 0;
-            if (isRunning) 
+            if (hasDashMomentum) 
             {
                 // Slight dash momentum factored in
                 horizontalVelocity = rb2d.velocity.x;
@@ -128,6 +172,7 @@ public class PlayerMovementController : MonoBehaviour {
             {
                 // Dash momentum not factored in
                 horizontalVelocity = -HorizontalJumpSpeed;
+                hasDashMomentum = false;
             }
             else if (direction == Numpad.N9)
             {

@@ -141,12 +141,12 @@ public class PlayerInputManager : MonoBehaviour
                     {
                         // Grounded forward step dash
                         playerMovement.Dash(firstInput);
-                        Debug.Log("Dash");
                     }
                     else
                     {
                         // forward airdash
-                        Debug.Log("Airdash");
+                        Debug.Log("Input airdash");
+                        playerMovement.AirDash(true);
                     }
                 }
             }

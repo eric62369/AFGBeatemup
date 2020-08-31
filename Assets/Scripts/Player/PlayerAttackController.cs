@@ -22,6 +22,7 @@ public class PlayerAttackController : MonoBehaviour {
             player.isRunning = false;
             player.AnimationSetBool(attackName, true);
             player.AnimationSetBool("IsRunning", false);
+            player.StopRun();
         }
     }
     public void Attack5B()

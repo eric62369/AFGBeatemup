@@ -1010,7 +1010,6 @@ MonoBehaviour:
   DeadZone: 0.25
   Time66: 0.25
   Time236: 0.35
-  A: 0
 --- !u!1001 &7814688488589737337
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1018,6 +1017,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7814688487690997638, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7814688488446206480, guid: 37e9a37824157947fb579dd60e393050, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.21
@@ -1090,13 +1093,33 @@ PrefabInstance:
       propertyPath: MaxRunSpeed
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: groundCheckRadius
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: MaxAirActions
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: GravityScale
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: AirDashSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: ForwardAirDashDuration
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7814688488446206493, guid: 37e9a37824157947fb579dd60e393050, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7814688488446206495, guid: 37e9a37824157947fb579dd60e393050, type: 3}
       propertyPath: m_GravityScale
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37e9a37824157947fb579dd60e393050, type: 3}
