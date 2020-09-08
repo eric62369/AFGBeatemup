@@ -145,8 +145,23 @@ public class PlayerInputManager : MonoBehaviour
                     else
                     {
                         // forward airdash
-                        Debug.Log("Input airdash");
                         playerMovement.AirDash(true);
+                    }
+                }
+            }
+            else if (firstInput == Numpad.N4 && secondInput == Numpad.N5 && (thirdInput == Numpad.N4 || thirdInput == Numpad.N7))
+            {
+                if (firstTime + secondTime <= Time66)
+                {
+                    if (playerMovement.isGrounded)
+                    {
+                        // Grounded backdash
+                        playerMovement.BackDash(firstInput);
+                    }
+                    else
+                    {
+                        // back airdash
+                        playerMovement.AirDash(false);
                     }
                 }
             }

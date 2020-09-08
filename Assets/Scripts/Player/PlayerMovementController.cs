@@ -10,12 +10,14 @@ public class PlayerMovementController : MonoBehaviour {
     public float AirDashSpeed;
     public float ForwardAirDashDuration;
     public float BackwardAirDashDuration;
+    public float BackDashDuration;
     public float HorizontalJumpSpeed;
     public float JumpForce;
     public float RunForce;
     public float MaxRunSpeed;
     public bool isRunning;
     public bool isAirDashing;
+    public bool isBackDashing;
     public int MaxAirActions;
     private int AirActionsLeft;
     public float GravityScale;
@@ -95,17 +97,38 @@ public class PlayerMovementController : MonoBehaviour {
         hasDashMomentum = true;
         animator.SetBool("IsRunning", true);
     }
+    public void BackDash(Numpad direction)
+    {
+        if (direction != Numpad.N4)
+        {
+            throw new ArgumentException(direction + " is not the backward direction");
+        }
+        if (!isGrounded)
+        {
+            throw new InvalidProgramException("Tried to Backdash while airborne!");
+        }
+        if (!attackController.isAttacking) {
+            Debug.Log("beckdesh");
+            rb2d.velocity = new Vector2(-InitialDashSpeed, 0f);
+            IEnumerator coroutine = StopBackDashCoroutine();
+            StartCoroutine(coroutine);
+        }
+        // animator.SetBool("IsRunning", true);
+    }
+
     public void AirDash(bool isForward)
     {
-        if (!isGrounded)
+        if (isGrounded)
+        {
+            throw new InvalidProgramException("Tried to Airdash while grounded!");
+        }
+        if (AirActionsLeft > 0)
         {
             isAirDashing = true;
             rb2d.gravityScale = 0f;
-            Debug.Log("1");
             IEnumerator coroutine;
             if (isForward)
             {
-                Debug.Log("Forward");
                 rb2d.velocity = new Vector2(AirDashSpeed, 0f);
                 coroutine = StopAirDashCoroutine(ForwardAirDashDuration);
             }
@@ -121,10 +144,14 @@ public class PlayerMovementController : MonoBehaviour {
 
     private IEnumerator StopAirDashCoroutine(float duration)
     {
-        Debug.Log("Going");
         yield return new WaitForSeconds(duration);
         rb2d.gravityScale = GravityScale;
         isAirDashing = false;
+    }
+    private IEnumerator StopBackDashCoroutine()
+    {
+        yield return new WaitForSeconds(BackDashDuration);
+        isBackDashing = false;
     }
     public void Run(Numpad direction)
     {

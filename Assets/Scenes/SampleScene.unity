@@ -1113,6 +1113,10 @@ PrefabInstance:
       propertyPath: ForwardAirDashDuration
       value: 0.25
       objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: BackwardAirDashDuration
+      value: 0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 7814688488446206493, guid: 37e9a37824157947fb579dd60e393050, type: 3}
       propertyPath: m_Name
       value: Player
