@@ -9,6 +9,7 @@ TagManager:
   - PlayerHitbox
   - PlayerHurtbox
   - EnemyHitbox
+  - Boss
   layers:
   - Default
   - TransparentFX

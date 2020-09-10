@@ -33,6 +33,7 @@ public class PlayerMovementController : MonoBehaviour {
     public Animator animator;
     private PlayerAttackController attackController;
     private PlayerInputManager playerInput;
+    private PlayerStateManager playerState;
 
     // Use this for initialization
     void Start()
@@ -42,6 +43,7 @@ public class PlayerMovementController : MonoBehaviour {
         animator = GetComponent<Animator>();
         attackController = GetComponent<PlayerAttackController>();
         playerInput = GetComponent<PlayerInputManager>();
+        playerState = GetComponent<PlayerStateManager>();
         rb2d.gravityScale = GravityScale;
     }
 
@@ -108,7 +110,6 @@ public class PlayerMovementController : MonoBehaviour {
             throw new InvalidProgramException("Tried to Backdash while airborne!");
         }
         if (!attackController.isAttacking) {
-            Debug.Log("beckdesh");
             rb2d.velocity = new Vector2(-InitialDashSpeed, 0f);
             IEnumerator coroutine = StopBackDashCoroutine();
             StartCoroutine(coroutine);
@@ -231,5 +232,15 @@ public class PlayerMovementController : MonoBehaviour {
     public void AnimationSetBool(string animationId, bool setValue)
     {
         animator.SetBool(animationId, setValue);
+    }
+
+    /// Reevaluate facing direction, update if necessary
+    private void UpdateFacingDirection()
+    {
+        // updates local scale if necessary
+        if (playerState.GetIsP1Side())
+        {
+            playerState.UpdateFacingDirection();
+        }
     }
 }

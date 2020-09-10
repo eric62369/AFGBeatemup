@@ -14,8 +14,8 @@ public class HitBoxController : MonoBehaviour
     /// Example: P1-5B
     public string AttackId;
     public Attack AttackData;
-    public Animator Anim;
-    public Rigidbody2D Rigidbody;
+    private Animator Anim;
+    private Rigidbody2D Rigidbody;
 
     // Start is called before the first frame update
     void Start()

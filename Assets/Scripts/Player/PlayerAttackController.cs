@@ -3,7 +3,9 @@ using System.Collections;
 using System.Threading.Tasks;
 
 public class PlayerAttackController : MonoBehaviour {
-    public bool isAttacking { get; private set; }
+
+    public bool isAttacking;
+
     private PlayerMovementController player;
     void Start()
     {
@@ -11,9 +13,6 @@ public class PlayerAttackController : MonoBehaviour {
         isAttacking = false;
     }
     
-    void Update()
-    {
-    }
     public void GroundedAttackFlags(string attackName)
     {
         if (player.isGrounded)
