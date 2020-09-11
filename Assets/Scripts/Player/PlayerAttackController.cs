@@ -3,8 +3,8 @@ using System.Collections;
 using System.Threading.Tasks;
 
 public class PlayerAttackController : MonoBehaviour {
-
-    public bool isAttacking;
+    
+    public bool isAttacking { get; private set; }
 
     private PlayerMovementController player;
     void Start()

@@ -11,6 +11,8 @@ public class PlayerMovementController : MonoBehaviour {
     public float ForwardAirDashDuration;
     public float BackwardAirDashDuration;
     public float BackDashDuration;
+    public float BackDashBackSpeed;
+    public float BackDashUpSpeed;
     public float HorizontalJumpSpeed;
     public float JumpForce;
     public float RunForce;
@@ -78,7 +80,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             walkDirection = -1;
         }
-        if (isGrounded && !attackController.isAttacking) {
+        if (isGrounded && !attackController.isAttacking && !isBackDashing) {
             rb2d.velocity = new Vector2(walkDirection * WalkSpeed, 0f);
         }
     }
@@ -92,7 +94,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new InvalidProgramException("Tried to Dash while airborne!");
         }
-        if (isGrounded && !attackController.isAttacking) {
+        if (isGrounded && !attackController.isAttacking && !isBackDashing) {
             rb2d.velocity = new Vector2(InitialDashSpeed, 0f);
         }
         isRunning = true;
@@ -109,8 +111,10 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new InvalidProgramException("Tried to Backdash while airborne!");
         }
-        if (!attackController.isAttacking) {
-            rb2d.velocity = new Vector2(-InitialDashSpeed, 0f);
+        if (!isBackDashing && !attackController.isAttacking) {
+            StopRun();
+            rb2d.velocity = new Vector2(-BackDashBackSpeed, BackDashUpSpeed);
+            isBackDashing = true;
             IEnumerator coroutine = StopBackDashCoroutine();
             StartCoroutine(coroutine);
         }
@@ -123,7 +127,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new InvalidProgramException("Tried to Airdash while grounded!");
         }
-        if (AirActionsLeft > 0)
+        if (AirActionsLeft > 0 && !isBackDashing)
         {
             isAirDashing = true;
             rb2d.gravityScale = 0f;
@@ -170,6 +174,8 @@ public class PlayerMovementController : MonoBehaviour {
         }
         isRunning = true;
     }
+
+    /// Called at the end of the skidding animation
     public void StopRun()
     {
         isRunning = false;
@@ -188,7 +194,7 @@ public class PlayerMovementController : MonoBehaviour {
             throw new ArgumentException(direction + " is not an upwards direction");
         }
         // TODO: can you fix this later?
-        bool canJump = !attackController.isAttacking && !isHoldingJump && AirActionsLeft > 0;
+        bool canJump = !attackController.isAttacking && !isHoldingJump && AirActionsLeft > 0  && !isBackDashing;
         if (canJump) {
             float horizontalVelocity = 0;
             if (hasDashMomentum) 
@@ -208,10 +214,10 @@ public class PlayerMovementController : MonoBehaviour {
             }
             rb2d.velocity = new Vector2(horizontalVelocity, 0f);
             rb2d.AddForce(new Vector2(0f, JumpForce));
-            isRunning = false;
             setIsHoldingJump(true);
             animator.SetBool("IsJumping", true);
             animator.SetBool("IsRunning", false);
+            StopRun();
             AirActionsLeft--;
         }
     }
