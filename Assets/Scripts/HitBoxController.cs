@@ -22,21 +22,7 @@ public class HitBoxController : MonoBehaviour
     {
         Anim = this.gameObject.transform.root.GetComponent<Animator>();
         Rigidbody = this.gameObject.transform.root.GetComponent<Rigidbody2D>();
-        AttackData = new Attack(AttackId, AttackLevel, AttackDamage);
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "EnemyHurtbox")
-        {
-            
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "EnemyHurtbox")
-        {
-        }
+        PlayerStateManager playerState = this.gameObject.transform.root.GetComponent<PlayerStateManager>();
+        AttackData = new Attack(AttackId, AttackLevel, AttackDamage, playerState);
     }
 }

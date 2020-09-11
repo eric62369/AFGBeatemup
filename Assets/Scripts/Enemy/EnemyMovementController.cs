@@ -16,15 +16,6 @@ public class EnemyMovementController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void Update()
-    {
-    }
-
-    //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
-    void FixedUpdate()
-    {
-    }
-
     // Must always be called before Recovery frames
     public async Task TriggerHitStop(Attack AttackData)
     {
@@ -49,10 +40,11 @@ public class EnemyMovementController : MonoBehaviour
         rb2d.bodyType = RigidbodyType2D.Kinematic;
         rb2d.velocity = new Vector2(0f, 0f);
         // TODO: Do we need to be able to interrupt hitstop? Probably
-        await Task.Delay(AttackData.GetHitStop());
+        await Task.Delay(AttackData.GetHitstun());
         animator.enabled=true;
         rb2d.bodyType = RigidbodyType2D.Dynamic;
         int pushback = AttackData.GetPushback();
-        rb2d.AddForce(new Vector2(pushback, 0), ForceMode2D.Force);
+        int direction = AttackData.GetPushBackDirection();
+        rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
     }
 }

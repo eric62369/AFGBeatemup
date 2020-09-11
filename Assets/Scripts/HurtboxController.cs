@@ -28,7 +28,6 @@ public class HurtboxController : MonoBehaviour
     {
         if (other.gameObject.tag == "PlayerHitbox")
         {
-            Debug.Log("Attack");
             HitBoxController hitbox = other.gameObject.GetComponent<HitBoxController>();
             Attack attack = hitbox.AttackData;
             this.gameObject.transform.root.GetComponent<ParentHurtbox>().RegisterAttack(attack);
@@ -39,7 +38,6 @@ public class HurtboxController : MonoBehaviour
     {
         if (other.gameObject.tag == "PlayerHitbox")
         {
-            Debug.Log("Exit Attack");
             HitBoxController hitbox = other.gameObject.GetComponent<HitBoxController>();
             Attack attack = hitbox.AttackData;
             this.gameObject.transform.root.GetComponent<ParentHurtbox>().UnregisterAttack(attack);
