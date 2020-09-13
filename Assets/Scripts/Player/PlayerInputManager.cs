@@ -39,6 +39,7 @@ public class PlayerInputManager : MonoBehaviour
     public float Time236; // in (ms) window to input 236
     private PlayerMovementController playerMovement;
     private PlayerAttackController playerAttack;
+    private PlayerStateManager playerState;
     private Numpad currentInput; // Current stick input in Numpad
     private float runningTime; // How much time (in ms) since last input?
     private IList<Numpad> inputHistory;
@@ -52,6 +53,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         playerMovement = GetComponent<PlayerMovementController>();
         playerAttack = GetComponent<PlayerAttackController>();
+        playerState = GetComponent<PlayerStateManager>();
         currentInput = Numpad.N0;
         runningTime = 0;
         inputHistory = new List<Numpad>();
@@ -241,57 +243,113 @@ public class PlayerInputManager : MonoBehaviour
 
         x = deadZoneInput(x);
         y = deadZoneInput(y);
-        // TODO: There's a better way probably
-        if (x == -1)
+        // TODO: There's a better way, pls fix this
+        if (playerState.GetCurrentFacingDirection())
         {
-            if (y == -1)
+            if (x == -1)
             {
-                return Numpad.N1;
+                if (y == -1)
+                {
+                    return Numpad.N1;
+                }
+                else if (y == 1) 
+                {
+                    return Numpad.N7;
+                }
+                else if (y == 0)
+                {
+                    return Numpad.N4;
+                }
             }
-            else if (y == 1) 
+            else if (x == 1) 
             {
-                return Numpad.N7;
+                if (y == -1)
+                {
+                    return Numpad.N3;
+                }
+                else if (y == 1) 
+                {
+                    return Numpad.N9;
+                }
+                else if (y == 0)
+                {
+                    return Numpad.N6;
+                }
             }
-            else if (y == 0)
+            else if (x == 0)
             {
-                return Numpad.N4;
+                if (y == -1)
+                {
+                    return Numpad.N2;
+                }
+                else if (y == 1) 
+                {
+                    return Numpad.N8;
+                }
+                else if (y == 0)
+                {
+                    return Numpad.N5;
+                }
             }
+            else
+            {
+                throw new InvalidOperationException(x + " is not -1, 0, 1 for input");
+            }
+            throw new InvalidOperationException(y + " is not -1, 0, 1 for input");
         }
-        else if (x == 1) 
+        else  // Left facing (P2 side)
         {
-            if (y == -1)
+            if (x == -1)
             {
-                return Numpad.N3;
+                if (y == -1)
+                {
+                    return Numpad.N3;
+                }
+                else if (y == 1) 
+                {
+                    return Numpad.N9;
+                }
+                else if (y == 0)
+                {
+                    return Numpad.N6;
+                }
             }
-            else if (y == 1) 
+            else if (x == 1) 
             {
-                return Numpad.N9;
+                if (y == -1)
+                {
+                    return Numpad.N1;
+                }
+                else if (y == 1) 
+                {
+                    return Numpad.N7;
+                }
+                else if (y == 0)
+                {
+                    return Numpad.N4;
+                }
             }
-            else if (y == 0)
+            else if (x == 0)
             {
-                return Numpad.N6;
+                if (y == -1)
+                {
+                    return Numpad.N2;
+                }
+                else if (y == 1) 
+                {
+                    return Numpad.N8;
+                }
+                else if (y == 0)
+                {
+                    return Numpad.N5;
+                }
             }
+            else
+            {
+                throw new InvalidOperationException(x + " is not -1, 0, 1 for input");
+            }
+            throw new InvalidOperationException(y + " is not -1, 0, 1 for input");
         }
-        else if (x == 0)
-        {
-            if (y == -1)
-            {
-                return Numpad.N2;
-            }
-            else if (y == 1) 
-            {
-                return Numpad.N8;
-            }
-            else if (y == 0)
-            {
-                return Numpad.N5;
-            }
-        }
-        else
-        {
-            throw new InvalidOperationException(x + " is not -1, 0, 1 for input");
-        }
-        throw new InvalidOperationException(y + " is not -1, 0, 1 for input");
     }
 
     // Apply the deadzone to the given input

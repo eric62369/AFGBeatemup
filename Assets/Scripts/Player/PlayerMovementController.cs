@@ -192,7 +192,7 @@ public class PlayerMovementController : MonoBehaviour {
         if (isGrounded && !attackController.isAttacking && !isBackDashing) {
             float horizontalVelocity = Math.Abs(rb2d.velocity.x);
             float horizontalForce = RunForce;
-            if (rb2d.velocity.x > MaxRunSpeed)
+            if (horizontalVelocity > MaxRunSpeed)
             {
                 horizontalVelocity = MaxRunSpeed;
             }
