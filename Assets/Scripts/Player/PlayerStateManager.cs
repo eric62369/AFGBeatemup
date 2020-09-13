@@ -6,6 +6,9 @@ using UnityEngine;
 public class PlayerStateManager : MonoBehaviour
 {
     private GameObject boss;
+    /// i.e. I jumped and crossed up, I airdash forward (the direction I'm facing)
+    private bool isFacingRight;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +26,7 @@ public class PlayerStateManager : MonoBehaviour
     }
 
     /// If on same x position, player is on P1 side
+    /// Gets absolute p1 or p2 side, not facing direction
     public bool GetIsP1Side()
     {
         if (boss == null)
@@ -36,10 +40,26 @@ public class PlayerStateManager : MonoBehaviour
         return posDiff <= 0;
     }
 
+    /// Return last updated facing direction
+    /// True is Right facing (P1) False is Left Facing
+    public bool GetCurrentFacingDirection()
+    {
+        return isFacingRight;
+    }
+
     public void UpdateFacingDirection()
     {
         Vector3 newScale = this.gameObject.transform.localScale;
-        newScale.x *= -1;
+        newScale.x = Math.Abs(newScale.x);
+        if (!GetIsP1Side())
+        {
+            newScale.x *= -1;
+            isFacingRight = false;
+        }
+        else
+        {
+            isFacingRight = true;
+        }
         this.gameObject.transform.localScale = newScale;
     }
 }

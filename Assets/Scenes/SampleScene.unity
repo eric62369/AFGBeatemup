@@ -349,6 +349,7 @@ GameObject:
   - component: {fileID: 531046030}
   - component: {fileID: 531046031}
   - component: {fileID: 531046032}
+  - component: {fileID: 531046033}
   m_Layer: 0
   m_Name: Korie
   m_TagString: Boss
@@ -528,6 +529,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &531046033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531046024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa97f2228b5af404bbd3de430823a6bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1303806409
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,6 +871,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 535144459, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 535144461, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513836250, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1513836253, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688487690978953, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688487690978955, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688488324967034, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688488324967036, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7814688488446206480, guid: 37e9a37824157947fb579dd60e393050, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.21
@@ -901,6 +946,22 @@ PrefabInstance:
     - target: {fileID: 7814688488446206480, guid: 37e9a37824157947fb579dd60e393050, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: BackDashDuration
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: InitialDashSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: BackDashBackSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: BackDashUpSpeed
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7814688488446206493, guid: 37e9a37824157947fb579dd60e393050, type: 3}
       propertyPath: m_Name

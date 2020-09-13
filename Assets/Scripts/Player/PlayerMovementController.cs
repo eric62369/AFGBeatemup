@@ -60,9 +60,16 @@ public class PlayerMovementController : MonoBehaviour {
                 // Landed!
                 animator.SetBool("IsJumping", false);
                 isHoldingJump = false;
+                hasDashMomentum = false;
                 AirActionsLeft = MaxAirActions;
             }
             isGrounded = newGrounded;
+
+            bool isIdling = isGrounded && !attackController.isAttacking && !isBackDashing;
+            if (isIdling)
+            {
+                UpdateFacingDirection();
+            }
         }
     }
 
@@ -80,8 +87,13 @@ public class PlayerMovementController : MonoBehaviour {
         {
             walkDirection = -1;
         }
+        if (!playerState.GetCurrentFacingDirection())
+        {
+            walkDirection *= -1;
+        }
         if (isGrounded && !attackController.isAttacking && !isBackDashing) {
             rb2d.velocity = new Vector2(walkDirection * WalkSpeed, 0f);
+            UpdateFacingDirection();
         }
     }
     public void Dash(Numpad direction)
@@ -95,7 +107,12 @@ public class PlayerMovementController : MonoBehaviour {
             throw new InvalidProgramException("Tried to Dash while airborne!");
         }
         if (isGrounded && !attackController.isAttacking && !isBackDashing) {
-            rb2d.velocity = new Vector2(InitialDashSpeed, 0f);
+            float horizontalVelocity = InitialDashSpeed;
+            if (!playerState.GetCurrentFacingDirection())
+            {
+                horizontalVelocity *= -1;
+            }
+            rb2d.velocity = new Vector2(horizontalVelocity, 0f);
         }
         isRunning = true;
         hasDashMomentum = true;
@@ -113,7 +130,12 @@ public class PlayerMovementController : MonoBehaviour {
         }
         if (!isBackDashing && !attackController.isAttacking) {
             StopRun();
-            rb2d.velocity = new Vector2(-BackDashBackSpeed, BackDashUpSpeed);
+            float horizontalVelocity = -BackDashBackSpeed;
+            if (!playerState.GetCurrentFacingDirection())
+            {
+                horizontalVelocity *= -1;
+            }
+            rb2d.velocity = new Vector2(horizontalVelocity, BackDashUpSpeed);
             isBackDashing = true;
             IEnumerator coroutine = StopBackDashCoroutine();
             StartCoroutine(coroutine);
@@ -132,16 +154,19 @@ public class PlayerMovementController : MonoBehaviour {
             isAirDashing = true;
             rb2d.gravityScale = 0f;
             IEnumerator coroutine;
+            float AirDashVelocity = -AirDashSpeed;
+            float AirDashDuration = BackwardAirDashDuration;
             if (isForward)
             {
-                rb2d.velocity = new Vector2(AirDashSpeed, 0f);
-                coroutine = StopAirDashCoroutine(ForwardAirDashDuration);
+                AirDashVelocity = AirDashSpeed;
+                AirDashDuration = ForwardAirDashDuration;
             }
-            else
+            if (!playerState.GetCurrentFacingDirection())
             {
-                rb2d.velocity = new Vector2(-AirDashSpeed, 0f);
-                coroutine = StopAirDashCoroutine(BackwardAirDashDuration);
+                AirDashVelocity *= -1;
             }
+            rb2d.velocity = new Vector2(AirDashVelocity, 0f);
+            coroutine = StopAirDashCoroutine(AirDashDuration);
             AirActionsLeft--;
             StartCoroutine(coroutine);
         }
@@ -164,18 +189,25 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new ArgumentException(direction + " is not a horizontal direction");
         }
-        if (isGrounded && !attackController.isAttacking) {
-            rb2d.AddForce(new Vector2(RunForce, 0f));
-            rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
+        if (isGrounded && !attackController.isAttacking && !isBackDashing) {
+            float horizontalVelocity = Math.Abs(rb2d.velocity.x);
+            float horizontalForce = RunForce;
             if (rb2d.velocity.x > MaxRunSpeed)
             {
-                rb2d.velocity = new Vector2(MaxRunSpeed, 0f);
+                horizontalVelocity = MaxRunSpeed;
             }
+            if (!playerState.GetCurrentFacingDirection())
+            {
+                horizontalVelocity *= -1;
+                horizontalForce *= -1;
+            }
+            rb2d.velocity = new Vector2(horizontalVelocity, 0f);
+            rb2d.AddForce(new Vector2(horizontalForce, 0f));
         }
         isRunning = true;
     }
 
-    /// Called at the end of the skidding animation
+    /// Called at the end of the skidding animation, and used to cancel Run state
     public void StopRun()
     {
         isRunning = false;
@@ -200,7 +232,8 @@ public class PlayerMovementController : MonoBehaviour {
             if (hasDashMomentum) 
             {
                 // Slight dash momentum factored in
-                horizontalVelocity = rb2d.velocity.x;
+                // Could be negative too
+                horizontalVelocity = Math.Abs(rb2d.velocity.x / 2);
             }
             if (direction == Numpad.N7)
             {
@@ -211,6 +244,11 @@ public class PlayerMovementController : MonoBehaviour {
             else if (direction == Numpad.N9)
             {
                 horizontalVelocity += HorizontalJumpSpeed;
+            }
+            // P1 or P2 side
+            if (!playerState.GetCurrentFacingDirection())
+            {
+                horizontalVelocity *= -1;
             }
             rb2d.velocity = new Vector2(horizontalVelocity, 0f);
             rb2d.AddForce(new Vector2(0f, JumpForce));
@@ -244,9 +282,6 @@ public class PlayerMovementController : MonoBehaviour {
     private void UpdateFacingDirection()
     {
         // updates local scale if necessary
-        if (playerState.GetIsP1Side())
-        {
-            playerState.UpdateFacingDirection();
-        }
+        playerState.UpdateFacingDirection();
     }
 }
