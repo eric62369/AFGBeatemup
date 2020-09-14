@@ -8,11 +8,13 @@ public class PlayerStateManager : MonoBehaviour
     private GameObject boss;
     /// i.e. I jumped and crossed up, I airdash forward (the direction I'm facing)
     private bool isFacingRight;
+    private PlayerInputManager inputManager;
 
     // Start is called before the first frame update
     void Start()
     {
         SearchForBoss();
+        inputManager = GetComponent<PlayerInputManager>();
     }
 
     /// Set reference to the current boss enemy
@@ -51,6 +53,7 @@ public class PlayerStateManager : MonoBehaviour
     {
         Vector3 newScale = this.gameObject.transform.localScale;
         newScale.x = Math.Abs(newScale.x);
+        bool oldDirection = isFacingRight;
         if (!GetIsP1Side())
         {
             newScale.x *= -1;
@@ -60,6 +63,10 @@ public class PlayerStateManager : MonoBehaviour
         {
             isFacingRight = true;
         }
-        this.gameObject.transform.localScale = newScale;
+        if (oldDirection != isFacingRight)
+        {
+            this.gameObject.transform.localScale = newScale;
+            inputManager.FacingDirectionChanged();
+        }
     }
 }

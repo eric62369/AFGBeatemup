@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum Numpad
 {
@@ -44,10 +45,10 @@ public class PlayerInputManager : MonoBehaviour
     private float runningTime; // How much time (in ms) since last input?
     private IList<Numpad> inputHistory;
     private IList<float> timeHistory;
-    private bool A;
-    private bool B;
-    private bool C;
-    private bool D;
+    private bool AButton;
+    private bool BButton;
+    private bool CButton;
+    private bool DButton;
 
     void Start()
     {
@@ -67,26 +68,32 @@ public class PlayerInputManager : MonoBehaviour
     }
     public void Update()
     {
-        Numpad newInput = GetCurrentInput();
         runningTime += Time.deltaTime;
-
         InterpretMovement();
-        // New input detected!
-        if (newInput != currentInput)
-        {
-            currentInput = newInput;
-            inputHistory.Insert(0, currentInput);
-            timeHistory.Insert(0, runningTime);
-            runningTime = 0;
-            if (inputHistory.Count > InputHistorySize)
-            {
-                inputHistory.RemoveAt(InputHistorySize);
-                timeHistory.RemoveAt(InputHistorySize);
-            }
-            InterpretDash();
-        }
-        InterpretButtons();
     }
+
+    /// Called when new input received
+    /// takes a numpad direction
+    /// modifies input and time History
+    private void InterpretNewStickInput(Numpad newInput)
+    {
+        currentInput = newInput;
+        inputHistory.Insert(0, currentInput);
+        timeHistory.Insert(0, runningTime);
+        runningTime = 0;
+        if (inputHistory.Count > InputHistorySize)
+        {
+            inputHistory.RemoveAt(InputHistorySize);
+            timeHistory.RemoveAt(InputHistorySize);
+        }
+        InterpretDash();
+    }
+
+    private void InterpretNewButtonInput(Button buttonPressed)
+    {
+        InterpretButtons(buttonPressed);
+    }
+
     private void InterpretMovement()
     {
         Numpad firstInput = inputHistory[0];
@@ -214,35 +221,18 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
     }
-    private void InterpretButtons()
+    private void InterpretButtons(Button buttonPressed)
     {
-        bool curA = Input.GetButton("Fire1");
-        bool curB = Input.GetButton("Fire2");
-        bool curC = Input.GetButton("Fire3");
-        // bool curD = Input.GetButton("Fire4");
-
-        if (curA == true && A == false) {
-            InterpretSpecial(Button.A);
-        }
-        if (curB == true && B == false) {
-            InterpretSpecial(Button.B);
-        }
-
-
-        A = curA;
-        B = curB;
-        C = curC;
+        // TODO: Interpret button combos here too?
+        InterpretSpecial(buttonPressed);
     }
 
     // Will always return P1 side style inputs
     // (i.e. P2 side 4 input is translated to -> 6)
-    public Numpad GetCurrentInput()
+    public Numpad GetInputToNumpad(float x, float y)
     {
-        float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
-
-        x = deadZoneInput(x);
-        y = deadZoneInput(y);
+        x = DeadZoneInput(x);
+        y = DeadZoneInput(y);
         // TODO: There's a better way, pls fix this
         if (playerState.GetCurrentFacingDirection())
         {
@@ -351,9 +341,37 @@ public class PlayerInputManager : MonoBehaviour
             throw new InvalidOperationException(y + " is not -1, 0, 1 for input");
         }
     }
+    public void FacingDirectionChanged()
+    {
+        // TODO: can be switch case or something else
+        if (currentInput == Numpad.N7)
+        {
+            InterpretNewStickInput(Numpad.N9);
+        }
+        else if (currentInput == Numpad.N4)
+        {
+            InterpretNewStickInput(Numpad.N6);
+        }
+        else if (currentInput == Numpad.N1)
+        {
+            InterpretNewStickInput(Numpad.N3);
+        }
+        else if (currentInput == Numpad.N9)
+        {
+            InterpretNewStickInput(Numpad.N7);
+        }
+        else if (currentInput == Numpad.N6)
+        {
+            InterpretNewStickInput(Numpad.N4);
+        }
+        else if (currentInput == Numpad.N3)
+        {
+            InterpretNewStickInput(Numpad.N1);
+        }
+    }
 
     // Apply the deadzone to the given input
-    private float deadZoneInput(float x)
+    private float DeadZoneInput(float x)
     {
         float absx = System.Math.Abs(x);
         if (absx < DeadZone)
@@ -365,5 +383,22 @@ public class PlayerInputManager : MonoBehaviour
             x /= absx;
         }
         return x;
+    }
+
+    //////////////////
+    // Input Manager Events
+    //////////////////
+    private void OnMove(InputValue value)
+    {
+        Vector2 input = value.Get<Vector2>();
+        InterpretNewStickInput(GetInputToNumpad(input.x, input.y));
+    }
+    private void OnA()
+    {
+        InterpretNewButtonInput(Button.A);
+    }
+    private void OnB()
+    {
+        InterpretNewButtonInput(Button.B);
     }
 }
