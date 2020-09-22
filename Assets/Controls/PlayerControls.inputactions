@@ -9,7 +9,7 @@
                     "name": "Move",
                     "type": "PassThrough",
                     "id": "e1191d49-5c94-45a0-a036-83f6d626846f",
-                    "expectedControlType": "Stick",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
                 },
@@ -88,6 +88,28 @@
                 },
                 {
                     "name": "",
+                    "id": "903cc9ae-7871-473e-a3f3-21f1427d7256",
+                    "path": "<Gamepad>/dpad",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e48e697e-19bb-4ad6-bb2a-63350990c7af",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "91ee4b85-94c1-4bff-894d-21aa1a6a5f73",
                     "path": "<Keyboard>/j",
                     "interactions": "",
@@ -99,8 +121,30 @@
                 },
                 {
                     "name": "",
+                    "id": "d2bc2181-d43c-400c-ac7e-d640f7cb2952",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "A",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "ba005158-5566-4a1b-884d-dd8059677ab4",
                     "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "B",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "009f6208-0735-4313-9cf6-32bcbc690dca",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
