@@ -17,11 +17,22 @@ public class PlayerAttackController : MonoBehaviour {
     {
         if (player.isGrounded)
         {
-            isAttacking = true;
-            player.isRunning = false;
-            player.AnimationSetBool(attackName, true);
-            player.AnimationSetBool("IsRunning", false);
-            player.StopRun();
+            if (isAttacking)
+            {
+                // Player is already attacking, is a cancel possible?
+                if (player.AnimationGetBool("CanCancel"))
+                {
+                    player.AnimationSetBool(attackName, true);
+                }
+            }
+            else
+            {
+                isAttacking = true;
+                player.isRunning = false;
+                player.AnimationSetBool(attackName, true);
+                player.AnimationSetBool("IsRunning", false);
+                player.StopRun();
+            }
         }
     }
     public void Attack5B()
