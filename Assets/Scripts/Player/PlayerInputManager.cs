@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,10 +47,7 @@ public class PlayerInputManager : MonoBehaviour
     private float runningTime; // How much time (in ms) since last input?
     private IList<Numpad> inputHistory;
     private IList<float> timeHistory;
-    private bool AButton;
-    private bool BButton;
-    private bool CButton;
-    private bool DButton;
+    private ConcurrentBag<Button> buttonDownBag;
 
     void Start()
     {
@@ -59,6 +58,7 @@ public class PlayerInputManager : MonoBehaviour
         runningTime = 0;
         inputHistory = new List<Numpad>();
         timeHistory = new List<float>();
+        buttonDownBag = new ConcurrentBag<Button>();
 
         for (int i = 0; i < InputHistorySize; i++)
         {
@@ -70,6 +70,10 @@ public class PlayerInputManager : MonoBehaviour
     {
         runningTime += Time.deltaTime;
         InterpretMovement();
+        if (!buttonDownBag.IsEmpty)
+        {
+            InterpretButtons();
+        }
     }
 
     /// Called when new input received
@@ -91,7 +95,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void InterpretNewButtonInput(Button buttonPressed)
     {
-        InterpretButtons(buttonPressed);
+        buttonDownBag.Add(buttonPressed);
     }
 
     private void InterpretMovement()
@@ -137,12 +141,19 @@ public class PlayerInputManager : MonoBehaviour
         Numpad firstInput = inputHistory[0];
         Numpad secondInput = inputHistory[1];
         Numpad thirdInput = inputHistory[2];
+        Numpad fourthInput = inputHistory[3];
         float firstTime = timeHistory[0];
         float secondTime = timeHistory[1];
 
         if (!playerAttack.isAttacking)
         {
-            if (firstInput == Numpad.N6 && secondInput == Numpad.N5 && (thirdInput == Numpad.N6 || thirdInput == Numpad.N9))
+            bool forwardDash = 
+                (firstInput == Numpad.N6 && secondInput == Numpad.N5 && (thirdInput == Numpad.N6 || thirdInput == Numpad.N9)) ||
+                (firstInput == Numpad.N6 && secondInput == Numpad.N5 && thirdInput == Numpad.N5 && (fourthInput == Numpad.N6 || fourthInput == Numpad.N9));
+            bool backwardDash = 
+                (firstInput == Numpad.N4 && secondInput == Numpad.N5 && (thirdInput == Numpad.N4 || thirdInput == Numpad.N7)) ||
+                (firstInput == Numpad.N4 && secondInput == Numpad.N5 && thirdInput == Numpad.N8 && (fourthInput == Numpad.N4 || fourthInput == Numpad.N7));
+            if (forwardDash)
             {
                 if (firstTime + secondTime <= Time66)
                 {
@@ -158,7 +169,7 @@ public class PlayerInputManager : MonoBehaviour
                     }
                 }
             }
-            else if (firstInput == Numpad.N4 && secondInput == Numpad.N5 && (thirdInput == Numpad.N4 || thirdInput == Numpad.N7))
+            else if (backwardDash)
             {
                 if (firstTime + secondTime <= Time66)
                 {
@@ -221,10 +232,39 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
     }
-    private void InterpretButtons(Button buttonPressed)
+
+    private void InterpretButtons()
     {
-        // TODO: Interpret button combos here too?
-        InterpretSpecial(buttonPressed);
+        if (buttonDownBag.IsEmpty)
+        {
+            throw new InvalidOperationException("Interpretting buttons, but there are no buttons down!");
+        }
+        Button[] buttonsDown = buttonDownBag.ToArray();
+        if (buttonsDown.Contains(Button.A) && buttonsDown.Contains(Button.B))
+        {
+            // Debug.Log("YEET");
+        }
+        else
+        {
+            if (buttonsDown.Contains(Button.A))
+            {
+                InterpretSpecial(Button.A);
+            }
+            else if (buttonsDown.Contains(Button.B))
+            {
+                InterpretSpecial(Button.B);
+            }
+            else if (buttonsDown.Contains(Button.C))
+            {
+                InterpretSpecial(Button.C);
+            }
+        }
+        // empty out button bag
+        while (!buttonDownBag.IsEmpty)
+        {
+            Button button;
+            buttonDownBag.TryTake(out button);
+        }
     }
 
     // Will always return P1 side style inputs
@@ -398,6 +438,14 @@ public class PlayerInputManager : MonoBehaviour
         InterpretNewButtonInput(Button.A);
     }
     private void OnB()
+    {
+        InterpretNewButtonInput(Button.B);
+    }
+    private void OnC()
+    {
+        InterpretNewButtonInput(Button.B);
+    }
+    private void OnD()
     {
         InterpretNewButtonInput(Button.B);
     }
