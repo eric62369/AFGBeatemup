@@ -176,6 +176,7 @@ public class PlayerMovementController : MonoBehaviour {
     {
         yield return new WaitForSeconds(duration);
         rb2d.gravityScale = GravityScale;
+        rb2d.velocity = new Vector2(rb2d.velocity.x / 2, rb2d.velocity.y);
         isAirDashing = false;
     }
     private IEnumerator StopBackDashCoroutine()

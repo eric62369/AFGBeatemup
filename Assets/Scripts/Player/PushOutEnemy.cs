@@ -18,7 +18,6 @@ public class PushOutEnemy : MonoBehaviour
     {
         if (playerMovement.isGrounded && other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            Debug.Log("WOW!");
             enemyPushOutBox.enabled = true;
         }
     }
@@ -26,7 +25,6 @@ public class PushOutEnemy : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            Debug.Log("OWO!");
             enemyPushOutBox.enabled = false;
         }
     }
