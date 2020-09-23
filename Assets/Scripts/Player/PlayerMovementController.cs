@@ -277,6 +277,10 @@ public class PlayerMovementController : MonoBehaviour {
     {
         animator.SetBool(animationId, setValue);
     }
+    public bool AnimationGetBool(string animationId)
+    {
+        return animator.GetBool(animationId);
+    }
 
     /// Reevaluate facing direction, update if necessary
     private void UpdateFacingDirection()
