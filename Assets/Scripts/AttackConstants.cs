@@ -11,4 +11,7 @@ public class AttackConstants
 
     /// AttackLevel to HitStop in (ms)
     public static readonly int[] AttackLevelHitStop = { 150, 250, 350, 500 };
+
+    /// {X, Y} Force in ForceMode
+    public static readonly int[] LightLaunchForce = { 200, 500 }; 
 }

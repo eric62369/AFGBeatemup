@@ -37,6 +37,6 @@ public class EnemyStateManager : MonoBehaviour
 
     public void GetLaunched(Attack attackData)
     {
-
+        movementController.LaunchEnemy(attackData.GetPushBackDirection());
     }
 }

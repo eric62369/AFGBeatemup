@@ -42,11 +42,6 @@ public class ParentHurtbox : MonoBehaviour
                     EnemyMovement.TriggerHitStun(attackData);
                     currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     HpManager.DealDamage(attackData.Damage);
-                    if (attackData.Type == AttackType.Launcher)
-                    {
-                        // Launch enemy uP!
-                        EnemyState.GetLaunched(attackData);
-                    }
                 }
             }
         }

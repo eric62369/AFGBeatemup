@@ -433,7 +433,7 @@ MonoBehaviour:
   AttackDamage: 10
   AttackLevel: 3
   AttackId: P1-ThrowStrike
-  Type: 0
+  Type: 1
 --- !u!61 &1375837177
 BoxCollider2D:
   m_ObjectHideFlags: 0

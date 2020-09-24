@@ -8,12 +8,15 @@ public class EnemyMovementController : MonoBehaviour
     private Rigidbody2D rb2d;
     public Animator animator;
 
+    private EnemyStateManager enemyState;
+
     // Use this for initialization
     void Start()
     {
         //Get and store a reference to the Rigidbody2D component so that we can access it.
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        enemyState = GetComponent<EnemyStateManager>();
     }
 
     /// Returns the velocity before freezing
@@ -39,27 +42,43 @@ public class EnemyMovementController : MonoBehaviour
         rb2d.velocity = new Vector2(0f, 0f);
     }
 
+    public void LaunchEnemy(int direction)
+    {
+        rb2d.AddForce(new Vector2(
+            AttackConstants.LightLaunchForce[0] * direction,
+            AttackConstants.LightLaunchForce[1]),
+            ForceMode2D.Force);
+    }
+
     // Must always be called before Recovery frames
-    public async Task TriggerHitStop(Attack AttackData)
+    public async Task TriggerHitStop(Attack attackData)
     {
         // Get animator
         // Pause animator for x seconds
         Vector2 oldVelocity = FreezeEnemy();
         // TODO: Do we need to be able to interrupt hitstop? Probably
-        await Task.Delay(AttackData.GetHitStop());
+        await Task.Delay(attackData.GetHitStop());
         UnFreezeEnemy(oldVelocity);
         // resume animation
     }
 
-    public async Task TriggerHitStun(Attack AttackData)
+    public async Task TriggerHitStun(Attack attackData)
     {
         // Trigger animation's hitstun 
         FreezeEnemy();
         // TODO: Do we need to be able to interrupt hitstop? Probably
-        await Task.Delay(AttackData.GetHitstun());
+        await Task.Delay(attackData.GetHitstun());
         UnFreezeEnemy();
-        int pushback = AttackData.GetPushback();
-        int direction = AttackData.GetPushBackDirection();
-        rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
+        int pushback = attackData.GetPushback();
+        int direction = attackData.GetPushBackDirection();
+        if (attackData.Type == AttackType.Launcher)
+        {
+            // Launch enemy uP!
+            enemyState.GetLaunched(attackData);
+        }
+        else
+        {
+            rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
+        }
     }
 }
