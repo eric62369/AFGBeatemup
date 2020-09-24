@@ -37,6 +37,11 @@ public class PlayerMovementController : MonoBehaviour {
     private PlayerInputManager playerInput;
     private PlayerStateManager playerState;
 
+    private ResetMovementStateToNeutral()
+    {
+
+    }
+
     // Use this for initialization
     void Start()
     {

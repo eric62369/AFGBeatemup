@@ -105,6 +105,7 @@ public class PlayerInputManager : MonoBehaviour
 
         if (IsNumpadUp(firstInput))
         {
+            playerState.SetCancelAction(CancelAction.Jump);
             playerMovement.Jump(firstInput);
         }
         else if (!playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N4))

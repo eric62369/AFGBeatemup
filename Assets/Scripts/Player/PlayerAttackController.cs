@@ -2,17 +2,25 @@
 using System.Collections;
 using System.Threading.Tasks;
 
+public enum CancelAction
+{
+    Jump,
+    Attack
+}
+
 public class PlayerAttackController : MonoBehaviour {
     
     public bool isAttacking { get; private set; }
 
     private PlayerMovementController movementController;
     private PlayerStateManager playerState;
+    private CancelAction? currentCancelAction;
     void Start()
     {
         movementController = GetComponent<PlayerMovementController>();
         playerState = GetComponent<PlayerStateManager>();
         isAttacking = false;
+        currentCancelAction = null;
     }
     
     public void GroundedAttackFlags(string attackName)
@@ -84,18 +92,10 @@ public class PlayerAttackController : MonoBehaviour {
     }
     public void MoveDone() {
         // Deactivate hurtbox
-        movementController.AnimationSetBool("5B", false);
-        movementController.AnimationSetBool("5C", false);
-        movementController.AnimationSetBool("ThrowWhiff", false);
-        movementController.AnimationSetBool("ThrowHit", false);
-        isAttacking = false;
+        ResetAttackStateToNeutral();
     }
     public void Cancel() {
-        movementController.AnimationSetBool("5B", false);
-        movementController.AnimationSetBool("5C", false);
-        movementController.AnimationSetBool("ThrowWhiff", false);
-        movementController.AnimationSetBool("ThrowHit", false);
-        isAttacking = false;
+        ResetAttackStateToNeutral();
     }
     public void SetCancel()
     {
@@ -130,5 +130,37 @@ public class PlayerAttackController : MonoBehaviour {
         // TODO: Do we need to be able to interrupt hitstop? Probably
         await Task.Delay(AttackData.GetHitStop());
         UnFreezePlayer(oldVelocity);
+        UseCancelAction();
+    }
+
+    public void SetCancelAction(CancelAction action)
+    {
+        // OnHit / OnBlock cancels
+        if (movementController.AnimationGetBool("CanCancel"))
+        {
+            currentCancelAction = action;
+        }
+        else
+        {
+            currentCancelAction = null;
+        }
+    }
+    private void UseCancelAction()
+    {
+        if (currentCancelAction != null)
+        {
+            Debug.Log(currentCancelAction);
+            playerState.UseCancelAction(currentCancelAction);
+        }
+        currentCancelAction = null;
+    }
+
+    private void ResetAttackStateToNeutral()
+    {
+        movementController.AnimationSetBool("5B", false);
+        movementController.AnimationSetBool("5C", false);
+        movementController.AnimationSetBool("ThrowWhiff", false);
+        movementController.AnimationSetBool("ThrowHit", false);
+        isAttacking = false;
     }
 }

@@ -115,4 +115,29 @@ public class PlayerStateManager : MonoBehaviour
         movementController.AnimationSetBool("ThrowHit", false);
         attackController.ThrowUnFreeze();
     }
+
+    public void SetCancelAction(CancelAction action)
+    {
+        attackController.SetCancelAction(action);
+    }
+
+    public void UseCancelAction(CancelAction? action)
+    {
+        if (action == null)
+        {
+            throw new ArgumentException("Tried to use null cancel action!");
+        }
+        // reset states to neutral
+        ResetStateToNeutral();
+        if (action == CancelAction.Jump)
+        {
+            movementController.Jump(Numpad.N8);
+        }
+    }
+
+    private void ResetStateToNeutral()
+    {
+        movementController.ResetMovementStateToNeutral();
+        attackController.ResetAttackStateToNeutral();
+    }
 }
