@@ -6,6 +6,7 @@ public class ParentHurtbox : MonoBehaviour
 {
     private EnemyHealthManager HpManager;
     private EnemyMovementController EnemyMovement;
+    private EnemyStateManager EnemyState;
     private Rigidbody2D Rigidbody;
     private IDictionary<string, int> currRegisteredAttacks;
     private readonly object registerAttackLock = new object();
@@ -17,6 +18,7 @@ public class ParentHurtbox : MonoBehaviour
         HpManager = GetComponent<EnemyHealthManager>();
         Rigidbody = GetComponent<Rigidbody2D>();
         EnemyMovement = GetComponent<EnemyMovementController>();
+        EnemyState = GetComponent<EnemyStateManager>();
         player1 = GameObject.FindWithTag("Player").GetComponent<PlayerAttackController>();
         currRegisteredAttacks = new Dictionary<string, int>();
     }
@@ -28,10 +30,24 @@ public class ParentHurtbox : MonoBehaviour
             if (!currRegisteredAttacks.ContainsKey(attackData.Id))
             {
                 // Attack landed!
-                player1.TriggerHitStop(attackData);
-                EnemyMovement.TriggerHitStun(attackData);
-                currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
-                HpManager.DealDamage(attackData.Damage);
+                if (attackData.Type == AttackType.Throw)
+                {
+                    EnemyState.TakeThrow(attackData.playerState);
+                    EnemyMovement.FreezeEnemy();
+                    currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
+                }
+                else
+                {
+                    player1.TriggerHitStop(attackData);
+                    EnemyMovement.TriggerHitStun(attackData);
+                    currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
+                    HpManager.DealDamage(attackData.Damage);
+                    if (attackData.Type == AttackType.Launcher)
+                    {
+                        // Launch enemy uP!
+                        EnemyState.GetLaunched(attackData);
+                    }
+                }
             }
         }
     }

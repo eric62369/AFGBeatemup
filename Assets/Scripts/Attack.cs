@@ -1,20 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
+public enum AttackType
+{
+    Strike,
+    Launcher,
+    Throw
+}
+
 public class Attack
 {
     public int Damage { get; private set; }
     public int Level { get; private set; }
     /// Example: P1-5B
     public string Id { get; private set; }
+    public AttackType Type { get; private set; }
     public PlayerStateManager playerState;
 
+    /// Defaults to strike attack type
     public Attack(string attackId, int attackLevel, int attackDamage, PlayerStateManager _playerState)
     {
         Id = attackId;
         Level = attackLevel;
         Damage = attackDamage;
         playerState = _playerState;
+        Type = AttackType.Strike;
+    }
+    /// Takes in an attack type also
+    public Attack(string attackId, int attackLevel, int attackDamage, AttackType attackType, PlayerStateManager _playerState)
+    {
+        Id = attackId;
+        Level = attackLevel;
+        Damage = attackDamage;
+        playerState = _playerState;
+        Type = attackType;
     }
 
     /// A force number

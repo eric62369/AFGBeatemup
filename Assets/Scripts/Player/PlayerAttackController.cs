@@ -6,32 +6,34 @@ public class PlayerAttackController : MonoBehaviour {
     
     public bool isAttacking { get; private set; }
 
-    private PlayerMovementController player;
+    private PlayerMovementController movementController;
+    private PlayerStateManager playerState;
     void Start()
     {
-        player = GetComponent<PlayerMovementController>();
+        movementController = GetComponent<PlayerMovementController>();
+        playerState = GetComponent<PlayerStateManager>();
         isAttacking = false;
     }
     
     public void GroundedAttackFlags(string attackName)
     {
-        if (player.isGrounded)
+        if (movementController.isGrounded)
         {
             if (isAttacking)
             {
                 // Player is already attacking, is a cancel possible?
-                if (player.AnimationGetBool("CanCancel"))
+                if (movementController.AnimationGetBool("CanCancel"))
                 {
-                    player.AnimationSetBool(attackName, true);
+                    movementController.AnimationSetBool(attackName, true);
                 }
             }
             else
             {
                 isAttacking = true;
-                player.isRunning = false;
-                player.AnimationSetBool(attackName, true);
-                player.AnimationSetBool("IsRunning", false);
-                player.StopRun();
+                movementController.isRunning = false;
+                movementController.AnimationSetBool(attackName, true);
+                movementController.AnimationSetBool("IsRunning", false);
+                movementController.StopRun();
             }
         }
     }
@@ -42,6 +44,31 @@ public class PlayerAttackController : MonoBehaviour {
     public void Attack5C()
     {
         GroundedAttackFlags("5C");
+    }
+    public void Throw(bool isForward)
+    {
+        if (movementController.isGrounded)
+        {
+            if (!isAttacking)
+            {
+                isAttacking = true; // TODO: Do we need a throw flag?
+                playerState.SetThrowDirection(isForward);
+                movementController.isRunning = false;
+                movementController.AnimationSetBool("ThrowWhiff", true);
+                movementController.AnimationSetBool("IsRunning", false);
+                movementController.StopRun();
+            }
+        }
+    }
+    public void ThrowFreeze()
+    {
+        movementController.rb2d.velocity = new Vector2(0f, 0f);
+        movementController.rb2d.bodyType = RigidbodyType2D.Kinematic;
+    }
+    public void ThrowUnFreeze()
+    {
+        movementController.rb2d.bodyType = RigidbodyType2D.Dynamic;
+        MoveDone();
     }
 
     public void Startup()
@@ -57,36 +84,51 @@ public class PlayerAttackController : MonoBehaviour {
     }
     public void MoveDone() {
         // Deactivate hurtbox
-        player.AnimationSetBool("5B", false);
-        player.AnimationSetBool("5C", false);
+        movementController.AnimationSetBool("5B", false);
+        movementController.AnimationSetBool("5C", false);
+        movementController.AnimationSetBool("ThrowWhiff", false);
+        movementController.AnimationSetBool("ThrowHit", false);
         isAttacking = false;
     }
     public void Cancel() {
-        player.AnimationSetBool("5B", false);
-        player.AnimationSetBool("5C", false);
+        movementController.AnimationSetBool("5B", false);
+        movementController.AnimationSetBool("5C", false);
+        movementController.AnimationSetBool("ThrowWhiff", false);
+        movementController.AnimationSetBool("ThrowHit", false);
         isAttacking = false;
     }
     public void SetCancel()
     {
-        player.AnimationSetBool("CanCancel", true);
+        movementController.AnimationSetBool("CanCancel", true);
     }
     public void ResetCancel()
     {
-        player.AnimationSetBool("CanCancel", false);
+        movementController.AnimationSetBool("CanCancel", false);
+    }
+
+    public Vector2 FreezePlayer()
+    {
+        movementController.animator.enabled=false;
+        movementController.rb2d.bodyType = RigidbodyType2D.Kinematic;
+        Vector2 oldVelocity = movementController.rb2d.velocity;
+        movementController.rb2d.velocity = new Vector2(0f, 0f);
+        return oldVelocity;
+    }
+
+    public void UnFreezePlayer(Vector2 oldVelocity)
+    {
+        movementController.animator.enabled=true;
+        movementController.rb2d.bodyType = RigidbodyType2D.Dynamic;
+        movementController.rb2d.velocity = oldVelocity;
     }
 
     // Must always be called before Recovery frames
     public async Task TriggerHitStop(Attack AttackData)
     {
         SetCancel();
-        player.animator.enabled=false;
-        player.rb2d.bodyType = RigidbodyType2D.Kinematic;
-        Vector2 oldVelocity = player.rb2d.velocity;
-        player.rb2d.velocity = new Vector2(0f, 0f);
+        Vector2 oldVelocity = FreezePlayer();
         // TODO: Do we need to be able to interrupt hitstop? Probably
         await Task.Delay(AttackData.GetHitStop());
-        player.animator.enabled=true;
-        player.rb2d.bodyType = RigidbodyType2D.Dynamic;
-        player.rb2d.velocity = oldVelocity;
+        UnFreezePlayer(oldVelocity);
     }
 }

@@ -9,12 +9,17 @@ public class PlayerStateManager : MonoBehaviour
     /// i.e. I jumped and crossed up, I airdash forward (the direction I'm facing)
     private bool isFacingRight;
     private PlayerInputManager inputManager;
+    private PlayerMovementController movementController;
+    private PlayerAttackController attackController;
+    private bool forwardThrowing;
 
     // Start is called before the first frame update
     void Start()
     {
         SearchForBoss();
         inputManager = GetComponent<PlayerInputManager>();
+        movementController = GetComponent<PlayerMovementController>();
+        attackController = GetComponent<PlayerAttackController>();
     }
 
     /// Set reference to the current boss enemy
@@ -68,5 +73,46 @@ public class PlayerStateManager : MonoBehaviour
             this.gameObject.transform.localScale = newScale;
             inputManager.FacingDirectionChanged();
         }
+    }
+
+    public Vector3 GetCurrentPosition()
+    {
+        return this.gameObject.transform.position;
+    }
+
+    //////////////////
+    // THROW
+    //////////////////
+    public void SetThrowDirection(bool isForward)
+    {
+        forwardThrowing = isForward;
+    }
+    public float GetThrowPositionOffset()
+    {
+        float positionOffset = 1f;
+        if (!GetCurrentFacingDirection())
+        {
+            positionOffset *= -1;
+        }
+        if (!forwardThrowing)
+        {
+            positionOffset *= -1;
+        }
+        return positionOffset;
+    }
+    public void ThrowHit()
+    {
+        movementController.AnimationSetBool("ThrowHit", true);
+        attackController.ThrowFreeze();
+    }
+    public void ExitThrowWhiff()
+    {
+        movementController.AnimationSetBool("ThrowWhiff", false);
+        UpdateFacingDirection();
+    }
+    public void ExitThrowHit()
+    {
+        movementController.AnimationSetBool("ThrowHit", false);
+        attackController.ThrowUnFreeze();
     }
 }

@@ -13,9 +13,10 @@ public class HitBoxController : MonoBehaviour
     public int AttackLevel;
     /// Example: P1-5B
     public string AttackId;
+    public AttackType Type;
     public Attack AttackData;
-    private Animator Anim;
-    private Rigidbody2D Rigidbody;
+    protected Animator Anim;
+    protected Rigidbody2D Rigidbody;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,6 @@ public class HitBoxController : MonoBehaviour
         Anim = this.gameObject.transform.root.GetComponent<Animator>();
         Rigidbody = this.gameObject.transform.root.GetComponent<Rigidbody2D>();
         PlayerStateManager playerState = this.gameObject.transform.root.GetComponent<PlayerStateManager>();
-        AttackData = new Attack(AttackId, AttackLevel, AttackDamage, playerState);
+        AttackData = new Attack(AttackId, AttackLevel, AttackDamage, Type, playerState);
     }
 }

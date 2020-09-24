@@ -16,33 +16,48 @@ public class EnemyMovementController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
+    /// Returns the velocity before freezing
+    public Vector2 FreezeEnemy()
+    {
+        animator.enabled=false;
+        rb2d.bodyType = RigidbodyType2D.Kinematic;
+        Vector2 oldVelocity = rb2d.velocity;
+        rb2d.velocity = new Vector2(0f, 0f);
+        return oldVelocity;
+    }
+
+    public void UnFreezeEnemy(Vector2 oldVelocity)
+    {
+        animator.enabled=true;
+        rb2d.bodyType = RigidbodyType2D.Dynamic;
+        rb2d.velocity = oldVelocity;
+    }
+    public void UnFreezeEnemy()
+    {
+        animator.enabled=true;
+        rb2d.bodyType = RigidbodyType2D.Dynamic;
+        rb2d.velocity = new Vector2(0f, 0f);
+    }
+
     // Must always be called before Recovery frames
     public async Task TriggerHitStop(Attack AttackData)
     {
         // Get animator
         // Pause animator for x seconds
-        animator.enabled=false;
-        rb2d.bodyType = RigidbodyType2D.Kinematic;
-        Vector2 oldVelocity = rb2d.velocity;
-        rb2d.velocity = new Vector2(0f, 0f);
+        Vector2 oldVelocity = FreezeEnemy();
         // TODO: Do we need to be able to interrupt hitstop? Probably
         await Task.Delay(AttackData.GetHitStop());
-        animator.enabled=true;
-        rb2d.bodyType = RigidbodyType2D.Dynamic;
-        rb2d.velocity = oldVelocity;
+        UnFreezeEnemy(oldVelocity);
         // resume animation
     }
 
     public async Task TriggerHitStun(Attack AttackData)
     {
         // Trigger animation's hitstun 
-        animator.enabled=false;
-        rb2d.bodyType = RigidbodyType2D.Kinematic;
-        rb2d.velocity = new Vector2(0f, 0f);
+        FreezeEnemy();
         // TODO: Do we need to be able to interrupt hitstop? Probably
         await Task.Delay(AttackData.GetHitstun());
-        animator.enabled=true;
-        rb2d.bodyType = RigidbodyType2D.Dynamic;
+        UnFreezeEnemy();
         int pushback = AttackData.GetPushback();
         int direction = AttackData.GetPushBackDirection();
         rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);

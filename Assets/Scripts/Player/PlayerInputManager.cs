@@ -242,7 +242,7 @@ public class PlayerInputManager : MonoBehaviour
         Button[] buttonsDown = buttonDownBag.ToArray();
         if (buttonsDown.Contains(Button.A) && buttonsDown.Contains(Button.B))
         {
-            // Debug.Log("YEET");
+            // RC?
         }
         else
         {
@@ -257,6 +257,21 @@ public class PlayerInputManager : MonoBehaviour
             else if (buttonsDown.Contains(Button.C))
             {
                 InterpretSpecial(Button.C);
+            }
+            else if (buttonsDown.Contains(Button.D))
+            {
+                Numpad firstInput = inputHistory[0];
+                switch (firstInput)
+                {
+                    case Numpad.N6:
+                        playerAttack.Throw(true);
+                        break;
+                    case Numpad.N4:
+                        playerAttack.Throw(false);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         // empty out button bag
@@ -443,10 +458,10 @@ public class PlayerInputManager : MonoBehaviour
     }
     private void OnC()
     {
-        InterpretNewButtonInput(Button.B);
+        InterpretNewButtonInput(Button.C);
     }
     private void OnD()
     {
-        InterpretNewButtonInput(Button.B);
+        InterpretNewButtonInput(Button.D);
     }
 }
