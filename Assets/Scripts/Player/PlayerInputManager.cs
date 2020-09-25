@@ -120,7 +120,7 @@ public class PlayerInputManager : MonoBehaviour
         }
         else
         {
-            if (playerMovement.isRunning && !playerMovement.AnimationGetBool("IsSkidding"))
+            if (playerMovement.AnimationGetBool("IsRunning") && !playerMovement.AnimationGetBool("IsSkidding"))
             {
                 playerMovement.Skid();
             }
@@ -150,11 +150,11 @@ public class PlayerInputManager : MonoBehaviour
         {
             bool forwardDash = 
                 (firstInput == Numpad.N6 && secondInput == Numpad.N5 && (thirdInput == Numpad.N6 || thirdInput == Numpad.N9)) ||
-                (firstInput == Numpad.N6 && secondInput == Numpad.N5 && thirdInput == Numpad.N5 && (fourthInput == Numpad.N6 || fourthInput == Numpad.N9));
+                (firstInput == Numpad.N6 && secondInput == Numpad.N5 && thirdInput == Numpad.N8 && fourthInput == Numpad.N9);
             bool backwardDash = 
                 (firstInput == Numpad.N4 && secondInput == Numpad.N5 && (thirdInput == Numpad.N4 || thirdInput == Numpad.N7)) ||
-                (firstInput == Numpad.N4 && secondInput == Numpad.N5 && thirdInput == Numpad.N8 && (fourthInput == Numpad.N4 || fourthInput == Numpad.N7));
-            if (forwardDash && !playerMovement.isRunning)
+                (firstInput == Numpad.N4 && secondInput == Numpad.N5 && thirdInput == Numpad.N8 && fourthInput == Numpad.N7);
+            if (forwardDash && !playerMovement.AnimationGetBool("IsRunning") && !playerMovement.AnimationGetBool("IsSkidding"))
             {
                 if (firstTime + secondTime <= Time66)
                 {

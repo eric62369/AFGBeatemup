@@ -125,10 +125,10 @@ public class PlayerMovementController : MonoBehaviour {
                 horizontalVelocity *= -1;
             }
             rb2d.velocity = new Vector2(horizontalVelocity, 0f);
+            isRunning = true;
+            hasDashMomentum = true;
+            animator.SetBool("IsRunning", true);
         }
-        isRunning = true;
-        hasDashMomentum = true;
-        animator.SetBool("IsRunning", true);
     }
     public void BackDash(Numpad direction)
     {
@@ -223,12 +223,13 @@ public class PlayerMovementController : MonoBehaviour {
     public void StopRun()
     {
         isRunning = false;
+        hasDashMomentum = false;
         animator.SetBool("IsSkidding", false);
+        animator.SetBool("IsRunning", false);
     }
     public void Skid()
     {
         rb2d.velocity = new Vector2(MaxRunSpeed * 0.8f, 0f);
-        animator.SetBool("IsRunning", false);
         animator.SetBool("IsSkidding", true);
     }
 
