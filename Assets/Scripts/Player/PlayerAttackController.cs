@@ -15,6 +15,7 @@ public class PlayerAttackController : MonoBehaviour {
     private PlayerMovementController movementController;
     private PlayerStateManager playerState;
     private CancelAction? currentCancelAction;
+
     void Start()
     {
         movementController = GetComponent<PlayerMovementController>();
@@ -139,9 +140,14 @@ public class PlayerAttackController : MonoBehaviour {
         if (movementController.AnimationGetBool("CanCancel"))
         {
             currentCancelAction = action;
+            if (movementController.animator.enabled)
+            {
+                UseCancelAction();
+            }
         }
         else
         {
+            // Cannot cancel right now
             currentCancelAction = null;
         }
     }
@@ -149,13 +155,14 @@ public class PlayerAttackController : MonoBehaviour {
     {
         if (currentCancelAction != null)
         {
-            Debug.Log(currentCancelAction);
+            Debug.Log("USING CANCEL");
+            movementController.AnimationSetTrigger("ExecutingCancel");
             playerState.UseCancelAction(currentCancelAction);
+            currentCancelAction = null;
         }
-        currentCancelAction = null;
     }
 
-    private void ResetAttackStateToNeutral()
+    public void ResetAttackStateToNeutral()
     {
         movementController.AnimationSetBool("5B", false);
         movementController.AnimationSetBool("5C", false);

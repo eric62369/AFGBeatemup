@@ -37,9 +37,14 @@ public class PlayerMovementController : MonoBehaviour {
     private PlayerInputManager playerInput;
     private PlayerStateManager playerState;
 
-    private ResetMovementStateToNeutral()
+    public void ResetMovementStateToNeutral()
     {
-
+        isRunning = false;
+        isAirDashing = false;
+        isBackDashing = false;
+        animator.SetBool("IsJumping", false);
+        animator.SetBool("IsRunning", false);
+        animator.SetBool("IsSkidding", false);
     }
 
     // Use this for initialization
@@ -286,6 +291,14 @@ public class PlayerMovementController : MonoBehaviour {
     public bool AnimationGetBool(string animationId)
     {
         return animator.GetBool(animationId);
+    }
+    public void AnimationSetTrigger(string animationId)
+    {
+        animator.SetTrigger(animationId);
+    }
+    public void AnimationResetTrigger(string animationId)
+    {
+        animator.ResetTrigger(animationId);
     }
 
     /// Reevaluate facing direction, update if necessary

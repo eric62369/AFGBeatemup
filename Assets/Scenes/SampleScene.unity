@@ -431,7 +431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AttackDamage: 10
-  AttackLevel: 3
+  AttackLevel: 1
   AttackId: P1-ThrowStrike
   Type: 1
 --- !u!61 &1375837177

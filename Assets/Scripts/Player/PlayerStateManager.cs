@@ -116,6 +116,9 @@ public class PlayerStateManager : MonoBehaviour
         attackController.ThrowUnFreeze();
     }
 
+    //////////////////
+    // CANCELS
+    //////////////////
     public void SetCancelAction(CancelAction action)
     {
         attackController.SetCancelAction(action);
@@ -133,11 +136,18 @@ public class PlayerStateManager : MonoBehaviour
         {
             movementController.Jump(Numpad.N8);
         }
+        movementController.AnimationSetBool("CanCancel", false);
+        // ResetCancelStates();
     }
 
     private void ResetStateToNeutral()
     {
         movementController.ResetMovementStateToNeutral();
         attackController.ResetAttackStateToNeutral();
+    }
+    private void ResetCancelStates()
+    {
+        movementController.AnimationSetBool("CanCancel", false);
+        movementController.AnimationSetTrigger("ExecutingCancel");
     }
 }
