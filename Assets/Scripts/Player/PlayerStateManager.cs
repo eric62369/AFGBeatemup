@@ -12,6 +12,7 @@ public class PlayerStateManager : MonoBehaviour
     private PlayerMovementController movementController;
     private PlayerAttackController attackController;
     private bool forwardThrowing;
+    private Numpad cancelActionInput;
 
     // Start is called before the first frame update
     void Start()
@@ -119,8 +120,9 @@ public class PlayerStateManager : MonoBehaviour
     //////////////////
     // CANCELS
     //////////////////
-    public void SetCancelAction(CancelAction action)
+    public void SetCancelAction(CancelAction action, Numpad _cancelActionInput)
     {
+        cancelActionInput = _cancelActionInput;
         attackController.SetCancelAction(action);
     }
 
@@ -134,7 +136,7 @@ public class PlayerStateManager : MonoBehaviour
         ResetStateToNeutral();
         if (action == CancelAction.Jump)
         {
-            movementController.Jump(Numpad.N8);
+            movementController.Jump(cancelActionInput);
         }
         movementController.AnimationSetBool("CanCancel", false);
         // ResetCancelStates();

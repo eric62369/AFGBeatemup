@@ -155,7 +155,6 @@ public class PlayerAttackController : MonoBehaviour {
     {
         if (currentCancelAction != null)
         {
-            Debug.Log("USING CANCEL");
             movementController.AnimationSetTrigger("ExecutingCancel");
             playerState.UseCancelAction(currentCancelAction);
             currentCancelAction = null;

@@ -101,7 +101,9 @@ public class PlayerMovementController : MonoBehaviour {
         {
             walkDirection *= -1;
         }
-        if (isGrounded && !attackController.isAttacking && !isBackDashing) {
+        bool canWalk = isGrounded && !attackController.isAttacking && !isBackDashing &&
+            !AnimationGetBool("IsJumping");
+        if (canWalk) {
             rb2d.velocity = new Vector2(walkDirection * WalkSpeed, 0f);
             UpdateFacingDirection();
         }
@@ -116,7 +118,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new InvalidProgramException("Tried to Dash while airborne!");
         }
-        if (isGrounded && !attackController.isAttacking && !isBackDashing) {
+        if (isGrounded && !attackController.isAttacking && !isBackDashing && !AnimationGetBool("IsJumping")) {
             float horizontalVelocity = InitialDashSpeed;
             if (!playerState.GetCurrentFacingDirection())
             {
@@ -138,7 +140,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new InvalidProgramException("Tried to Backdash while airborne!");
         }
-        if (!isBackDashing && !attackController.isAttacking) {
+        if (isGrounded && !isBackDashing && !attackController.isAttacking && !AnimationGetBool("IsJumping")) {
             StopRun();
             float horizontalVelocity = -BackDashBackSpeed;
             if (!playerState.GetCurrentFacingDirection())
