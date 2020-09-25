@@ -26,7 +26,7 @@ public class PlayerAttackController : MonoBehaviour {
     
     public void GroundedAttackFlags(string attackName)
     {
-        if (movementController.isGrounded)
+        if (movementController.isGrounded && !movementController.AnimationGetBool("IsJumping"))
         {
             if (isAttacking)
             {
