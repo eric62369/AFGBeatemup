@@ -113,14 +113,14 @@ public class PlayerInputManager : MonoBehaviour
             // Walk check
             playerMovement.Walk(firstInput);
         }
-        else if (playerMovement.isRunning && (firstInput == Numpad.N6))
+        else if (playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N3) && !playerMovement.AnimationGetBool("IsSkidding"))
         {
             // Holding run check
             playerMovement.Run(firstInput);
         }
         else
         {
-            if (playerMovement.isRunning)
+            if (playerMovement.isRunning && !playerMovement.AnimationGetBool("IsSkidding"))
             {
                 playerMovement.Skid();
             }
@@ -154,7 +154,7 @@ public class PlayerInputManager : MonoBehaviour
             bool backwardDash = 
                 (firstInput == Numpad.N4 && secondInput == Numpad.N5 && (thirdInput == Numpad.N4 || thirdInput == Numpad.N7)) ||
                 (firstInput == Numpad.N4 && secondInput == Numpad.N5 && thirdInput == Numpad.N8 && (fourthInput == Numpad.N4 || fourthInput == Numpad.N7));
-            if (forwardDash)
+            if (forwardDash && !playerMovement.isRunning)
             {
                 if (firstTime + secondTime <= Time66)
                 {

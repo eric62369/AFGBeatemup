@@ -143,9 +143,6 @@ public class PlayerAttackController : MonoBehaviour {
         // OnHit / OnBlock cancels
         if (movementController.AnimationGetBool("CanCancel"))
         {
-            Debug.Log(action);
-            Debug.Log(currentActiveAttack);
-            Debug.Log(RedAttackProperties.JumpCancellable.Contains(currentActiveAttack));
             if (action == CancelAction.Jump && 
                 !RedAttackProperties.JumpCancellable.Contains(currentActiveAttack))
             {

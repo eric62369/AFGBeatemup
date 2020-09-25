@@ -44,7 +44,7 @@ public class PlayerMovementController : MonoBehaviour {
         isBackDashing = false;
         animator.SetBool("IsJumping", false);
         animator.SetBool("IsRunning", false);
-        animator.SetBool("IsSkidding", false);
+        AnimationSetBool("IsSkidding", false);
     }
 
     // Use this for initialization
@@ -198,7 +198,7 @@ public class PlayerMovementController : MonoBehaviour {
     }
     public void Run(Numpad direction)
     {
-        if (direction != Numpad.N6)
+        if (direction != Numpad.N6 && direction != Numpad.N3)
         {
             throw new ArgumentException(direction + " is not a horizontal direction");
         }
@@ -215,9 +215,8 @@ public class PlayerMovementController : MonoBehaviour {
                 horizontalForce *= -1;
             }
             rb2d.velocity = new Vector2(horizontalVelocity, 0f);
-            rb2d.AddForce(new Vector2(horizontalForce, 0f));
+            rb2d.AddForce(new Vector2(horizontalForce, 0f), ForceMode2D.Force);
         }
-        isRunning = true;
     }
 
     /// Called at the end of the skidding animation, and used to cancel Run state
@@ -228,6 +227,7 @@ public class PlayerMovementController : MonoBehaviour {
     }
     public void Skid()
     {
+        rb2d.velocity = new Vector2(MaxRunSpeed * 0.8f, 0f);
         animator.SetBool("IsRunning", false);
         animator.SetBool("IsSkidding", true);
     }
