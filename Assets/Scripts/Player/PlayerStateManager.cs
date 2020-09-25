@@ -139,17 +139,11 @@ public class PlayerStateManager : MonoBehaviour
             movementController.Jump(cancelActionInput);
         }
         movementController.AnimationSetBool("CanCancel", false);
-        // ResetCancelStates();
     }
 
     private void ResetStateToNeutral()
     {
         movementController.ResetMovementStateToNeutral();
         attackController.ResetAttackStateToNeutral();
-    }
-    private void ResetCancelStates()
-    {
-        movementController.AnimationSetBool("CanCancel", false);
-        movementController.AnimationSetTrigger("ExecutingCancel");
     }
 }

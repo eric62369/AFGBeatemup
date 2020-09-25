@@ -11,10 +11,11 @@ public enum CancelAction
 public class PlayerAttackController : MonoBehaviour {
     
     public bool isAttacking { get; private set; }
-
+    public RedAttackProperties attackProperties;
     private PlayerMovementController movementController;
     private PlayerStateManager playerState;
     private CancelAction? currentCancelAction;
+    private string currentActiveAttack;
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class PlayerAttackController : MonoBehaviour {
         playerState = GetComponent<PlayerStateManager>();
         isAttacking = false;
         currentCancelAction = null;
+        currentActiveAttack = null;
     }
     
     public void GroundedAttackFlags(string attackName)
@@ -34,6 +36,7 @@ public class PlayerAttackController : MonoBehaviour {
                 if (movementController.AnimationGetBool("CanCancel"))
                 {
                     movementController.AnimationSetBool(attackName, true);
+                    currentActiveAttack = attackName;
                 }
             }
             else
@@ -41,6 +44,7 @@ public class PlayerAttackController : MonoBehaviour {
                 isAttacking = true;
                 movementController.isRunning = false;
                 movementController.AnimationSetBool(attackName, true);
+                currentActiveAttack = attackName;
                 movementController.AnimationSetBool("IsRunning", false);
                 movementController.StopRun();
             }
@@ -139,10 +143,23 @@ public class PlayerAttackController : MonoBehaviour {
         // OnHit / OnBlock cancels
         if (movementController.AnimationGetBool("CanCancel"))
         {
-            currentCancelAction = action;
-            if (movementController.animator.enabled)
+            Debug.Log(action);
+            Debug.Log(currentActiveAttack);
+            Debug.Log(RedAttackProperties.JumpCancellable.Contains(currentActiveAttack));
+            if (action == CancelAction.Jump && 
+                !RedAttackProperties.JumpCancellable.Contains(currentActiveAttack))
             {
-                UseCancelAction();
+                currentCancelAction = null;
+            }
+            else
+            {
+                // valid cancel action
+                currentCancelAction = action;
+                // If no hitstop present, use cancel action now!
+                if (movementController.animator.enabled)
+                {
+                    UseCancelAction();
+                }
             }
         }
         else
@@ -167,6 +184,7 @@ public class PlayerAttackController : MonoBehaviour {
         movementController.AnimationSetBool("5C", false);
         movementController.AnimationSetBool("ThrowWhiff", false);
         movementController.AnimationSetBool("ThrowHit", false);
+        currentActiveAttack = null;
         isAttacking = false;
     }
 }
