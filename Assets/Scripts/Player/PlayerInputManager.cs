@@ -465,4 +465,9 @@ public class PlayerInputManager : MonoBehaviour
     {
         InterpretNewButtonInput(Button.D);
     }
+    private void OnStart()
+    {
+        MenuController menu = (MenuController) FindObjectOfType(typeof(MenuController));
+        menu.PauseGame();
+    }
 }

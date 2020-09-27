@@ -17,6 +17,7 @@ public class PlayerMovementController : MonoBehaviour {
     public float JumpForce;
     public float RunForce;
     public float MaxRunSpeed;
+    public float SkidSpeed;
     public bool isRunning;
     public bool isAirDashing;
     public bool isBackDashing;
@@ -223,13 +224,17 @@ public class PlayerMovementController : MonoBehaviour {
     public void StopRun()
     {
         isRunning = false;
-        hasDashMomentum = false;
         animator.SetBool("IsSkidding", false);
         animator.SetBool("IsRunning", false);
     }
     public void Skid()
     {
-        rb2d.velocity = new Vector2(MaxRunSpeed * 0.8f, 0f);
+        int direction = 1;
+        if (!playerState.GetCurrentFacingDirection())
+        {
+            direction *= -1;
+        }
+        rb2d.velocity = new Vector2(SkidSpeed * direction, 0f);
         animator.SetBool("IsSkidding", true);
     }
 
