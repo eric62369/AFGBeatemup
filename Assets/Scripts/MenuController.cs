@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class MenuController : MonoBehaviour
 {
     public GameObject PauseMenu;
-    public bool IsPaused;
+    public static bool IsPaused { get; private set; }
     private float previousTimeScale;
 
     // Start is called before the first frame update
@@ -39,7 +39,13 @@ public class MenuController : MonoBehaviour
 
     public void ResumeGame()
     {
+        PauseGame();
+    }
 
+    public void QuitGame()
+    {
+        ResumeGame(); // Exit Pause Menu time freeze
+        // SceneManager.Load(MainMenuScene);
     }
 
     public void ChangeControls()
