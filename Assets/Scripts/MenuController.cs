@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class MenuController : MonoBehaviour
 {
     public GameObject PauseMenu;
     public static bool IsPaused { get; private set; }
     private float previousTimeScale;
+    // Freezing inputs
+    public InputActionAsset PlayerInputActions;
+    private InputActionMap fighterActionMap;
+    private InputActionMap uiActionMap;
 
     // Start is called before the first frame update
     void Start()
     {
         IsPaused = false;
         previousTimeScale = 0.5f;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        fighterActionMap = PlayerInputActions.FindActionMap("Fighter");
+        uiActionMap = PlayerInputActions.FindActionMap("UI");
     }
 
     public void PauseGame()
@@ -30,10 +31,14 @@ public class MenuController : MonoBehaviour
         {
             previousTimeScale = Time.timeScale;
             Time.timeScale = 0f;
+            fighterActionMap.Disable();
+            uiActionMap.Enable();
         }
         else
         {
             Time.timeScale = previousTimeScale;
+            fighterActionMap.Enable();
+            uiActionMap.Disable();
         }
     }
 
@@ -50,6 +55,6 @@ public class MenuController : MonoBehaviour
 
     public void ChangeControls()
     {
-
+        
     }
 }
