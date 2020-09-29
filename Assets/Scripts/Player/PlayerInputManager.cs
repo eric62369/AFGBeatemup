@@ -40,6 +40,7 @@ public class PlayerInputManager : MonoBehaviour
     public float DeadZone; // square for no input detection
     public float Time66; // in (ms) window to input 66 (dash)
     public float Time236; // in (ms) window to input 236
+    public StickVisualizerController stickVisualizer;
     private PlayerMovementController playerMovement;
     private PlayerAttackController playerAttack;
     private PlayerStateManager playerState;
@@ -447,7 +448,9 @@ public class PlayerInputManager : MonoBehaviour
     private void OnMove(InputValue value)
     {
         Vector2 input = value.Get<Vector2>();
-        InterpretNewStickInput(GetInputToNumpad(input.x, input.y));
+        Numpad newInput = GetInputToNumpad(input.x, input.y);
+        InterpretNewStickInput(newInput);
+        stickVisualizer.UpdateStickUI(newInput);
     }
     private void OnA()
     {
