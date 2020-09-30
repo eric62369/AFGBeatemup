@@ -38,6 +38,7 @@ public class ParentHurtbox : MonoBehaviour
                 }
                 else
                 {
+                    SoundManagerController.playSFX(SoundManagerController.hitLvl1Sound);
                     player1.TriggerHitStop(attackData);
                     EnemyMovement.TriggerHitStun(attackData);
                     currRegisteredAttacks.Add(attackData.Id, attackData.Damage);

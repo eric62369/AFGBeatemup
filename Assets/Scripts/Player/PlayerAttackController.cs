@@ -87,6 +87,7 @@ public class PlayerAttackController : MonoBehaviour {
     public void Startup()
     {
         ResetCancel();
+        SoundManagerController.playSFX(SoundManagerController.whiffLvl1Sound);
     }
     public void Active() {
         // Activate hitbox and hurtbox

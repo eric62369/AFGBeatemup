@@ -181,6 +181,7 @@ public class PlayerMovementController : MonoBehaviour {
             rb2d.velocity = new Vector2(AirDashVelocity, 0f);
             coroutine = StopAirDashCoroutine(AirDashDuration);
             AirActionsLeft--;
+            SoundManagerController.playSFX(SoundManagerController.airdashSound);
             StartCoroutine(coroutine);
         }
     }
@@ -276,6 +277,7 @@ public class PlayerMovementController : MonoBehaviour {
             animator.SetBool("IsRunning", false);
             StopRun();
             AirActionsLeft--;
+            SoundManagerController.playSFX(SoundManagerController.jumpSound);
         }
     }
 
