@@ -41,9 +41,11 @@ public class PlayerInputManager : MonoBehaviour
     public float Time66; // in (ms) window to input 66 (dash)
     public float Time236; // in (ms) window to input 236
     public StickVisualizerController stickVisualizer;
+    
     private PlayerMovementController playerMovement;
     private PlayerAttackController playerAttack;
     private PlayerStateManager playerState;
+
     private Numpad currentInput; // Current stick input in Numpad
     private float runningTime; // How much time (in ms) since last input?
     private IList<Numpad> inputHistory;
@@ -55,6 +57,7 @@ public class PlayerInputManager : MonoBehaviour
         playerMovement = GetComponent<PlayerMovementController>();
         playerAttack = GetComponent<PlayerAttackController>();
         playerState = GetComponent<PlayerStateManager>();
+
         currentInput = Numpad.N0;
         runningTime = 0;
         inputHistory = new List<Numpad>();

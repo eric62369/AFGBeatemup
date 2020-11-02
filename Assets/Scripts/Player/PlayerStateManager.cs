@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerStateManager : MonoBehaviour
 {
+    [SerializeField]  // TODO: What's this?
+    private int playerIndex; // 0 is P1, 1 is P2
+
     private GameObject boss;
     /// i.e. I jumped and crossed up, I airdash forward (the direction I'm facing)
     private bool isFacingRight;
@@ -21,6 +24,11 @@ public class PlayerStateManager : MonoBehaviour
         inputManager = GetComponent<PlayerInputManager>();
         movementController = GetComponent<PlayerMovementController>();
         attackController = GetComponent<PlayerAttackController>();
+    }
+    
+    public int GetPlayerIndex()
+    {
+        return playerIndex;
     }
 
     /// Set reference to the current boss enemy
