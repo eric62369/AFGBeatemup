@@ -37,10 +37,8 @@ public enum Direction
 public class PlayerInputManager : MonoBehaviour
 {
     public int InputHistorySize; // size for input history
-    public float DeadZone; // square for no input detection
     public float Time66; // in (ms) window to input 66 (dash)
     public float Time236; // in (ms) window to input 236
-    public StickVisualizerController stickVisualizer;
     
     private PlayerMovementController playerMovement;
     private PlayerAttackController playerAttack;
@@ -83,7 +81,7 @@ public class PlayerInputManager : MonoBehaviour
     /// Called when new input received
     /// takes a numpad direction
     /// modifies input and time History
-    private void InterpretNewStickInput(Numpad newInput)
+    public void InterpretNewStickInput(Numpad newInput)
     {
         currentInput = newInput;
         inputHistory.Insert(0, currentInput);
@@ -97,7 +95,7 @@ public class PlayerInputManager : MonoBehaviour
         InterpretDash();
     }
 
-    private void InterpretNewButtonInput(Button buttonPressed)
+    public void InterpretNewButtonInput(Button buttonPressed)
     {
         buttonDownBag.Add(buttonPressed);
     }
@@ -287,120 +285,7 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    // Will always return P1 side style inputs
-    // (i.e. P2 side 4 input is translated to -> 6)
-    public Numpad GetInputToNumpad(float x, float y)
-    {
-        x = DeadZoneInput(x);
-        y = DeadZoneInput(y);
-        // TODO: There's a better way, pls fix this
-        if (playerState.GetCurrentFacingDirection())
-        {
-            if (x == -1)
-            {
-                if (y == -1)
-                {
-                    return Numpad.N1;
-                }
-                else if (y == 1) 
-                {
-                    return Numpad.N7;
-                }
-                else if (y == 0)
-                {
-                    return Numpad.N4;
-                }
-            }
-            else if (x == 1) 
-            {
-                if (y == -1)
-                {
-                    return Numpad.N3;
-                }
-                else if (y == 1) 
-                {
-                    return Numpad.N9;
-                }
-                else if (y == 0)
-                {
-                    return Numpad.N6;
-                }
-            }
-            else if (x == 0)
-            {
-                if (y == -1)
-                {
-                    return Numpad.N2;
-                }
-                else if (y == 1) 
-                {
-                    return Numpad.N8;
-                }
-                else if (y == 0)
-                {
-                    return Numpad.N5;
-                }
-            }
-            else
-            {
-                throw new InvalidOperationException(x + " is not -1, 0, 1 for input");
-            }
-            throw new InvalidOperationException(y + " is not -1, 0, 1 for input");
-        }
-        else  // Left facing (P2 side)
-        {
-            if (x == -1)
-            {
-                if (y == -1)
-                {
-                    return Numpad.N3;
-                }
-                else if (y == 1) 
-                {
-                    return Numpad.N9;
-                }
-                else if (y == 0)
-                {
-                    return Numpad.N6;
-                }
-            }
-            else if (x == 1) 
-            {
-                if (y == -1)
-                {
-                    return Numpad.N1;
-                }
-                else if (y == 1) 
-                {
-                    return Numpad.N7;
-                }
-                else if (y == 0)
-                {
-                    return Numpad.N4;
-                }
-            }
-            else if (x == 0)
-            {
-                if (y == -1)
-                {
-                    return Numpad.N2;
-                }
-                else if (y == 1) 
-                {
-                    return Numpad.N8;
-                }
-                else if (y == 0)
-                {
-                    return Numpad.N5;
-                }
-            }
-            else
-            {
-                throw new InvalidOperationException(x + " is not -1, 0, 1 for input");
-            }
-            throw new InvalidOperationException(y + " is not -1, 0, 1 for input");
-        }
-    }
+    
     public void FacingDirectionChanged()
     {
         // TODO: can be switch case or something else
@@ -428,52 +313,5 @@ public class PlayerInputManager : MonoBehaviour
         {
             InterpretNewStickInput(Numpad.N1);
         }
-    }
-
-    // Apply the deadzone to the given input
-    private float DeadZoneInput(float x)
-    {
-        float absx = System.Math.Abs(x);
-        if (absx < DeadZone)
-        {
-            x = 0;
-        }
-        else
-        {
-            x /= absx;
-        }
-        return x;
-    }
-
-    //////////////////
-    // Input Manager Events
-    //////////////////
-    private void OnMove(InputValue value)
-    {
-        Vector2 input = value.Get<Vector2>();
-        Numpad newInput = GetInputToNumpad(input.x, input.y);
-        InterpretNewStickInput(newInput);
-        stickVisualizer.UpdateStickUI(newInput);
-    }
-    private void OnA()
-    {
-        InterpretNewButtonInput(Button.A);
-    }
-    private void OnB()
-    {
-        InterpretNewButtonInput(Button.B);
-    }
-    private void OnC()
-    {
-        InterpretNewButtonInput(Button.C);
-    }
-    private void OnD()
-    {
-        InterpretNewButtonInput(Button.D);
-    }
-    private void OnStart()
-    {
-        MenuController menu = (MenuController) FindObjectOfType(typeof(MenuController));
-        menu.PauseGame();
     }
 }

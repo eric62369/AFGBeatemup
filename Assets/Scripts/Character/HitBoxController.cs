@@ -11,7 +11,10 @@ public class HitBoxController : MonoBehaviour
 {
     public int AttackDamage;
     public int AttackLevel;
-    /// Example: P1-5B
+    /**
+     Example: 5B
+     Based on playerIndex, P1- or P2- will be appended onto the attack id
+     */
     public string AttackId;
     public AttackType Type;
     public Attack AttackData;
@@ -24,6 +27,7 @@ public class HitBoxController : MonoBehaviour
         Anim = this.gameObject.transform.root.GetComponent<Animator>();
         Rigidbody = this.gameObject.transform.root.GetComponent<Rigidbody2D>();
         PlayerStateManager playerState = this.gameObject.transform.root.GetComponent<PlayerStateManager>();
+        playerState.GetPlayerIndex;
         AttackData = new Attack(AttackId, AttackLevel, AttackDamage, Type, playerState);
     }
 }

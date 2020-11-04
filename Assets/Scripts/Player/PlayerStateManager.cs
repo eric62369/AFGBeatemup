@@ -30,6 +30,9 @@ public class PlayerStateManager : MonoBehaviour
     {
         return playerIndex;
     }
+    public PlayerInputManager GetInputManager() {
+        return inputManager;
+    }
 
     /// Set reference to the current boss enemy
     public void SearchForBoss()
