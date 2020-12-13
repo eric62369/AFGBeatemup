@@ -145,7 +145,7 @@ public class PlayerAttackController : MonoBehaviour {
         if (movementController.AnimationGetBool("CanCancel"))
         {
             if (action == CancelAction.Jump && 
-                !RedAttackProperties.JumpCancellable.Contains(currentActiveAttack))
+                !attackProperties.CanJumpCancel(currentActiveAttack))
             {
                 currentCancelAction = null;
             }

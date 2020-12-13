@@ -1104,7 +1104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e157c5f4d45d91551962858215739051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackProperties: {fileID: 0}
+  attackProperties: {fileID: 11400000, guid: 415d576e4dd15e54aa11a38c6d137a77, type: 2}
 --- !u!114 &1869464737
 MonoBehaviour:
   m_ObjectHideFlags: 0
