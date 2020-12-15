@@ -46,7 +46,7 @@ public class ControllerReader : MonoBehaviour
         Vector2 input = value.Get<Vector2>();
         Numpad newInput = GetInputToNumpad(input.x, input.y);
         playerInputManager.InterpretNewStickInput(newInput);
-        // stickVisualizer.UpdateStickUI(newInput);
+        // TODO: stickVisualizer.UpdateStickUI(newInput);
     }
     private void OnA()
     {
