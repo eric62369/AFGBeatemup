@@ -43,6 +43,7 @@ public class PlayerInputManager : MonoBehaviour
     private PlayerMovementController playerMovement;
     private PlayerAttackController playerAttack;
     private PlayerStateManager playerState;
+    private PlayerAnimationController animator;
 
     private Numpad currentInput; // Current stick input in Numpad
     private float runningTime; // How much time (in ms) since last input?
@@ -55,6 +56,7 @@ public class PlayerInputManager : MonoBehaviour
         playerMovement = GetComponent<PlayerMovementController>();
         playerAttack = GetComponent<PlayerAttackController>();
         playerState = GetComponent<PlayerStateManager>();
+        animator = GetComponent<PlayerAnimationController>();
 
         currentInput = Numpad.N0;
         runningTime = 0;
@@ -115,14 +117,14 @@ public class PlayerInputManager : MonoBehaviour
             // Walk check
             playerMovement.Walk(firstInput);
         }
-        else if (playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N3) && !playerMovement.AnimationGetBool("IsSkidding"))
+        else if (playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N3) && !animator.AnimationGetBool("IsSkidding"))
         {
             // Holding run check
             playerMovement.Run(firstInput);
         }
         else
         {
-            if (playerMovement.AnimationGetBool("IsRunning") && !playerMovement.AnimationGetBool("IsSkidding"))
+            if (animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding"))
             {
                 playerMovement.Skid();
             }
@@ -156,7 +158,7 @@ public class PlayerInputManager : MonoBehaviour
             bool backwardDash = 
                 (firstInput == Numpad.N4 && secondInput == Numpad.N5 && (thirdInput == Numpad.N4 || thirdInput == Numpad.N7)) ||
                 (firstInput == Numpad.N4 && secondInput == Numpad.N5 && thirdInput == Numpad.N8 && fourthInput == Numpad.N7);
-            if (forwardDash && !playerMovement.AnimationGetBool("IsRunning") && !playerMovement.AnimationGetBool("IsSkidding"))
+            if (forwardDash && !animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding"))
             {
                 if (firstTime + secondTime <= Time66)
                 {

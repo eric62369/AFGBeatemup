@@ -14,6 +14,7 @@ public class PlayerStateManager : MonoBehaviour
     private PlayerInputManager inputManager;
     private PlayerMovementController movementController;
     private PlayerAttackController attackController;
+    private PlayerAnimationController animator;
     private bool forwardThrowing;
     private Numpad cancelActionInput;
 
@@ -24,6 +25,7 @@ public class PlayerStateManager : MonoBehaviour
         inputManager = GetComponent<PlayerInputManager>();
         movementController = GetComponent<PlayerMovementController>();
         attackController = GetComponent<PlayerAttackController>();
+        animator = GetComponent<PlayerAnimationController>();
     }
     
     public int GetPlayerIndex()
@@ -117,17 +119,17 @@ public class PlayerStateManager : MonoBehaviour
     }
     public void ThrowHit()
     {
-        movementController.AnimationSetBool("ThrowHit", true);
+        animator.AnimationSetBool("ThrowHit", true);
         attackController.ThrowFreeze();
     }
     public void ExitThrowWhiff()
     {
-        movementController.AnimationSetBool("ThrowWhiff", false);
+        animator.AnimationSetBool("ThrowWhiff", false);
         UpdateFacingDirection();
     }
     public void ExitThrowHit()
     {
-        movementController.AnimationSetBool("ThrowHit", false);
+        animator.AnimationSetBool("ThrowHit", false);
         attackController.ThrowUnFreeze();
     }
 
@@ -152,7 +154,7 @@ public class PlayerStateManager : MonoBehaviour
         {
             movementController.Jump(cancelActionInput);
         }
-        movementController.AnimationSetBool("CanCancel", false);
+        animator.AnimationSetBool("CanCancel", false);
     }
 
     private void ResetStateToNeutral()
