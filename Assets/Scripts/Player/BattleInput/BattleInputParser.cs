@@ -5,41 +5,12 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public enum Numpad
-{
-    N0, // Initial state (no inputs detected yet)
-    N5, // Neutral
-    N1, // Downback
-    N2, // Down
-    N3, // Downforward
-    N4, // Back
-    N6, // Forward
-    N7, // Upback
-    N8, // Up
-    N9, // Upforward
-}
-public enum Button
-{
-    None, // No buttons
-    A, // Light
-    B, // Medium
-    C, // Heavy
-    D // Unique
-}
-public enum Direction
-{
-    Down, // i.e. 1, 2, 3  are all down inputsInterpretInput();
-    Left,
-    Up,
-    Right
-}
-
 public class BattleInputParser : MonoBehaviour
 {
     public int InputHistorySize; // size for input history
     public float Time66; // in (ms) window to input 66 (dash)
     public float Time236; // in (ms) window to input 236
-    
+
     private Numpad currentInput; // Current stick input in Numpad
     private float runningTime; // How much time (in ms) since last input?
     private IList<Numpad> inputHistory;

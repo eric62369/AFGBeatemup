@@ -5,6 +5,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum Button
+{
+    A, // Light
+    B, // Medium
+    C, // Heavy
+    D // Unique
+}
 public class ControllerReader : MonoBehaviour
 {
     /*

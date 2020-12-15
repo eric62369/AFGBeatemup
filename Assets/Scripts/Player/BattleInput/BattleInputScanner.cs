@@ -18,57 +18,94 @@ public enum Numpad
     N8, // Up
     N9, // Upforward
 }
-public enum Button
+public enum ButtonStatus
 {
-    None, // No buttons
-    A, // Light
-    B, // Medium
-    C, // Heavy
-    D // Unique
-}
-public enum Direction
-{
-    Down, // i.e. 1, 2, 3  are all down inputsInterpretInput();
-    Left,
-    Up,
-    Right
+    Down, // Pressed down on this frame!
+    Hold, // Button was pressed earlier, being held down now
+    Release, // Button was released this frame! (Negative edge)
+    Up // Button is in neutral (not pressed) state
 }
 
+/// Mainly responsible for managing input history
 public class BattleInputScanner : MonoBehaviour
 {
+    private static readonly int ButtonCount = 4; // A B C D
     public int InputHistorySize; // size for input history
-    public float Time66; // in (ms) window to input 66 (dash)
-    public float Time236; // in (ms) window to input 236
-    
-    private Numpad currentInput; // Current stick input in Numpad
-    private float runningTime; // How much time (in ms) since last input?
-    private IList<Numpad> inputHistory;
-    private IList<float> timeHistory;
-    private ConcurrentBag<Button> buttonDownBag;
+    private int runningFrames; // How much time (in frames) since last input?
+
+    private BattleInputParser parser;
+
+    // Input history data
+    public IList<Numpad> inputHistory { get; private set; }
+    public IList<IList<ButtonStatus>> buttonHistory { get; private set; }
+    public IList<int> timeHistory { get; private set; }
+
+    // Received inputs from ControllerReader
+    private Numpad nextDirection;
+    private IList<ButtonStatus> nextButtons;
+    // new inputs must be added to the input history on the next frame!
+    private bool newInputs;
 
     void Start()
     {
-
-        currentInput = Numpad.N0;
-        runningTime = 0;
+        runningFrames = 0; // Frame 1 will be first update frame
         inputHistory = new List<Numpad>();
-        timeHistory = new List<float>();
-        buttonDownBag = new ConcurrentBag<Button>();
+        buttonHistory = new List<List<ButtonStatus>>();
+        timeHistory = new List<int>();
 
+        parser = GetComponent<BattleInputParser>();
+
+        nextDirection = Numpad.N0;
+        nextButtons = new List<ButtonStatus>();
+        for (int j = 0; j < ButtonCount; j++) {
+            nextButtons.Add(ButtonStatus.Up);
+        }
+        newInputs = false;
+
+        // initialize input history
         for (int i = 0; i < InputHistorySize; i++)
         {
             inputHistory.Add(Numpad.N0);
             timeHistory.Add(0);
+
+            IList<ButtonStatus> emptyButtons = new List<ButtonStatus>();
+            for (int j = 0; j < ButtonCount; j++) {
+                emptyButtons.Add(ButtonStatus.Up);
+            }
+            buttonHistory.Add(emptyButtons);
         }
     }
-    public void Update()
+
+    // every frame update
+    void Update()
     {
-        runningTime += Time.deltaTime;
-        InterpretMovement();
-        if (!buttonDownBag.IsEmpty)
-        {
-            InterpretButtons();
+        runningFrames++;
+        
+        if (newInputs) {
+            // Add all received inputs to input history
+            inputHistory.Insert(0, nextDirection);
+            IList<ButtonStatus> copyButtons = new List<ButtonStatus>();
+            for (int i = 0; i < ButtonCount; i++) {
+                copyButtons[i] = nextButtons[i];
+            }
+            buttonHistory.Insert(0, copyButtons);
+            timeHistory.Insert(0, runningFrames);
+
+            // trim input history size
+            if (inputHistory.Count > InputHistorySize)
+            {
+                inputHistory.RemoveAt(InputHistorySize);
+                buttonHistory.RemoveAt(InputHistorySize);
+                timeHistory.RemoveAt(InputHistorySize);
+            }
+        
+            // pass data to input parser
+
+            // reset flags and running state
+            newInputs = false;
+            runningFrames = 0;
         }
+        
     }
 
     /// Called when new input received
@@ -76,209 +113,33 @@ public class BattleInputScanner : MonoBehaviour
     /// modifies input and time History
     public void InterpretNewStickInput(Numpad newInput)
     {
-        currentInput = newInput;
-        inputHistory.Insert(0, currentInput);
-        timeHistory.Insert(0, runningTime);
-        runningTime = 0;
-        if (inputHistory.Count > InputHistorySize)
-        {
-            inputHistory.RemoveAt(InputHistorySize);
-            timeHistory.RemoveAt(InputHistorySize);
-        }
-        InterpretDash();
+        nextDirection = newInput;
     }
 
+    // TODO: Change Controller Reader to detect button release (and maybe hold)
     public void InterpretNewButtonInput(Button buttonPressed)
     {
-        buttonDownBag.Add(buttonPressed);
-    }
-
-    private void InterpretMovement()
-    {
-        Numpad firstInput = inputHistory[0];
-        Numpad secondInput = inputHistory[1];
-
-        if (IsNumpadUp(firstInput))
-        {
-            playerState.SetCancelAction(CancelAction.Jump, firstInput);
-            playerMovement.Jump(firstInput);
-        }
-        else if (!playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N4))
-        {
-            // Walk check
-            playerMovement.Walk(firstInput);
-        }
-        else if (playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N3) && !animator.AnimationGetBool("IsSkidding"))
-        {
-            // Holding run check
-            playerMovement.Run(firstInput);
-        }
-        else
-        {
-            if (animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding"))
-            {
-                playerMovement.Skid();
-            }
-            // Nothing / Idle
-        }
-
-        if (!IsNumpadUp(firstInput))
-        {
-            playerMovement.setIsHoldingJump(false);
+        switch (buttonPressed) {
+            case Button.A:
+                nextButtons[0] = ButtonStatus.Down;
+                break;
+            case Button.B:
+                nextButtons[1] = ButtonStatus.Down;
+                break;
+            case Button.C:
+                nextButtons[2] = ButtonStatus.Down;
+                break;
+            case Button.D:
+                nextButtons[3] = ButtonStatus.Down;
+                break;
+            default:
+                throw new InvalidOperationException(buttonPressed + " is not an ABCD button!");
+                break;
         }
     }
-    private bool IsNumpadUp(Numpad num)
-    {
-        return num == Numpad.N7 || num == Numpad.N8 || num == Numpad.N9;
-    }
-
-    private void InterpretDash()
-    {
-        Numpad firstInput = inputHistory[0];
-        Numpad secondInput = inputHistory[1];
-        Numpad thirdInput = inputHistory[2];
-        Numpad fourthInput = inputHistory[3];
-        float firstTime = timeHistory[0];
-        float secondTime = timeHistory[1];
-
-        if (!playerAttack.isAttacking)
-        {
-            bool forwardDash = 
-                (firstInput == Numpad.N6 && secondInput == Numpad.N5 && (thirdInput == Numpad.N6 || thirdInput == Numpad.N9)) ||
-                (firstInput == Numpad.N6 && secondInput == Numpad.N5 && thirdInput == Numpad.N8 && fourthInput == Numpad.N9);
-            bool backwardDash = 
-                (firstInput == Numpad.N4 && secondInput == Numpad.N5 && (thirdInput == Numpad.N4 || thirdInput == Numpad.N7)) ||
-                (firstInput == Numpad.N4 && secondInput == Numpad.N5 && thirdInput == Numpad.N8 && fourthInput == Numpad.N7);
-            if (forwardDash && !animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding"))
-            {
-                if (firstTime + secondTime <= Time66)
-                {
-                    if (playerMovement.isGrounded)
-                    {
-                        // Grounded forward step dash
-                        playerMovement.Dash(firstInput);
-                    }
-                    else
-                    {
-                        // forward airdash
-                        playerMovement.AirDash(true);
-                    }
-                }
-            }
-            else if (backwardDash)
-            {
-                if (firstTime + secondTime <= Time66)
-                {
-                    if (playerMovement.isGrounded)
-                    {
-                        // Grounded backdash
-                        playerMovement.BackDash(firstInput);
-                    }
-                    else
-                    {
-                        // back airdash
-                        playerMovement.AirDash(false);
-                    }
-                }
-            }
-        }
-    }
-    private void InterpretSpecial(Button button)
-    {
-        Numpad firstInput = inputHistory[0];
-        Numpad secondInput = inputHistory[1];
-        Numpad thirdInput = inputHistory[2];
-        Numpad fourthInput = inputHistory[3];
-        float firstTime = timeHistory[0];
-        float secondTime = timeHistory[1];
-        float thirdTime = timeHistory[2];
-        // 236 or 236? motion
-        if (thirdInput == Numpad.N2 && secondInput == Numpad.N3 && firstInput == Numpad.N6)
-        {
-            // Motion detected!
-            if (firstTime + runningTime <= Time236)
-            {
-                if (button == Button.A)
-                {
-                    Debug.Log("Stun Edge!");
-                }
-            }
-        }
-        else if (fourthInput == Numpad.N2 && thirdInput == Numpad.N3 && secondInput == Numpad.N6) 
-        {
-            // Motion detected!
-            if (secondTime + firstTime + runningTime <= Time236)
-            {
-                if (button == Button.A)
-                {
-                    Debug.Log("Stun Edge Extra!");
-                }
-            }
-        }
-        else
-        {
-            // Normals
-            if (button == Button.A)
-            {
-                playerAttack.Attack5B();
-            }
-            else if (button == Button.B)
-            {
-                playerAttack.Attack5C();
-            }
-        }
-    }
-
-    private void InterpretButtons()
-    {
-        if (buttonDownBag.IsEmpty)
-        {
-            throw new InvalidOperationException("Interpretting buttons, but there are no buttons down!");
-        }
-        Button[] buttonsDown = buttonDownBag.ToArray();
-        if (buttonsDown.Contains(Button.A) && buttonsDown.Contains(Button.B))
-        {
-            // RC?
-        }
-        else
-        {
-            if (buttonsDown.Contains(Button.A))
-            {
-                InterpretSpecial(Button.A);
-            }
-            else if (buttonsDown.Contains(Button.B))
-            {
-                InterpretSpecial(Button.B);
-            }
-            else if (buttonsDown.Contains(Button.C))
-            {
-                InterpretSpecial(Button.C);
-            }
-            else if (buttonsDown.Contains(Button.D))
-            {
-                Numpad firstInput = inputHistory[0];
-                switch (firstInput)
-                {
-                    case Numpad.N6:
-                        playerAttack.Throw(true);
-                        break;
-                    case Numpad.N4:
-                        playerAttack.Throw(false);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        // empty out button bag
-        while (!buttonDownBag.IsEmpty)
-        {
-            Button button;
-            buttonDownBag.TryTake(out button);
-        }
-    }
-
     
+
+    // TODO: Connect to player's turnaround event somehow
     public void FacingDirectionChanged()
     {
         // TODO: can be switch case or something else
