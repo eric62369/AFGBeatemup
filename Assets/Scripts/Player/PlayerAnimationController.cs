@@ -19,7 +19,6 @@ public class PlayerAnimationController : MonoBehaviour
         
     }
 
-
     public void AnimationSetBool(string animationId, bool setValue)
     {
         animator.SetBool(animationId, setValue);

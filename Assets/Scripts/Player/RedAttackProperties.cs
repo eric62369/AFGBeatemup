@@ -5,11 +5,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "RedAttackProperties", menuName = "RedAttackProperties", order = 0)]
 public class RedAttackProperties : ScriptableObject {
     /// Animation Parameter names
-    public ISet<string> JumpCancellable { get; private set; }
+    private ISet<string> JumpCancellable;
 
     public void OnEnable()
     {
-        Debug.Log("OnEnable");
         InitializeJumpCancellable();
     }
 

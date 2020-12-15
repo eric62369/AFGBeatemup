@@ -78,12 +78,11 @@ public class PlayerAttackController : MonoBehaviour {
     }
     public void ThrowFreeze()
     {
-        movementController.rb2d.velocity = new Vector2(0f, 0f);
-        movementController.rb2d.bodyType = RigidbodyType2D.Kinematic;
+        movementController.ThrowHit();
     }
     public void ThrowUnFreeze()
     {
-        movementController.rb2d.bodyType = RigidbodyType2D.Dynamic;
+        movementController.ThrowEnd();
         MoveDone();
     }
 
@@ -118,17 +117,13 @@ public class PlayerAttackController : MonoBehaviour {
     public Vector2 FreezePlayer()
     {
         animator.AnimatorEnable(false);
-        movementController.rb2d.bodyType = RigidbodyType2D.Kinematic;
-        Vector2 oldVelocity = movementController.rb2d.velocity;
-        movementController.rb2d.velocity = new Vector2(0f, 0f);
-        return oldVelocity;
+        return movementController.FreezePlayer();
     }
 
     public void UnFreezePlayer(Vector2 oldVelocity)
     {
         animator.AnimatorEnable(true);
-        movementController.rb2d.bodyType = RigidbodyType2D.Dynamic;
-        movementController.rb2d.velocity = oldVelocity;
+        movementController.UnFreezePlayer(oldVelocity);
     }
 
     // Must always be called before Recovery frames

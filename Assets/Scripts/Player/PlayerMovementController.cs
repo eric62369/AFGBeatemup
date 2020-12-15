@@ -28,11 +28,11 @@ public class PlayerMovementController : MonoBehaviour {
     public Transform groundCheck;
     public float groundCheckRadius;
     public LayerMask groundLayers;
-    public bool isGrounded;
-    public bool isHoldingJump;
+    public bool isGrounded { get; private set; }
+    public bool isHoldingJump { get; private set; }
     private bool hasDashMomentum;
 
-    public Rigidbody2D rb2d;
+    private Rigidbody2D rb2d;
     
     private PlayerAttackController attackController;
     private PlayerInputManager playerInput;
@@ -288,13 +288,33 @@ public class PlayerMovementController : MonoBehaviour {
         isHoldingJump = state;
     }
 
-    public Vector2 GetVelocity()
-    {
-        return rb2d.velocity;
-    }
-    public void SetVelocity(Vector2 movement)
-    {
+    /**
+    How should movement behave on throw hit?
+    */
+    public void ThrowHit() {
         rb2d.velocity = new Vector2(0f, 0f);
+        rb2d.bodyType = RigidbodyType2D.Kinematic;
+    }
+
+    /**
+    How should movement behave after throw ends?
+    */
+    public void ThrowEnd() {
+        rb2d.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+    public Vector2 FreezePlayer()
+    {
+        rb2d.bodyType = RigidbodyType2D.Kinematic;
+        Vector2 oldVelocity = rb2d.velocity;
+        rb2d.velocity = new Vector2(0f, 0f);
+        return oldVelocity;
+    }
+
+    public void UnFreezePlayer(Vector2 oldVelocity)
+    {
+        rb2d.bodyType = RigidbodyType2D.Dynamic;
+        rb2d.velocity = oldVelocity;
     }
 
     /// Reevaluate facing direction, update if necessary
