@@ -36,9 +36,7 @@ public class BattleInputScanner : MonoBehaviour
     private BattleInputParser parser;
 
     // Input history data
-    public IList<Numpad> inputHistory { get; private set; }
-    public IList<IList<ButtonStatus>> buttonHistory { get; private set; }
-    public IList<int> timeHistory { get; private set; }
+    private InputHistory inputHistory;
 
     // Received inputs from ControllerReader
     private Numpad nextDirection;
@@ -49,9 +47,6 @@ public class BattleInputScanner : MonoBehaviour
     void Start()
     {
         runningFrames = 0; // Frame 1 will be first update frame
-        inputHistory = new List<Numpad>();
-        buttonHistory = new List<List<ButtonStatus>>();
-        timeHistory = new List<int>();
 
         parser = GetComponent<BattleInputParser>();
 
@@ -63,17 +58,7 @@ public class BattleInputScanner : MonoBehaviour
         newInputs = false;
 
         // initialize input history
-        for (int i = 0; i < InputHistorySize; i++)
-        {
-            inputHistory.Add(Numpad.N0);
-            timeHistory.Add(0);
-
-            IList<ButtonStatus> emptyButtons = new List<ButtonStatus>();
-            for (int j = 0; j < ButtonCount; j++) {
-                emptyButtons.Add(ButtonStatus.Up);
-            }
-            buttonHistory.Add(emptyButtons);
-        }
+        inputHistory = new InputHistory(InputHistorySize, ButtonCount);
     }
 
     // every frame update
@@ -83,27 +68,22 @@ public class BattleInputScanner : MonoBehaviour
         
         if (newInputs) {
             // Add all received inputs to input history
-            inputHistory.Insert(0, nextDirection);
             IList<ButtonStatus> copyButtons = new List<ButtonStatus>();
             for (int i = 0; i < ButtonCount; i++) {
                 copyButtons[i] = nextButtons[i];
             }
-            buttonHistory.Insert(0, copyButtons);
-            timeHistory.Insert(0, runningFrames);
+            inputHistory.AddNewEntry(
+                nextDirection,
+                copyButtons,
+                runningFrames
+            );    
 
-            // trim input history size
-            if (inputHistory.Count > InputHistorySize)
-            {
-                inputHistory.RemoveAt(InputHistorySize);
-                buttonHistory.RemoveAt(InputHistorySize);
-                timeHistory.RemoveAt(InputHistorySize);
-            }
-        
             // pass data to input parser
+            parser.ParseNewInput(inputHistory);
 
             // reset flags and running state
             newInputs = false;
-            runningFrames = 0;
+            runningFrames = 0; // Frame 1 will be the next new update frame
         }
         
     }
@@ -114,6 +94,7 @@ public class BattleInputScanner : MonoBehaviour
     public void InterpretNewStickInput(Numpad newInput)
     {
         nextDirection = newInput;
+        newInputs = true;
     }
 
     // TODO: Change Controller Reader to detect button release (and maybe hold)
@@ -136,36 +117,38 @@ public class BattleInputScanner : MonoBehaviour
                 throw new InvalidOperationException(buttonPressed + " is not an ABCD button!");
                 break;
         }
+        newInputs = true;
     }
     
 
     // TODO: Connect to player's turnaround event somehow
-    public void FacingDirectionChanged()
-    {
-        // TODO: can be switch case or something else
-        if (currentInput == Numpad.N7)
-        {
-            InterpretNewStickInput(Numpad.N9);
-        }
-        else if (currentInput == Numpad.N4)
-        {
-            InterpretNewStickInput(Numpad.N6);
-        }
-        else if (currentInput == Numpad.N1)
-        {
-            InterpretNewStickInput(Numpad.N3);
-        }
-        else if (currentInput == Numpad.N9)
-        {
-            InterpretNewStickInput(Numpad.N7);
-        }
-        else if (currentInput == Numpad.N6)
-        {
-            InterpretNewStickInput(Numpad.N4);
-        }
-        else if (currentInput == Numpad.N3)
-        {
-            InterpretNewStickInput(Numpad.N1);
-        }
-    }
+    // public void FacingDirectionChanged()
+    // {
+    //     // TODO: can be switch case or something else
+    //     if (currentInput == Numpad.N7)
+    //     {
+    //         InterpretNewStickInput(Numpad.N9);
+    //     }
+    //     else if (currentInput == Numpad.N4)
+    //     {
+    //         InterpretNewStickInput(Numpad.N6);
+    //     }
+    //     else if (currentInput == Numpad.N1)
+    //     {
+    //         InterpretNewStickInput(Numpad.N3);
+    //     }
+    //     else if (currentInput == Numpad.N9)
+    //     {
+    //         InterpretNewStickInput(Numpad.N7);
+    //     }
+    //     else if (currentInput == Numpad.N6)
+    //     {
+    //         InterpretNewStickInput(Numpad.N4);
+    //     }
+    //     else if (currentInput == Numpad.N3)
+    //     {
+    //         InterpretNewStickInput(Numpad.N1);
+    //     }
+    //     newInputs = true;
+    // }
 }

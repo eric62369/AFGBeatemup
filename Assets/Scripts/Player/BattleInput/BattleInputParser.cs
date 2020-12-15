@@ -7,36 +7,14 @@ using UnityEngine.InputSystem;
 
 public class BattleInputParser : MonoBehaviour
 {
-    public int InputHistorySize; // size for input history
     public float Time66; // in (ms) window to input 66 (dash)
     public float Time236; // in (ms) window to input 236
 
-    private Numpad currentInput; // Current stick input in Numpad
-    private float runningTime; // How much time (in ms) since last input?
-    private IList<Numpad> inputHistory;
-    private IList<float> timeHistory;
-    private ConcurrentBag<Button> buttonDownBag;
-
     void Start()
     {
-        playerMovement = GetComponent<PlayerMovementController>();
-        playerAttack = GetComponent<PlayerAttackController>();
-        playerState = GetComponent<PlayerStateManager>();
-        animator = GetComponent<PlayerAnimationController>();
 
-        currentInput = Numpad.N0;
-        runningTime = 0;
-        inputHistory = new List<Numpad>();
-        timeHistory = new List<float>();
-        buttonDownBag = new ConcurrentBag<Button>();
-
-        for (int i = 0; i < InputHistorySize; i++)
-        {
-            inputHistory.Add(Numpad.N0);
-            timeHistory.Add(0);
-        }
     }
-    public void Update()
+    void Update()
     {
         runningTime += Time.deltaTime;
         InterpretMovement();
@@ -46,26 +24,20 @@ public class BattleInputParser : MonoBehaviour
         }
     }
 
+    /**
+    Warning, not called every frame
+    Only called when new input is detected from scanner
+    */
+    public void ParseNewInput(InputHistory inputHistory) {
+
+    }
+
     /// Called when new input received
     /// takes a numpad direction
     /// modifies input and time History
     public void InterpretNewStickInput(Numpad newInput)
     {
-        currentInput = newInput;
-        inputHistory.Insert(0, currentInput);
-        timeHistory.Insert(0, runningTime);
-        runningTime = 0;
-        if (inputHistory.Count > InputHistorySize)
-        {
-            inputHistory.RemoveAt(InputHistorySize);
-            timeHistory.RemoveAt(InputHistorySize);
-        }
         InterpretDash();
-    }
-
-    public void InterpretNewButtonInput(Button buttonPressed)
-    {
-        buttonDownBag.Add(buttonPressed);
     }
 
     private void InterpretMovement()

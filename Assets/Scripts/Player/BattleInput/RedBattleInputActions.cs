@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RedBattleInputActions : MonoBehaviour
+public class RedBattleInputActions : MonoBehaviour, IBattleInputActions
 {
     // Start is called before the first frame update
     void Start()
