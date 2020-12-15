@@ -13,11 +13,6 @@ public class PlayerAnimationController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        
-    }
 
     public void AnimationSetBool(string animationId, bool setValue)
     {

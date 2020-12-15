@@ -10,7 +10,6 @@ public class ParentHurtbox : MonoBehaviour
     private Rigidbody2D Rigidbody;
     private IDictionary<string, int> currRegisteredAttacks;
     private readonly object registerAttackLock = new object();
-    private PlayerAttackController player1;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +18,6 @@ public class ParentHurtbox : MonoBehaviour
         Rigidbody = GetComponent<Rigidbody2D>();
         EnemyMovement = GetComponent<EnemyMovementController>();
         EnemyState = GetComponent<EnemyStateManager>();
-        player1 = GameObject.FindWithTag("Player").GetComponent<PlayerAttackController>();
         currRegisteredAttacks = new Dictionary<string, int>();
     }
 

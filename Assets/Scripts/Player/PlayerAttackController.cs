@@ -76,6 +76,7 @@ public class PlayerAttackController : MonoBehaviour {
             }
         }
     }
+    
     public void ThrowFreeze()
     {
         movementController.ThrowHit();

@@ -117,6 +117,7 @@ public class PlayerStateManager : MonoBehaviour
         }
         return positionOffset;
     }
+    
     public void ThrowHit()
     {
         animator.AnimationSetBool("ThrowHit", true);
