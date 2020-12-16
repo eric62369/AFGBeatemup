@@ -115,7 +115,6 @@ public class BattleInputScanner : MonoBehaviour
                 break;
             default:
                 throw new InvalidOperationException(buttonPressed + " is not an ABCD button!");
-                break;
         }
         newInputs = true;
     }

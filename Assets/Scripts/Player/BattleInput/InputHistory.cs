@@ -16,7 +16,7 @@ public class InputHistory
         InputHistorySize = inputHistorySize;
 
         inputHistory = new List<Numpad>();
-        buttonHistory = new List<List<ButtonStatus>>();
+        buttonHistory = new List<IList<ButtonStatus>>();
         timeHistory = new List<int>();
 
         // initialize input history
@@ -61,7 +61,7 @@ public class InputHistory
         return new InputHistoryEntry(
             inputHistory[index],
             buttonHistory[index],
-            runningFrames[index]
+            timeHistory[index]
         );
     }
 
@@ -73,14 +73,14 @@ public class InputHistory
 
 public class InputHistoryEntry
 {
-    Numpad direction { get; private set; }
-    IList<ButtonStatus> buttons { get; private set; }  // TODO: Make this immutable list?
-    int runningFrames { get; private set; }
+    public Numpad direction { get; private set; }
+    public IList<ButtonStatus> buttons { get; private set; }  // TODO: Make this immutable list?
+    public int runningFrames { get; private set; }
 
     public InputHistoryEntry(
         Numpad direction_,
         IList<ButtonStatus> buttons_,
-        int runningFrames)
+        int runningFrames_)
     {
         direction = direction_;
         buttons = buttons_;

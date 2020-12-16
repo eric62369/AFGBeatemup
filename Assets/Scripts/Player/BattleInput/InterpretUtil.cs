@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,20 +12,21 @@ public class MotionInput
     /// 6523 -> 3256, 236 -> 632
     /// </summary>
     /// <typeparam name="Numpad">represent directions</typeparam>
-    IList<IList<Numpad>> motionInputs { get; private set; }
+    public IList<IList<Numpad>> motionInputs { get; private set; }
 
-    int frameLimit { get; private set; }
+    public int frameLimit { get; private set; }
 
     public MotionInput(string input, int frameLimit_) {
-        IList<string> inputs = new List<string>();
-        inputs.Add(input);
-        this(inputs);
+        // TODO: copy pasted from other constructor
+        motionInputs.Add(StringToNumpads(input));
+        frameLimit = frameLimit_;
     }
     public MotionInput(IList<string> inputs, int frameLimit_) {
-        motionInputs = new List<List<Numpad>>();
+        motionInputs = new List<IList<Numpad>>();
         foreach (string input in inputs) {
             motionInputs.Add(StringToNumpads(input));
         }
+        frameLimit = frameLimit_;
     }
 
     private IList<Numpad> StringToNumpads(string input) {
@@ -62,7 +64,6 @@ public class MotionInput
                     break;
                 default:
                     throw new InvalidOperationException(input[i] + " is not an expected Numpad input!");
-                    break;
             }
             numpads.Add(nextNumpad);
         }
@@ -87,7 +88,7 @@ public class InterpretUtil
         Numpad prevInput = Numpad.N0;  // most recently interpreted numpad direction
         int curIndex = 0;  // which index in the motion inputs to look at?
         int totalFrames = 0;  // total frames the input took to input
-        boolean noMatchesFound = false;   // has the input history matched a motion input yet?
+        bool noMatchesFound = false;   // has the input history matched a motion input yet?
         // assume watching all at first
         bool[] notWatching = new bool[motionInput.motionInputs.Count];
         while (!noMatchesFound) {
