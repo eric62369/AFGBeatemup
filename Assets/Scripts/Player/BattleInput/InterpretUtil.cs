@@ -13,12 +13,14 @@ public class MotionInput
     /// <typeparam name="Numpad">represent directions</typeparam>
     IList<IList<Numpad>> motionInputs { get; private set; }
 
-    public MotionInput(string input) {
+    int frameLimit { get; private set; }
+
+    public MotionInput(string input, int frameLimit_) {
         IList<string> inputs = new List<string>();
         inputs.Add(input);
         this(inputs);
     }
-    public MotionInput(IList<string> inputs) {
+    public MotionInput(IList<string> inputs, int frameLimit_) {
         motionInputs = new List<List<Numpad>>();
         foreach (string input in inputs) {
             motionInputs.Add(StringToNumpads(input));
@@ -74,32 +76,59 @@ public class InterpretUtil
 {
     /// <summary>
     /// Return true if input history matches the numpad inputs given
+    /// 
+    /// TODO: Make sure this function isn't too slow
     /// </summary>
     /// <param name="inputHistory">The player's most recent inputs</param>
     /// <param name="motionInput">All possible forms of the given motion input</param>
     /// <returns>true if the player inputs match this motion input</returns>
     public static bool InterpretInput(InputHistory inputHistory, MotionInput motionInput) {
-        int historyIndex = -1;
-        Numpad prevInput = Numpad.N0;
-        int curIndex = 0;
-        int totalFrames = 0;
-        boolean matched = false;
+        int historyIndex = -1;  // which index in the input history to look at?
+        Numpad prevInput = Numpad.N0;  // most recently interpreted numpad direction
+        int curIndex = 0;  // which index in the motion inputs to look at?
+        int totalFrames = 0;  // total frames the input took to input
+        boolean noMatchesFound = false;   // has the input history matched a motion input yet?
         // assume watching all at first
         bool[] notWatching = new bool[motionInput.motionInputs.Count];
-        while (!matched) {
+        while (!noMatchesFound) {
             // find next input in inputHistory to consider
             historyIndex++;
-            InputHistoryEntry currEntry = inputHistory.GetEntry(historyIndex);
+            InputHistoryEntry currEntry = inputHistory.GetEntry(historyIndex); 
+            // add to total frames
+            totalFrames += currEntry.runningFrames;
+
             if (currEntry.direction != prevInput) {
                 // new numpad input to investigate!
+                // update prev input for next iteration
                 prevInput = currEntry.direction;
-
                 for (int i = 0; i < notWatching.Length; i++) {
-
+                    if (notWatching[i] == false) {
+                        // still watching this motion input list
+                        IList<Numpad> curMotionInput = motionInput.motionInputs[i];
+                        if (curIndex > curMotionInput.Count - 1) {
+                            // curMotionInput was on watch list and is not exhausted
+                            // means a match was detected!
+                            if (totalFrames <= motionInput.frameLimit) {
+                                return true;
+                            }
+                            notWatching[i] = true;
+                        } else if (curMotionInput[curIndex] != currEntry.direction) {
+                            // motion input did not match up, don't watch it anymore
+                            notWatching[i] = true;
+                        }
+                    }
                 }
+                // looking for next index on next new direction found
+                curIndex++;
+            }
+
+            // are we watching any other motion inputs?
+            noMatchesFound = true;
+            foreach (bool notWatch in notWatching) {
+                noMatchesFound = noMatchesFound && notWatch;
             }
         }
-        return true;
+        return false;
     }
 
 }
