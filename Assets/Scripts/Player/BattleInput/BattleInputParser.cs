@@ -10,18 +10,21 @@ public class BattleInputParser : MonoBehaviour
     public float Time66; // in (ms) window to input 66 (dash)
     public float Time236; // in (ms) window to input 236
 
+    public IBattleInputActions inputActions;
+
+    private InputHistory mostRecentHistory;
+
     void Start()
     {
-
+        // Might not work, interface might need to be a component
+        inputActions = GetComponent<IBattleInputActions>();
+        mostRecentHistory = null;
     }
     void Update()
     {
-        runningTime += Time.deltaTime;
         InterpretMovement();
-        if (!buttonDownBag.IsEmpty)
-        {
-            InterpretButtons();
-        }
+        // If there are new button downs / releases
+        InterpretButtons();
     }
 
     /**
@@ -30,14 +33,6 @@ public class BattleInputParser : MonoBehaviour
     */
     public void ParseNewInput(InputHistory inputHistory) {
 
-    }
-
-    /// Called when new input received
-    /// takes a numpad direction
-    /// modifies input and time History
-    public void InterpretNewStickInput(Numpad newInput)
-    {
-        InterpretDash();
     }
 
     private void InterpretMovement()

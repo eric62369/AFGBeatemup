@@ -65,6 +65,10 @@ public class InputHistory
         );
     }
 
+    public int GetSize() {
+        return inputHistory.Count;
+    }
+
 }
 
 public class InputHistoryEntry

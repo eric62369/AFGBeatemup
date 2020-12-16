@@ -30,7 +30,7 @@ public enum ButtonStatus
 public class BattleInputScanner : MonoBehaviour
 {
     private static readonly int ButtonCount = 4; // A B C D
-    public int InputHistorySize; // size for input history
+    public static readonly int InputHistorySize = 18; // size for input history
     private int runningFrames; // How much time (in frames) since last input?
 
     private BattleInputParser parser;
