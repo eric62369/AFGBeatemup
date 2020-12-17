@@ -50,7 +50,7 @@ public class BattleInputScanner : MonoBehaviour
 
         parser = GetComponent<BattleInputParser>();
 
-        nextDirection = Numpad.N0;
+        nextDirection = Numpad.N5;
         nextButtons = new List<ButtonStatus>();
         for (int j = 0; j < ButtonCount; j++) {
             nextButtons.Add(ButtonStatus.Up);
@@ -70,7 +70,7 @@ public class BattleInputScanner : MonoBehaviour
             // Add all received inputs to input history
             IList<ButtonStatus> copyButtons = new List<ButtonStatus>();
             for (int i = 0; i < ButtonCount; i++) {
-                copyButtons[i] = nextButtons[i];
+                copyButtons.Add(nextButtons[i]);
             }
             inputHistory.AddNewEntry(
                 nextDirection,
@@ -80,6 +80,9 @@ public class BattleInputScanner : MonoBehaviour
 
             // pass data to input parser
             // parser.ParseNewInput(inputHistory);
+
+            // print input history to console
+            Debug.Log(inputHistory.ToString());
 
             // reset flags and running state
             newInputs = false;

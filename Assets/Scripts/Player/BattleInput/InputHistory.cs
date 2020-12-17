@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -69,6 +70,19 @@ public class InputHistory
         return inputHistory.Count;
     }
 
+    public override string ToString() {
+        string result = "";
+        for (int i = 0; i < InputHistorySize; i++) {
+            InputHistoryEntry entry = new InputHistoryEntry(
+                inputHistory[i],
+                buttonHistory[i],
+                timeHistory[i]
+            );
+            result += "["+ entry.ToString() + "]\n";
+        }
+        return result;
+    }
+
 }
 
 public class InputHistoryEntry
@@ -89,6 +103,38 @@ public class InputHistoryEntry
         direction = direction_;
         buttons = buttons_;
         runningFrames = runningFrames_;
+    }
+
+    public override string ToString() {
+        string result = "";
+        result += direction + " ";
+
+        result += "(";
+        if (buttons.Count != 0) {
+            result += ButtonStatusToString(buttons[0]);
+        }
+        for (int i = 1; i < buttons.Count; i++) {
+            result += "," + ButtonStatusToString(buttons[i]);
+        }
+        result += ") ";
+
+        result += runningFrames;
+
+        return result;
+    }
+    private string ButtonStatusToString(ButtonStatus button) {
+        switch (button) {
+            case ButtonStatus.Down:
+                return "Dwn";
+            case ButtonStatus.Hold:
+                return "Hld";
+            case ButtonStatus.Release:
+                return "Rls";
+            case ButtonStatus.Up:
+                return "Up_";
+            default:
+                throw new InvalidOperationException(button + " was not expected button status!");
+        }
     }
 
 }
