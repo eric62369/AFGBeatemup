@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 
 public enum Button
 {
+    None,
     A, // Light
     B, // Medium
     C, // Heavy

@@ -3,6 +3,45 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class AttackMotionInput
+{
+    public ButtonStatus[] buttons;
+
+    public AttackMotionInput(IList<string> inputs, string buttons, int frameLimit_) : base(inputs, frameLimit_) {
+        this.buttons = StringToButtons(buttons_);
+    }
+
+    private ButtonStatus[] StringToButtons(string input) {
+        // TODO: Remove hardcoded 4
+        ButtonStatus[] buttons = new ButtonStatus[4];
+        for (int i = 0; i < buttons.Length; i++) {
+            buttons[i] = ButtonStatus.Up;
+        }
+
+        for (int i = input.Length - 1; i <= 0; i--) {
+            switch (input[i]) {
+                case 'A':
+                    buttons[0] = ButtonStatus.Down;
+                    break;
+                case 'B':
+                    buttons[1] = ButtonStatus.Down;
+                    break;
+                case 'C':
+                    buttons[2] = ButtonStatus.Down;
+                    break;
+                case 'D':
+                    buttons[3] = ButtonStatus.Down;
+                    break;
+                default:
+                    throw new InvalidOperationException(input[i] + " is not an expected Button input!");
+            }
+            buttons.Add(nextButton);
+        }
+
+        return buttons;
+    }
+}
+
 public class MotionInput
 {
     /// <summary>
@@ -16,14 +55,14 @@ public class MotionInput
 
     public int frameLimit { get; private set; }
 
-    public MotionInput(string input, int frameLimit_) {
+    public MotionInput(string input_, int frameLimit_) {
         // TODO: copy pasted from other constructor
-        motionInputs.Add(StringToNumpads(input));
+        motionInputs.Add(StringToNumpads(input_));
         frameLimit = frameLimit_;
     }
-    public MotionInput(IList<string> inputs, int frameLimit_) {
+    public MotionInput(IList<string> inputs_, int frameLimit_) {
         motionInputs = new List<IList<Numpad>>();
-        foreach (string input in inputs) {
+        foreach (string input in inputs_) {
             motionInputs.Add(StringToNumpads(input));
         }
         frameLimit = frameLimit_;
@@ -71,7 +110,6 @@ public class MotionInput
         return numpads;
     }
 }
-
 
 public class InterpretUtil
 {
@@ -130,6 +168,21 @@ public class InterpretUtil
             }
         }
         return false;
+    }
+
+    /// <summary>
+    /// Note, if input history does not contain a button input on the most recent entry,
+    /// this will return false.
+    /// </summary>
+    /// <param name="inputHistory"></param>
+    /// <param name="motionInput"></param>
+    /// <returns></returns>
+    public static bool InterpretAttackInput(InputHistory inputHistory, AttackMotionInput motionInput) {
+        InputHistoryEntry entry = inputHistory.GetEntry(0);
+        IList<ButtonStatus> buttons = entry.buttons;
+        for (int i = 0; i < buttons.Count; i++) {
+            if ()
+        }
     }
 
 }

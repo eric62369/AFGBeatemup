@@ -74,6 +74,10 @@ public class InputHistory
 public class InputHistoryEntry
 {
     public Numpad direction { get; private set; }
+    /// <summary>
+    /// 0 is A, last index is D
+    /// </summary>
+    /// <value></value>
     public IList<ButtonStatus> buttons { get; private set; }  // TODO: Make this immutable list?
     public int runningFrames { get; private set; }
 
