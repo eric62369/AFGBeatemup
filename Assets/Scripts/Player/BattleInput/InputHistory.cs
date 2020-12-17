@@ -71,7 +71,7 @@ public class InputHistory
     }
 
     public override string ToString() {
-        string result = "";
+        string result = "InputHistory:\n";
         for (int i = 0; i < InputHistorySize; i++) {
             InputHistoryEntry entry = new InputHistoryEntry(
                 inputHistory[i],

@@ -59,25 +59,21 @@ public class ControllerReader : MonoBehaviour
         scanner.InterpretNewStickInput(newInput);
         // TODO: stickVisualizer.UpdateStickUI(newInput);
     }
-    private void OnA()
+    private void OnA(InputValue value)
     {
-        scanner.InterpretNewButtonInput(Button.A);
-        // playerInputManager.InterpretNewButtonInput(Button.A);
+        scanner.InterpretNewButtonInput(Button.A, value.isPressed);
     }
-    private void OnB()
+    private void OnB(InputValue value)
     {
-        scanner.InterpretNewButtonInput(Button.B);
-        // playerInputManager.InterpretNewButtonInput(Button.B);
+        scanner.InterpretNewButtonInput(Button.B, value.isPressed);
     }
-    private void OnC()
+    private void OnC(InputValue value)
     {
-        scanner.InterpretNewButtonInput(Button.C);
-        // playerInputManager.InterpretNewButtonInput(Button.C);
+        scanner.InterpretNewButtonInput(Button.C, value.isPressed);
     }
-    private void OnD()
+    private void OnD(InputValue value)
     {
-        scanner.InterpretNewButtonInput(Button.D);
-        // playerInputManager.InterpretNewButtonInput(Button.D);
+        scanner.InterpretNewButtonInput(Button.D, value.isPressed);
     }
     private void OnStart()
     {

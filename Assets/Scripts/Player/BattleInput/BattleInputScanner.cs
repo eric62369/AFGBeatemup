@@ -87,8 +87,15 @@ public class BattleInputScanner : MonoBehaviour
             // reset flags and running state
             newInputs = false;
             runningFrames = 0; // Frame 1 will be the next new update frame
+            for (int i = 0; i < ButtonCount; i++) {
+                ButtonStatus status = nextButtons[i];
+                if (status == ButtonStatus.Down) {
+                    nextButtons[i] = ButtonStatus.Hold;
+                } else if (status == ButtonStatus.Release) {
+                    nextButtons[i] = ButtonStatus.Up;
+                }
+            }
         }
-        
     }
 
     /// Called when new input received
@@ -101,20 +108,24 @@ public class BattleInputScanner : MonoBehaviour
     }
 
     // TODO: Change Controller Reader to detect button release (and maybe hold)
-    public void InterpretNewButtonInput(Button buttonPressed)
+    public void InterpretNewButtonInput(Button buttonPressed, bool isPressed)
     {
+        ButtonStatus newStatus = ButtonStatus.Down;
+        if (!isPressed) {
+            newStatus = ButtonStatus.Release;
+        }
         switch (buttonPressed) {
             case Button.A:
-                nextButtons[0] = ButtonStatus.Down;
+                nextButtons[0] = newStatus;
                 break;
             case Button.B:
-                nextButtons[1] = ButtonStatus.Down;
+                nextButtons[1] = newStatus;
                 break;
             case Button.C:
-                nextButtons[2] = ButtonStatus.Down;
+                nextButtons[2] = newStatus;
                 break;
             case Button.D:
-                nextButtons[3] = ButtonStatus.Down;
+                nextButtons[3] = newStatus;
                 break;
             default:
                 throw new InvalidOperationException(buttonPressed + " is not an ABCD button!");
