@@ -32,7 +32,8 @@ public class ControllerReader : MonoBehaviour
 
     private PlayerInput playerUnityInput;
     private PlayerStateManager playerStateManager;
-    private PlayerInputManager playerInputManager;
+    // private PlayerInputManager playerInputManager;
+    private BattleInputScanner scanner;
     // public StickVisualizerController stickVisualizer;
 
     // Start is called before the first frame update
@@ -43,7 +44,8 @@ public class ControllerReader : MonoBehaviour
         IEnumerable<PlayerStateManager> stateManagers = 
             (IEnumerable<PlayerStateManager>)FindObjectsOfType<PlayerStateManager>();
         playerStateManager = stateManagers.FirstOrDefault(s => s.GetPlayerIndex() == playerIndex);
-        playerInputManager = playerStateManager.GetInputManager();
+        // playerInputManager = playerStateManager.GetInputManager();
+        scanner = playerStateManager.GetInputScanner();
     }
 
     //////////////////
@@ -53,24 +55,29 @@ public class ControllerReader : MonoBehaviour
     {
         Vector2 input = value.Get<Vector2>();
         Numpad newInput = GetInputToNumpad(input.x, input.y);
-        playerInputManager.InterpretNewStickInput(newInput);
+        // playerInputManager.InterpretNewStickInput(newInput);
+        scanner.InterpretNewStickInput(newInput);
         // TODO: stickVisualizer.UpdateStickUI(newInput);
     }
     private void OnA()
     {
-        playerInputManager.InterpretNewButtonInput(Button.A);
+        scanner.InterpretNewButtonInput(Button.A);
+        // playerInputManager.InterpretNewButtonInput(Button.A);
     }
     private void OnB()
     {
-        playerInputManager.InterpretNewButtonInput(Button.B);
+        scanner.InterpretNewButtonInput(Button.B);
+        // playerInputManager.InterpretNewButtonInput(Button.B);
     }
     private void OnC()
     {
-        playerInputManager.InterpretNewButtonInput(Button.C);
+        scanner.InterpretNewButtonInput(Button.C);
+        // playerInputManager.InterpretNewButtonInput(Button.C);
     }
     private void OnD()
     {
-        playerInputManager.InterpretNewButtonInput(Button.D);
+        scanner.InterpretNewButtonInput(Button.D);
+        // playerInputManager.InterpretNewButtonInput(Button.D);
     }
     private void OnStart()
     {

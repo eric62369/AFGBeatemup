@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackMotionInput
+public class AttackMotionInput : MotionInput
 {
     public ButtonStatus[] buttons;
 
-    public AttackMotionInput(IList<string> inputs, string buttons, int frameLimit_) : base(inputs, frameLimit_) {
+    public AttackMotionInput(IList<string> inputs_, string buttons_, int frameLimit_) : base(inputs_, frameLimit_) {
         this.buttons = StringToButtons(buttons_);
     }
 
@@ -35,7 +35,6 @@ public class AttackMotionInput
                 default:
                     throw new InvalidOperationException(input[i] + " is not an expected Button input!");
             }
-            buttons.Add(nextButton);
         }
 
         return buttons;
@@ -173,6 +172,8 @@ public class InterpretUtil
     /// <summary>
     /// Note, if input history does not contain a button input on the most recent entry,
     /// this will return false.
+    /// 
+    /// TODO: work out the details of button combo interpretations later
     /// </summary>
     /// <param name="inputHistory"></param>
     /// <param name="motionInput"></param>
@@ -180,9 +181,24 @@ public class InterpretUtil
     public static bool InterpretAttackInput(InputHistory inputHistory, AttackMotionInput motionInput) {
         InputHistoryEntry entry = inputHistory.GetEntry(0);
         IList<ButtonStatus> buttons = entry.buttons;
+        ButtonStatus[] reference = motionInput.buttons;
+
         for (int i = 0; i < buttons.Count; i++) {
-            if ()
+            ButtonStatus currStatus = buttons[i];
+            if (reference[i] == ButtonStatus.Down &&
+                (currStatus == ButtonStatus.Down || currStatus == ButtonStatus.Release || currStatus == ButtonStatus.Hold)) {
+                // Down match
+            } else if (reference[i] == ButtonStatus.Up &&
+                currStatus == ButtonStatus.Up) {
+                // Up match
+            } else {
+                // mismatch!
+                // TODO: might lead to strange behavior currently. i.e. 632AB might not give nothing instead of A DP
+                return false;
+            }
         }
+
+        return true;
     }
 
 }
