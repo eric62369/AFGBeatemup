@@ -1,9 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RedBattleInputActions : MonoBehaviour, IBattleInputActions
 {
+    private PlayerAttackController playerAttack;
+
+    void Start() {
+        playerAttack = GetComponent<PlayerAttackController>();
+    }
+
+    void Update() {
+
+    }
+
     // Universal Movement
     public void Dash() {}
     public void AirDash(bool direction) {}
@@ -18,7 +29,23 @@ public class RedBattleInputActions : MonoBehaviour, IBattleInputActions
 
 
     // Normals
-    public void N5(Button button) {}
+    public void N5(Button button) {
+        switch (button) {
+            case Button.A:
+                break;
+            case Button.B:
+                playerAttack.Attack5B();
+                break;
+            case Button.C:
+                playerAttack.Attack5C();
+                break;
+            case Button.D:
+                break;
+            default:
+                throw new InvalidOperationException(button + " was not an expected normal button!");
+        }
+        
+    }
 
     // Command Normals
 

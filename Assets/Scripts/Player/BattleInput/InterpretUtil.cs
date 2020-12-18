@@ -160,7 +160,8 @@ public class InterpretUtil
                     if (notWatching[i] == false) {
                         // still watching this motion input list
                         IList<Numpad> curMotionInput = motionInput.motionInputs[i];
-                        if (curIndex > curMotionInput.Count - 1) {
+                        if (curIndex == curMotionInput.Count - 1 &&
+                            curMotionInput[curIndex] == currEntry.direction) {
                             // curMotionInput was on watch list and is not exhausted
                             // means a match was detected!
                             if (totalFrames <= motionInput.frameLimit) {
@@ -197,6 +198,10 @@ public class InterpretUtil
     /// Note, if input history does not contain a button input on the most recent entry,
     /// this will return false.
     /// 
+    /// Works only for single button attack inputs (Normals and Specials)
+    /// 
+    /// TODO: For normals / don't interpret negative edge
+    /// 
     /// TODO: work out the details of button combo interpretations later
     /// </summary>
     /// <param name="inputHistory"></param>
@@ -210,11 +215,10 @@ public class InterpretUtil
         for (int i = 0; i < buttons.Count; i++) {
             ButtonStatus currStatus = buttons[i];
             if (reference[i] == ButtonStatus.Down &&
-                (currStatus == ButtonStatus.Down || currStatus == ButtonStatus.Release || currStatus == ButtonStatus.Hold)) {
+                (currStatus == ButtonStatus.Down || currStatus == ButtonStatus.Release)) {
                 // Down match
-            } else if (reference[i] == ButtonStatus.Up &&
-                currStatus == ButtonStatus.Up) {
-                // Up match
+            } else if (reference[i] == ButtonStatus.Up) {
+                // Up ignored
             } else {
                 // mismatch!
                 // TODO: might lead to strange behavior currently. i.e. 632AB might not give nothing instead of A DP

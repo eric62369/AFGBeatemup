@@ -81,8 +81,8 @@ public class BattleInputScanner : MonoBehaviour
             // pass data to input parser
             parser.ParseNewInput(inputHistory);
 
-            // print input history to console
-            Debug.Log(inputHistory.ToString());
+            // // print input history to console
+            // Debug.Log(inputHistory.ToString());
 
             // reset flags and running state
             newInputs = false;

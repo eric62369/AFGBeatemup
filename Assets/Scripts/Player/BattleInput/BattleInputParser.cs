@@ -80,8 +80,10 @@ public class BattleInputParser : MonoBehaviour
     {
         if (InterpretUtil.InterpretAttackInput(inputHistory, N5B)) {
             Debug.Log(N5B.ToString());
+            inputActions.N5(Button.B);
         } else if (InterpretUtil.InterpretAttackInput(inputHistory, N5C)) {
             Debug.Log(N5C.ToString());
+            inputActions.N5(Button.C);
         }
         // if (buttonsDown.Contains(Button.A))
         // {
