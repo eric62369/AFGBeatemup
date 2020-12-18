@@ -79,7 +79,7 @@ public class BattleInputScanner : MonoBehaviour
             );    
 
             // pass data to input parser
-            // parser.ParseNewInput(inputHistory);
+            parser.ParseNewInput(inputHistory);
 
             // print input history to console
             Debug.Log(inputHistory.ToString());

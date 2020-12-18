@@ -7,26 +7,63 @@ using UnityEngine.InputSystem;
 
 public class BattleInputParser : MonoBehaviour
 {
-    public float Time66; // in (ms) window to input 66 (dash)
-    public float Time236; // in (ms) window to input 236
+    public int Time66; // in (frames) window to input 66 (dash)
+    public int Time236; // in (frames) window to input 236
 
     public IBattleInputActions inputActions;
 
-    private MotionInput S236;
-    private MotionInput M66;
-    private MotionInput Throw;
+    // TODO: Move initialization for these inputs somewhere else (these are universal inputs)
+    private static AttackMotionInput S236;
+    private static AttackMotionInput N5B;
+    private static AttackMotionInput N5C;
+    private static MotionInput M66;
+    private static MotionInput M44;
+    private static AttackMotionInput ForwardThrow;
+    private static AttackMotionInput BackwardThrow;
 
     void Start()
     {
         // Might not work, interface might need to be a component
         inputActions = GetComponent<IBattleInputActions>();
+        initMotionInputs();
     }
-    
-    void Update()
-    {
-        // InterpretMovement();
-        // If there are new button downs / releases
-        // InterpretButtons();
+
+    private void initMotionInputs() {
+        IList<string> list236 = new List<string>();
+        list236.Add("236");
+        list236.Add("2365");
+        list236.Add("2369");
+        S236 = new AttackMotionInput(list236, "A", Time236);
+
+        IList<string> list66 = new List<string>();
+        list66.Add("656");
+        list66.Add("956");
+        list66.Add("9856");
+        list66.Add("9656");
+        M66 = new MotionInput(list66, Time66);
+
+        IList<string> list44 = new List<string>();
+        list44.Add("454");
+        list44.Add("754");
+        list44.Add("7854");
+        list44.Add("7454");
+        M44 = new MotionInput(list44, Time66);
+
+        IList<string> list5B = new List<string>();
+        list5B.Add("5");
+        N5B = new AttackMotionInput(list5B, "B", 0);
+
+        IList<string> list5C = new List<string>();
+        list5C.Add("5");
+        N5C = new AttackMotionInput(list5C, "C", 0);
+
+        IList<string> listForwardThrow = new List<string>();
+        listForwardThrow.Add("6");
+        ForwardThrow = new AttackMotionInput(listForwardThrow, "AD", 0);
+
+        IList<string> listBackwardThrow = new List<string>();
+        listBackwardThrow.Add("4");
+        BackwardThrow = new AttackMotionInput(listBackwardThrow, "AD", 0);
     }
 
     /**
@@ -34,47 +71,91 @@ public class BattleInputParser : MonoBehaviour
     Only called when new input is detected from scanner
     */
     public void ParseNewInput(InputHistory inputHistory) {
-
+        bool matched = false;
+        matched = InterpretAttack(inputHistory);
+        matched = InterpretMovement(inputHistory);
     }
 
-    // private void InterpretMovement()
-    // {
-    //     Numpad firstInput = inputHistory[0];
-    //     Numpad secondInput = inputHistory[1];
+    private bool InterpretAttack(InputHistory inputHistory)
+    {
+        if (InterpretUtil.InterpretAttackInput(inputHistory, N5B)) {
+            Debug.Log(N5B.ToString());
+        } else if (InterpretUtil.InterpretAttackInput(inputHistory, N5C)) {
+            Debug.Log(N5C.ToString());
+        }
+        // if (buttonsDown.Contains(Button.A))
+        // {
+        //     InterpretSpecial(Button.A);
+        // }
+        // else if (buttonsDown.Contains(Button.B))
+        // {
+        //     InterpretSpecial(Button.B);
+        // }
+        // else if (buttonsDown.Contains(Button.C))
+        // {
+        //     InterpretSpecial(Button.C);
+        // }
+        // else if (buttonsDown.Contains(Button.D))
+        // {
+        //     Numpad firstInput = inputHistory[0];
+        //     switch (firstInput)
+        //     {
+        //         case Numpad.N6:
+        //             playerAttack.Throw(true);
+        //             break;
+        //         case Numpad.N4:
+        //             playerAttack.Throw(false);
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // }
+        
+        // // empty out button bag
+        // while (!buttonDownBag.IsEmpty)
+        // {
+        //     Button button;
+        //     buttonDownBag.TryTake(out button);
+        // }
+        return false;
+    }
 
-    //     if (IsNumpadUp(firstInput))
-    //     {
-    //         playerState.SetCancelAction(CancelAction.Jump, firstInput);
-    //         playerMovement.Jump(firstInput);
-    //     }
-    //     else if (!playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N4))
-    //     {
-    //         // Walk check
-    //         playerMovement.Walk(firstInput);
-    //     }
-    //     else if (playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N3) && !animator.AnimationGetBool("IsSkidding"))
-    //     {
-    //         // Holding run check
-    //         playerMovement.Run(firstInput);
-    //     }
-    //     else
-    //     {
-    //         if (animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding"))
-    //         {
-    //             playerMovement.Skid();
-    //         }
-    //         // Nothing / Idle
-    //     }
+    private bool InterpretMovement(InputHistory inputHistory)
+    {
+        // if (IsNumpadUp(firstInput))
+        // {
+        //     playerState.SetCancelAction(CancelAction.Jump, firstInput);
+        //     playerMovement.Jump(firstInput);
+        // }
+        // else if (!playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N4))
+        // {
+        //     // Walk check
+        //     playerMovement.Walk(firstInput);
+        // }
+        // else if (playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N3) && !animator.AnimationGetBool("IsSkidding"))
+        // {
+        //     // Holding run check
+        //     playerMovement.Run(firstInput);
+        // }
+        // else
+        // {
+        //     if (animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding"))
+        //     {
+        //         playerMovement.Skid();
+        //     }
+        //     // Nothing / Idle
+        // }
 
-    //     if (!IsNumpadUp(firstInput))
-    //     {
-    //         playerMovement.setIsHoldingJump(false);
-    //     }
-    // }
-    // private bool IsNumpadUp(Numpad num)
-    // {
-    //     return num == Numpad.N7 || num == Numpad.N8 || num == Numpad.N9;
-    // }
+        // if (!IsNumpadUp(firstInput))
+        // {
+        //     playerMovement.setIsHoldingJump(false);
+        // }
+        return false;
+    }
+    private bool IsNumpadUp(Numpad num)
+    {
+        return num == Numpad.N7 || num == Numpad.N8 || num == Numpad.N9;
+    }
 
     // private void InterpretDash()
     // {
@@ -170,55 +251,6 @@ public class BattleInputParser : MonoBehaviour
     //         {
     //             playerAttack.Attack5C();
     //         }
-    //     }
-    // }
-
-    // private void InterpretButtons()
-    // {
-    //     if (buttonDownBag.IsEmpty)
-    //     {
-    //         throw new InvalidOperationException("Interpretting buttons, but there are no buttons down!");
-    //     }
-    //     Button[] buttonsDown = buttonDownBag.ToArray();
-    //     if (buttonsDown.Contains(Button.A) && buttonsDown.Contains(Button.B))
-    //     {
-    //         // RC?
-    //     }
-    //     else
-    //     {
-    //         if (buttonsDown.Contains(Button.A))
-    //         {
-    //             InterpretSpecial(Button.A);
-    //         }
-    //         else if (buttonsDown.Contains(Button.B))
-    //         {
-    //             InterpretSpecial(Button.B);
-    //         }
-    //         else if (buttonsDown.Contains(Button.C))
-    //         {
-    //             InterpretSpecial(Button.C);
-    //         }
-    //         else if (buttonsDown.Contains(Button.D))
-    //         {
-    //             Numpad firstInput = inputHistory[0];
-    //             switch (firstInput)
-    //             {
-    //                 case Numpad.N6:
-    //                     playerAttack.Throw(true);
-    //                     break;
-    //                 case Numpad.N4:
-    //                     playerAttack.Throw(false);
-    //                     break;
-    //                 default:
-    //                     break;
-    //             }
-    //         }
-    //     }
-    //     // empty out button bag
-    //     while (!buttonDownBag.IsEmpty)
-    //     {
-    //         Button button;
-    //         buttonDownBag.TryTake(out button);
     //     }
     // }
 }

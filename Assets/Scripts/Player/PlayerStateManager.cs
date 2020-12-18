@@ -11,7 +11,7 @@ public class PlayerStateManager : MonoBehaviour
     private GameObject boss;
     /// i.e. I jumped and crossed up, I airdash forward (the direction I'm facing)
     private bool isFacingRight;
-    private PlayerInputManager inputManager;
+    // private PlayerInputManager inputManager;
     private BattleInputScanner inputScanner;
     private PlayerMovementController movementController;
     private PlayerAttackController attackController;
@@ -23,7 +23,7 @@ public class PlayerStateManager : MonoBehaviour
     void Start()
     {
         SearchForBoss();
-        inputManager = GetComponent<PlayerInputManager>();
+        // inputManager = GetComponent<PlayerInputManager>();
         inputScanner = GetComponent<BattleInputScanner>();
         movementController = GetComponent<PlayerMovementController>();
         attackController = GetComponent<PlayerAttackController>();
@@ -34,9 +34,9 @@ public class PlayerStateManager : MonoBehaviour
     {
         return playerIndex;
     }
-    public PlayerInputManager GetInputManager() {
-        return inputManager;
-    }
+    // public PlayerInputManager GetInputManager() {
+    //     return inputManager;
+    // }
     public BattleInputScanner GetInputScanner() {
         return inputScanner;
     }
@@ -93,7 +93,7 @@ public class PlayerStateManager : MonoBehaviour
         if (oldDirection != isFacingRight)
         {
             this.gameObject.transform.localScale = newScale;
-            inputManager.FacingDirectionChanged();
+            // inputManager.FacingDirectionChanged(); // TODO:
         }
     }
 

@@ -7,8 +7,15 @@ public class AttackMotionInput : MotionInput
 {
     public ButtonStatus[] buttons;
 
+    private string displayButtons;
+
     public AttackMotionInput(IList<string> inputs_, string buttons_, int frameLimit_) : base(inputs_, frameLimit_) {
         this.buttons = StringToButtons(buttons_);
+        this.displayButtons = buttons_;
+    }
+
+    public override String ToString() {
+        return "AttackMotionInput: " + base.displayInput + displayButtons;
     }
 
     private ButtonStatus[] StringToButtons(string input) {
@@ -18,7 +25,7 @@ public class AttackMotionInput : MotionInput
             buttons[i] = ButtonStatus.Up;
         }
 
-        for (int i = input.Length - 1; i <= 0; i--) {
+        for (int i = input.Length - 1; i >= 0; i--) {
             switch (input[i]) {
                 case 'A':
                     buttons[0] = ButtonStatus.Down;
@@ -54,10 +61,16 @@ public class MotionInput
 
     public int frameLimit { get; private set; }
 
+    /// <summary>
+    /// Note: just for ToString use
+    /// </summary>
+    protected string displayInput;
+
     public MotionInput(string input_, int frameLimit_) {
         // TODO: copy pasted from other constructor
         motionInputs.Add(StringToNumpads(input_));
         frameLimit = frameLimit_;
+        displayInput = input_;
     }
     public MotionInput(IList<string> inputs_, int frameLimit_) {
         motionInputs = new List<IList<Numpad>>();
@@ -65,12 +78,17 @@ public class MotionInput
             motionInputs.Add(StringToNumpads(input));
         }
         frameLimit = frameLimit_;
+        displayInput = inputs_[0];
+    }
+
+    public override String ToString() {
+        return "MotionInput: " + displayInput;
     }
 
     private IList<Numpad> StringToNumpads(string input) {
         IList<Numpad> numpads = new List<Numpad>();
 
-        for (int i = input.Length - 1; i <= 0; i--) {
+        for (int i = input.Length - 1; i >= 0; i--) {
             Numpad nextNumpad = Numpad.N0;
             switch (input[i]) {
                 case '1':
@@ -120,7 +138,7 @@ public class InterpretUtil
     /// <param name="inputHistory">The player's most recent inputs</param>
     /// <param name="motionInput">All possible forms of the given motion input</param>
     /// <returns>true if the player inputs match this motion input</returns>
-    public static bool InterpretInput(InputHistory inputHistory, MotionInput motionInput) {
+    public static bool InterpretMotionInput(InputHistory inputHistory, MotionInput motionInput) {
         int historyIndex = -1;  // which index in the input history to look at?
         Numpad prevInput = Numpad.N0;  // most recently interpreted numpad direction
         int curIndex = 0;  // which index in the motion inputs to look at?
@@ -133,7 +151,6 @@ public class InterpretUtil
             historyIndex++;
             InputHistoryEntry currEntry = inputHistory.GetEntry(historyIndex); 
             // add to total frames
-            totalFrames += currEntry.runningFrames;
 
             if (currEntry.direction != prevInput) {
                 // new numpad input to investigate!
@@ -147,6 +164,7 @@ public class InterpretUtil
                             // curMotionInput was on watch list and is not exhausted
                             // means a match was detected!
                             if (totalFrames <= motionInput.frameLimit) {
+                                // TODO: You can put this check earlier probably!
                                 return true;
                             }
                             notWatching[i] = true;
@@ -164,6 +182,12 @@ public class InterpretUtil
             noMatchesFound = true;
             foreach (bool notWatch in notWatching) {
                 noMatchesFound = noMatchesFound && notWatch;
+            }
+
+            if (historyIndex > 0) {
+                // i.e. first input has running frames since last input.
+                // Only factor in if motion input is longer than 1 input (ie. 46A)
+                totalFrames += inputHistory.GetEntry(historyIndex - 1).runningFrames;
             }
         }
         return false;
@@ -198,7 +222,7 @@ public class InterpretUtil
             }
         }
 
-        return true;
+        return InterpretMotionInput(inputHistory, motionInput);
     }
 
 }
