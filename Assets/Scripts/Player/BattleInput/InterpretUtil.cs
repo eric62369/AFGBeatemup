@@ -149,6 +149,10 @@ public class InterpretUtil
         while (!noMatchesFound) {
             // find next input in inputHistory to consider
             historyIndex++;
+            if (historyIndex >= inputHistory.GetSize()) {
+                Debug.LogWarning("end of input history reached during interpretation. Probably a bug!");
+                return false;
+            }
             InputHistoryEntry currEntry = inputHistory.GetEntry(historyIndex); 
             // add to total frames
 
@@ -199,15 +203,14 @@ public class InterpretUtil
     /// this will return false.
     /// 
     /// Works only for single button attack inputs (Normals and Specials)
-    /// 
-    /// TODO: For normals / don't interpret negative edge
+
     /// 
     /// TODO: work out the details of button combo interpretations later
     /// </summary>
     /// <param name="inputHistory"></param>
     /// <param name="motionInput"></param>
     /// <returns></returns>
-    public static bool InterpretAttackInput(InputHistory inputHistory, AttackMotionInput motionInput) {
+    public static bool InterpretSpecialAttackInput(InputHistory inputHistory, AttackMotionInput motionInput) {
         InputHistoryEntry entry = inputHistory.GetEntry(0);
         IList<ButtonStatus> buttons = entry.buttons;
         ButtonStatus[] reference = motionInput.buttons;
@@ -216,6 +219,34 @@ public class InterpretUtil
             ButtonStatus currStatus = buttons[i];
             if (reference[i] == ButtonStatus.Down &&
                 (currStatus == ButtonStatus.Down || currStatus == ButtonStatus.Release)) {
+                // Down match
+            } else if (reference[i] == ButtonStatus.Up) {
+                // Up ignored
+            } else {
+                // mismatch!
+                // TODO: might lead to strange behavior currently. i.e. 632AB might not give nothing instead of A DP
+                return false;
+            }
+        }
+
+        return InterpretMotionInput(inputHistory, motionInput);
+    }
+
+    /// <summary>
+    /// i.e. won't detect negative edge or holds
+    /// </summary>
+    /// <param name="inputHistory"></param>
+    /// <param name="motionInput"></param>
+    /// <returns></returns>
+    public static bool InterpretNormalAttackInput(InputHistory inputHistory, AttackMotionInput motionInput) {
+        InputHistoryEntry entry = inputHistory.GetEntry(0);
+        IList<ButtonStatus> buttons = entry.buttons;
+        ButtonStatus[] reference = motionInput.buttons;
+
+        for (int i = 0; i < buttons.Count; i++) {
+            ButtonStatus currStatus = buttons[i];
+            if (reference[i] == ButtonStatus.Down &&
+                currStatus == ButtonStatus.Down) {
                 // Down match
             } else if (reference[i] == ButtonStatus.Up) {
                 // Up ignored

@@ -13,7 +13,8 @@ public class BattleInputParser : MonoBehaviour
     public IBattleInputActions inputActions;
 
     // TODO: Move initialization for these inputs somewhere else (these are universal inputs)
-    private static AttackMotionInput S236;
+    // Full list of attack commands to interpret will probably come from the input actions
+    private static AttackMotionInput S236B;
     private static AttackMotionInput N5B;
     private static AttackMotionInput N5C;
     private static MotionInput M66;
@@ -29,11 +30,11 @@ public class BattleInputParser : MonoBehaviour
     }
 
     private void initMotionInputs() {
-        IList<string> list236 = new List<string>();
-        list236.Add("236");
-        list236.Add("2365");
-        list236.Add("2369");
-        S236 = new AttackMotionInput(list236, "A", Time236);
+        IList<string> list236B = new List<string>();
+        list236B.Add("236");
+        list236B.Add("2365");
+        list236B.Add("2369");
+        S236B = new AttackMotionInput(list236B, "B", Time236);
 
         IList<string> list66 = new List<string>();
         list66.Add("656");
@@ -73,18 +74,40 @@ public class BattleInputParser : MonoBehaviour
     public void ParseNewInput(InputHistory inputHistory) {
         bool matched = false;
         matched = InterpretAttack(inputHistory);
-        matched = InterpretMovement(inputHistory);
+        if (!matched) {
+            matched = InterpretMovement(inputHistory);
+        }
     }
 
+    /// <summary>
+    /// Attack input priority is determined here too!
+    /// </summary>
+    /// <param name="inputHistory"></param>
+    /// <returns>true if interpreted to something</returns>
     private bool InterpretAttack(InputHistory inputHistory)
     {
-        if (InterpretUtil.InterpretAttackInput(inputHistory, N5B)) {
-            Debug.Log(N5B.ToString());
-            inputActions.N5(Button.B);
-        } else if (InterpretUtil.InterpretAttackInput(inputHistory, N5C)) {
-            Debug.Log(N5C.ToString());
-            inputActions.N5(Button.C);
+        // invul moves
+
+        // button combos
+
+        // specials
+        if (InterpretUtil.InterpretSpecialAttackInput(inputHistory, S236B)) {
+            Debug.Log(S236B.ToString());
+            inputActions.S236(Button.B);
+            return true;
         }
+
+        // // normals
+        // if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5B)) {
+        //     Debug.Log(N5B.ToString());
+        //     inputActions.N5(Button.B);
+        //     return true;
+        // }
+        // if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5C)) {
+        //     Debug.Log(N5C.ToString());
+        //     inputActions.N5(Button.C);
+        //     return true;
+        // }
         // if (buttonsDown.Contains(Button.A))
         // {
         //     InterpretSpecial(Button.A);
