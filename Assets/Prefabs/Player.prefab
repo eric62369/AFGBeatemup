@@ -1185,7 +1185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Time66: 30
-  Time236: 30
+  Time236: 100
 --- !u!114 &5583650266419778372
 MonoBehaviour:
   m_ObjectHideFlags: 0

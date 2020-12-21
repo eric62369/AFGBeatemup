@@ -269,6 +269,10 @@ PrefabInstance:
       propertyPath: playerIndex
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3909351404058856867, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: Time66
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 7814688488446206480, guid: 37e9a37824157947fb579dd60e393050, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.74
@@ -444,25 +448,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef8aba20a60708b68ada06c2687b925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2030182042 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7814688488446206493, guid: 37e9a37824157947fb579dd60e393050, type: 3}
-  m_PrefabInstance: {fileID: 7814688488589737337}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2030182056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2030182042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2330a31b4ca91d970b474bc9da8e11d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Time66: 30
-  Time236: 30
 --- !u!1 &2117489177
 GameObject:
   m_ObjectHideFlags: 0
