@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using BattleInput;
 
 public class StickVisualizerController : MonoBehaviour
 {

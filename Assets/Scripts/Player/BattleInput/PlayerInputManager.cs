@@ -5,6 +5,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+namespace BattleInput
+{
 public class PlayerInputManager : MonoBehaviour
 {
     public int InputHistorySize; // size for input history
@@ -287,4 +290,5 @@ public class PlayerInputManager : MonoBehaviour
             InterpretNewStickInput(Numpad.N1);
         }
     }
+}
 }

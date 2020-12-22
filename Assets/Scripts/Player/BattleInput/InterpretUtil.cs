@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace BattleInput
+{
 public class AttackMotionInput : MotionInput {
     public ButtonStatus[] buttons;
 
@@ -257,4 +259,7 @@ public class InterpretUtil {
         return InterpretMotionInput (inputHistory, motionInput);
     }
 
+}
+
+    
 }

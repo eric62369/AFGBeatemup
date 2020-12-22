@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace BattleInput
+{
+    
 public class InputHistory
 {
     private int ButtonCount; // A B C D = 4
@@ -137,4 +140,5 @@ public class InputHistoryEntry
         }
     }
 
+}
 }

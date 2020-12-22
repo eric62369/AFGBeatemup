@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+namespace BattleInput
+{
 public enum Button
 {
     None,
@@ -211,4 +213,7 @@ public class ControllerReader : MonoBehaviour
         }
         return x;
     }
+}
+
+    
 }

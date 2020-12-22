@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace BattleInput
+{
 public class RedBattleInputActions : MonoBehaviour, IBattleInputActions
 {
     private PlayerAttackController playerAttack;
@@ -51,4 +53,5 @@ public class RedBattleInputActions : MonoBehaviour, IBattleInputActions
 
     // Specials
     public void S236(Button button) {}
+}
 }
