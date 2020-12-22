@@ -3,22 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackMotionInput : MotionInput
-{
+public class AttackMotionInput : MotionInput {
     public ButtonStatus[] buttons;
 
     private string displayButtons;
 
-    public AttackMotionInput(IList<string> inputs_, string buttons_, int frameLimit_) : base(inputs_, frameLimit_) {
-        this.buttons = StringToButtons(buttons_);
+    public AttackMotionInput (IList<string> inputs_, string buttons_, int frameLimit_) : base (inputs_, frameLimit_) {
+        this.buttons = StringToButtons (buttons_);
         this.displayButtons = buttons_;
     }
 
-    public override String ToString() {
+    public override String ToString (){ 
         return "AttackMotionInput: " + base.displayInput + displayButtons;
     }
 
-    private ButtonStatus[] StringToButtons(string input) {
+    private ButtonStatus[] StringToButtons (string input) {
         // TODO: Remove hardcoded 4
         ButtonStatus[] buttons = new ButtonStatus[4];
         for (int i = 0; i < buttons.Length; i++) {
@@ -40,7 +39,7 @@ public class AttackMotionInput : MotionInput
                     buttons[3] = ButtonStatus.Down;
                     break;
                 default:
-                    throw new InvalidOperationException(input[i] + " is not an expected Button input!");
+                    throw new InvalidOperationException (input[i] + " is not an expected Button input!");
             }
         }
 
@@ -48,8 +47,7 @@ public class AttackMotionInput : MotionInput
     }
 }
 
-public class MotionInput
-{
+public class MotionInput {
     /// <summary>
     /// Contains multiple definitions of a certain motion input
     /// 
@@ -66,27 +64,27 @@ public class MotionInput
     /// </summary>
     protected string displayInput;
 
-    public MotionInput(string input_, int frameLimit_) {
+    public MotionInput (string input_, int frameLimit_) {
         // TODO: copy pasted from other constructor
-        motionInputs.Add(StringToNumpads(input_));
+        motionInputs.Add (StringToNumpads (input_));
         frameLimit = frameLimit_;
         displayInput = input_;
     }
-    public MotionInput(IList<string> inputs_, int frameLimit_) {
-        motionInputs = new List<IList<Numpad>>();
+    public MotionInput (IList<string> inputs_, int frameLimit_) {
+        motionInputs = new List<IList<Numpad>> ();
         foreach (string input in inputs_) {
-            motionInputs.Add(StringToNumpads(input));
+            motionInputs.Add (StringToNumpads (input));
         }
         frameLimit = frameLimit_;
         displayInput = inputs_[0];
     }
 
-    public override String ToString() {
+    public override String ToString () {
         return "MotionInput: " + displayInput;
     }
 
-    private IList<Numpad> StringToNumpads(string input) {
-        IList<Numpad> numpads = new List<Numpad>();
+    private IList<Numpad> StringToNumpads (string input) {
+        IList<Numpad> numpads = new List<Numpad> ();
 
         for (int i = input.Length - 1; i >= 0; i--) {
             Numpad nextNumpad = Numpad.N0;
@@ -119,17 +117,16 @@ public class MotionInput
                     nextNumpad = Numpad.N9;
                     break;
                 default:
-                    throw new InvalidOperationException(input[i] + " is not an expected Numpad input!");
+                    throw new InvalidOperationException (input[i] + " is not an expected Numpad input!");
             }
-            numpads.Add(nextNumpad);
+            numpads.Add (nextNumpad);
         }
 
         return numpads;
     }
 }
 
-public class InterpretUtil
-{
+public class InterpretUtil {
     /// <summary>
     /// Return true if input history matches the numpad inputs given
     /// 
@@ -138,22 +135,22 @@ public class InterpretUtil
     /// <param name="inputHistory">The player's most recent inputs</param>
     /// <param name="motionInput">All possible forms of the given motion input</param>
     /// <returns>true if the player inputs match this motion input</returns>
-    public static bool InterpretMotionInput(InputHistory inputHistory, MotionInput motionInput) {
-        int historyIndex = -1;  // which index in the input history to look at?
-        Numpad prevInput = Numpad.N0;  // most recently interpreted numpad direction
-        int curIndex = 0;  // which index in the motion inputs to look at?
-        int totalFrames = 0;  // total frames the input took to input
-        bool noMatchesFound = false;   // has the input history matched a motion input yet?
+    public static bool InterpretMotionInput (InputHistory inputHistory, MotionInput motionInput) {
+        int historyIndex = -1; // which index in the input history to look at?
+        Numpad prevInput = Numpad.N0; // most recently interpreted numpad direction
+        int curIndex = 0; // which index in the motion inputs to look at?
+        int totalFrames = 0; // total frames the input took to input
+        bool noMatchesFound = false; // has the input history matched a motion input yet?
         // assume watching all at first
         bool[] notWatching = new bool[motionInput.motionInputs.Count];
         while (!noMatchesFound) {
             // find next input in inputHistory to consider
             historyIndex++;
-            if (historyIndex >= inputHistory.GetSize()) {
-                Debug.LogWarning("end of input history reached during interpretation. Probably a bug!");
+            if (historyIndex >= inputHistory.GetSize ()) {
+                Debug.LogWarning ("end of input history reached during interpretation. Probably a bug!");
                 return false;
             }
-            InputHistoryEntry currEntry = inputHistory.GetEntry(historyIndex); 
+            InputHistoryEntry currEntry = inputHistory.GetEntry (historyIndex);
             // add to total frames
 
             if (currEntry.direction != prevInput) {
@@ -192,7 +189,7 @@ public class InterpretUtil
             if (historyIndex > 0) {
                 // i.e. first input has running frames since last input.
                 // Only factor in if motion input is longer than 1 input (ie. 46A)
-                totalFrames += inputHistory.GetEntry(historyIndex - 1).runningFrames;
+                totalFrames += inputHistory.GetEntry (historyIndex - 1).runningFrames;
             }
         }
         return false;
@@ -210,8 +207,8 @@ public class InterpretUtil
     /// <param name="inputHistory"></param>
     /// <param name="motionInput"></param>
     /// <returns></returns>
-    public static bool InterpretSpecialAttackInput(InputHistory inputHistory, AttackMotionInput motionInput) {
-        InputHistoryEntry entry = inputHistory.GetEntry(0);
+    public static bool InterpretSpecialAttackInput (InputHistory inputHistory, AttackMotionInput motionInput) {
+        InputHistoryEntry entry = inputHistory.GetEntry (0);
         IList<ButtonStatus> buttons = entry.buttons;
         ButtonStatus[] reference = motionInput.buttons;
 
@@ -229,7 +226,7 @@ public class InterpretUtil
             }
         }
 
-        return InterpretMotionInput(inputHistory, motionInput);
+        return InterpretMotionInput (inputHistory, motionInput);
     }
 
     /// <summary>
@@ -238,8 +235,8 @@ public class InterpretUtil
     /// <param name="inputHistory"></param>
     /// <param name="motionInput"></param>
     /// <returns></returns>
-    public static bool InterpretNormalAttackInput(InputHistory inputHistory, AttackMotionInput motionInput) {
-        InputHistoryEntry entry = inputHistory.GetEntry(0);
+    public static bool InterpretNormalAttackInput (InputHistory inputHistory, AttackMotionInput motionInput) {
+        InputHistoryEntry entry = inputHistory.GetEntry (0);
         IList<ButtonStatus> buttons = entry.buttons;
         ButtonStatus[] reference = motionInput.buttons;
 
@@ -257,7 +254,7 @@ public class InterpretUtil
             }
         }
 
-        return InterpretMotionInput(inputHistory, motionInput);
+        return InterpretMotionInput (inputHistory, motionInput);
     }
 
 }

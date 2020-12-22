@@ -6,13 +6,14 @@ using UnityEngine.TestTools;
 
 namespace Tests
 {
-    public class NewTestScript
+    public class BattleInputParser
     {
         // A Test behaves as an ordinary method
         [Test]
         public void NewTestScriptSimplePasses()
         {
             // Use the Assert class to test conditions
+            Assert.AreNotEqual(0, 0);
         }
 
         // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
