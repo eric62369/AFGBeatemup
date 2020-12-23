@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
+using BattleInput;
 
 namespace Tests
 {
-    public class BattleInputParser
+    public class BattleInputTest
     {
         // A Test behaves as an ordinary method
         [Test]
         public void NewTestScriptSimplePasses()
         {
             // Use the Assert class to test conditions
+            Assert.AreNotEqual(0, 0);
+        }
+
+        [Test]
+        public void InterpretN5History()
+        {
+            InputHistory history = new InputHistory();
             Assert.AreNotEqual(0, 0);
         }
 
