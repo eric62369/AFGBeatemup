@@ -17,10 +17,13 @@ public class PlayerAttackController : MonoBehaviour {
     private CancelAction? currentCancelAction;
     private string currentActiveAttack;
 
+    private PlayerAnimationController animator;
+
     void Start()
     {
         movementController = GetComponent<PlayerMovementController>();
         playerState = GetComponent<PlayerStateManager>();
+        animator = GetComponent<PlayerAnimationController>();
         isAttacking = false;
         currentCancelAction = null;
         currentActiveAttack = null;
@@ -28,14 +31,14 @@ public class PlayerAttackController : MonoBehaviour {
     
     public void GroundedAttackFlags(string attackName)
     {
-        if (movementController.isGrounded && !movementController.AnimationGetBool("IsJumping"))
+        if (movementController.isGrounded && !animator.AnimationGetBool("IsJumping"))
         {
             if (isAttacking)
             {
                 // Player is already attacking, is a cancel possible?
-                if (movementController.AnimationGetBool("CanCancel"))
+                if (animator.AnimationGetBool("CanCancel"))
                 {
-                    movementController.AnimationSetBool(attackName, true);
+                    animator.AnimationSetBool(attackName, true);
                     currentActiveAttack = attackName;
                 }
             }
@@ -43,9 +46,9 @@ public class PlayerAttackController : MonoBehaviour {
             {
                 isAttacking = true;
                 movementController.isRunning = false;
-                movementController.AnimationSetBool(attackName, true);
+                animator.AnimationSetBool(attackName, true);
                 currentActiveAttack = attackName;
-                movementController.AnimationSetBool("IsRunning", false);
+                animator.AnimationSetBool("IsRunning", false);
                 movementController.StopRun();
             }
         }
@@ -67,20 +70,20 @@ public class PlayerAttackController : MonoBehaviour {
                 isAttacking = true; // TODO: Do we need a throw flag?
                 playerState.SetThrowDirection(isForward);
                 movementController.isRunning = false;
-                movementController.AnimationSetBool("ThrowWhiff", true);
-                movementController.AnimationSetBool("IsRunning", false);
+                animator.AnimationSetBool("ThrowWhiff", true);
+                animator.AnimationSetBool("IsRunning", false);
                 movementController.StopRun();
             }
         }
     }
+    
     public void ThrowFreeze()
     {
-        movementController.rb2d.velocity = new Vector2(0f, 0f);
-        movementController.rb2d.bodyType = RigidbodyType2D.Kinematic;
+        movementController.ThrowHit();
     }
     public void ThrowUnFreeze()
     {
-        movementController.rb2d.bodyType = RigidbodyType2D.Dynamic;
+        movementController.ThrowEnd();
         MoveDone();
     }
 
@@ -105,27 +108,23 @@ public class PlayerAttackController : MonoBehaviour {
     }
     public void SetCancel()
     {
-        movementController.AnimationSetBool("CanCancel", true);
+        animator.AnimationSetBool("CanCancel", true);
     }
     public void ResetCancel()
     {
-        movementController.AnimationSetBool("CanCancel", false);
+        animator.AnimationSetBool("CanCancel", false);
     }
 
     public Vector2 FreezePlayer()
     {
-        movementController.animator.enabled=false;
-        movementController.rb2d.bodyType = RigidbodyType2D.Kinematic;
-        Vector2 oldVelocity = movementController.rb2d.velocity;
-        movementController.rb2d.velocity = new Vector2(0f, 0f);
-        return oldVelocity;
+        animator.AnimatorEnable(false);
+        return movementController.FreezePlayer();
     }
 
     public void UnFreezePlayer(Vector2 oldVelocity)
     {
-        movementController.animator.enabled=true;
-        movementController.rb2d.bodyType = RigidbodyType2D.Dynamic;
-        movementController.rb2d.velocity = oldVelocity;
+        animator.AnimatorEnable(true);
+        movementController.UnFreezePlayer(oldVelocity);
     }
 
     // Must always be called before Recovery frames
@@ -142,10 +141,10 @@ public class PlayerAttackController : MonoBehaviour {
     public void SetCancelAction(CancelAction action)
     {
         // OnHit / OnBlock cancels
-        if (movementController.AnimationGetBool("CanCancel"))
+        if (animator.AnimationGetBool("CanCancel"))
         {
             if (action == CancelAction.Jump && 
-                !RedAttackProperties.JumpCancellable.Contains(currentActiveAttack))
+                !attackProperties.CanJumpCancel(currentActiveAttack))
             {
                 currentCancelAction = null;
             }
@@ -154,7 +153,7 @@ public class PlayerAttackController : MonoBehaviour {
                 // valid cancel action
                 currentCancelAction = action;
                 // If no hitstop present, use cancel action now!
-                if (movementController.animator.enabled)
+                if (animator.GetAnimatorEnable())
                 {
                     UseCancelAction();
                 }
@@ -170,7 +169,7 @@ public class PlayerAttackController : MonoBehaviour {
     {
         if (currentCancelAction != null)
         {
-            movementController.AnimationSetTrigger("ExecutingCancel");
+            animator.AnimationSetTrigger("ExecutingCancel");
             playerState.UseCancelAction(currentCancelAction);
             currentCancelAction = null;
         }
@@ -178,10 +177,10 @@ public class PlayerAttackController : MonoBehaviour {
 
     public void ResetAttackStateToNeutral()
     {
-        movementController.AnimationSetBool("5B", false);
-        movementController.AnimationSetBool("5C", false);
-        movementController.AnimationSetBool("ThrowWhiff", false);
-        movementController.AnimationSetBool("ThrowHit", false);
+        animator.AnimationSetBool("5B", false);
+        animator.AnimationSetBool("5C", false);
+        animator.AnimationSetBool("ThrowWhiff", false);
+        animator.AnimationSetBool("ThrowHit", false);
         currentActiveAttack = null;
         isAttacking = false;
     }

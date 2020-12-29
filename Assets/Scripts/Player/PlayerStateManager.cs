@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BattleInput;
 
 public class PlayerStateManager : MonoBehaviour
 {
@@ -11,9 +12,11 @@ public class PlayerStateManager : MonoBehaviour
     private GameObject boss;
     /// i.e. I jumped and crossed up, I airdash forward (the direction I'm facing)
     private bool isFacingRight;
-    private PlayerInputManager inputManager;
+    // private PlayerInputManager inputManager;
+    private BattleInputScanner inputScanner;
     private PlayerMovementController movementController;
     private PlayerAttackController attackController;
+    private PlayerAnimationController animator;
     private bool forwardThrowing;
     private Numpad cancelActionInput;
 
@@ -21,17 +24,22 @@ public class PlayerStateManager : MonoBehaviour
     void Start()
     {
         SearchForBoss();
-        inputManager = GetComponent<PlayerInputManager>();
+        // inputManager = GetComponent<PlayerInputManager>();
+        inputScanner = GetComponent<BattleInputScanner>();
         movementController = GetComponent<PlayerMovementController>();
         attackController = GetComponent<PlayerAttackController>();
+        animator = GetComponent<PlayerAnimationController>();
     }
     
     public int GetPlayerIndex()
     {
         return playerIndex;
     }
-    public PlayerInputManager GetInputManager() {
-        return inputManager;
+    // public PlayerInputManager GetInputManager() {
+    //     return inputManager;
+    // }
+    public BattleInputScanner GetInputScanner() {
+        return inputScanner;
     }
     public PlayerAttackController GetAttackController() {
         return attackController;
@@ -86,7 +94,7 @@ public class PlayerStateManager : MonoBehaviour
         if (oldDirection != isFacingRight)
         {
             this.gameObject.transform.localScale = newScale;
-            inputManager.FacingDirectionChanged();
+            // inputManager.FacingDirectionChanged(); // TODO:
         }
     }
 
@@ -115,19 +123,20 @@ public class PlayerStateManager : MonoBehaviour
         }
         return positionOffset;
     }
+    
     public void ThrowHit()
     {
-        movementController.AnimationSetBool("ThrowHit", true);
+        animator.AnimationSetBool("ThrowHit", true);
         attackController.ThrowFreeze();
     }
     public void ExitThrowWhiff()
     {
-        movementController.AnimationSetBool("ThrowWhiff", false);
+        animator.AnimationSetBool("ThrowWhiff", false);
         UpdateFacingDirection();
     }
     public void ExitThrowHit()
     {
-        movementController.AnimationSetBool("ThrowHit", false);
+        animator.AnimationSetBool("ThrowHit", false);
         attackController.ThrowUnFreeze();
     }
 
@@ -152,7 +161,7 @@ public class PlayerStateManager : MonoBehaviour
         {
             movementController.Jump(cancelActionInput);
         }
-        movementController.AnimationSetBool("CanCancel", false);
+        animator.AnimationSetBool("CanCancel", false);
     }
 
     private void ResetStateToNeutral()

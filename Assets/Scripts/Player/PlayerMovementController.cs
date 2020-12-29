@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
+using BattleInput;
 
 public class PlayerMovementController : MonoBehaviour {
 
@@ -28,36 +29,28 @@ public class PlayerMovementController : MonoBehaviour {
     public Transform groundCheck;
     public float groundCheckRadius;
     public LayerMask groundLayers;
-    public bool isGrounded;
-    public bool isHoldingJump;
+    public bool isGrounded { get; private set; }
+    public bool isHoldingJump { get; private set; }
     private bool hasDashMomentum;
 
-    public Rigidbody2D rb2d;
-    public Animator animator;
+    private Rigidbody2D rb2d;
+    
     private PlayerAttackController attackController;
     private PlayerInputManager playerInput;
     private PlayerStateManager playerState;
 
-    public void ResetMovementStateToNeutral()
-    {
-        isRunning = false;
-        isAirDashing = false;
-        isBackDashing = false;
-        animator.SetBool("IsJumping", false);
-        animator.SetBool("IsRunning", false);
-        AnimationSetBool("IsSkidding", false);
-    }
+    private PlayerAnimationController animator;
 
     // Use this for initialization
     void Start()
     {
         //Get and store a reference to the Rigidbody2D component so that we can access it.
         rb2d = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
         attackController = GetComponent<PlayerAttackController>();
         playerInput = GetComponent<PlayerInputManager>();
         playerState = GetComponent<PlayerStateManager>();
         rb2d.gravityScale = GravityScale;
+        animator = GetComponent<PlayerAnimationController>();
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -69,7 +62,7 @@ public class PlayerMovementController : MonoBehaviour {
             if (newGrounded != isGrounded && newGrounded == true)
             {
                 // Landed!
-                animator.SetBool("IsJumping", false);
+                animator.AnimationSetBool("IsJumping", false);
                 isHoldingJump = false;
                 hasDashMomentum = false;
                 AirActionsLeft = MaxAirActions;
@@ -82,6 +75,16 @@ public class PlayerMovementController : MonoBehaviour {
                 UpdateFacingDirection();
             }
         }
+    }
+
+    public void ResetMovementStateToNeutral()
+    {
+        isRunning = false;
+        isAirDashing = false;
+        isBackDashing = false;
+        animator.AnimationSetBool("IsJumping", false);
+        animator.AnimationSetBool("IsRunning", false);
+        animator.AnimationSetBool("IsSkidding", false);
     }
 
     public void Walk(Numpad direction)
@@ -103,7 +106,7 @@ public class PlayerMovementController : MonoBehaviour {
             walkDirection *= -1;
         }
         bool canWalk = isGrounded && !attackController.isAttacking && !isBackDashing &&
-            !AnimationGetBool("IsJumping");
+            !animator.AnimationGetBool("IsJumping");
         if (canWalk) {
             rb2d.velocity = new Vector2(walkDirection * WalkSpeed, 0f);
             UpdateFacingDirection();
@@ -119,7 +122,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new InvalidProgramException("Tried to Dash while airborne!");
         }
-        if (isGrounded && !attackController.isAttacking && !isBackDashing && !AnimationGetBool("IsJumping")) {
+        if (isGrounded && !attackController.isAttacking && !isBackDashing && !animator.AnimationGetBool("IsJumping")) {
             float horizontalVelocity = InitialDashSpeed;
             if (!playerState.GetCurrentFacingDirection())
             {
@@ -128,7 +131,7 @@ public class PlayerMovementController : MonoBehaviour {
             rb2d.velocity = new Vector2(horizontalVelocity, 0f);
             isRunning = true;
             hasDashMomentum = true;
-            animator.SetBool("IsRunning", true);
+            animator.AnimationSetBool("IsRunning", true);
         }
     }
     public void BackDash(Numpad direction)
@@ -141,7 +144,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new InvalidProgramException("Tried to Backdash while airborne!");
         }
-        if (isGrounded && !isBackDashing && !attackController.isAttacking && !AnimationGetBool("IsJumping")) {
+        if (isGrounded && !isBackDashing && !attackController.isAttacking && !animator.AnimationGetBool("IsJumping")) {
             StopRun();
             float horizontalVelocity = -BackDashBackSpeed;
             if (!playerState.GetCurrentFacingDirection())
@@ -153,7 +156,7 @@ public class PlayerMovementController : MonoBehaviour {
             IEnumerator coroutine = StopBackDashCoroutine();
             StartCoroutine(coroutine);
         }
-        // animator.SetBool("IsRunning", true);
+        // animator.AnimationSetBool("IsRunning", true);
     }
 
     public void AirDash(bool isForward)
@@ -225,8 +228,8 @@ public class PlayerMovementController : MonoBehaviour {
     public void StopRun()
     {
         isRunning = false;
-        animator.SetBool("IsSkidding", false);
-        animator.SetBool("IsRunning", false);
+        animator.AnimationSetBool("IsSkidding", false);
+        animator.AnimationSetBool("IsRunning", false);
     }
     public void Skid()
     {
@@ -236,7 +239,7 @@ public class PlayerMovementController : MonoBehaviour {
             direction *= -1;
         }
         rb2d.velocity = new Vector2(SkidSpeed * direction, 0f);
-        animator.SetBool("IsSkidding", true);
+        animator.AnimationSetBool("IsSkidding", true);
     }
 
     public void Jump(Numpad direction)
@@ -273,8 +276,8 @@ public class PlayerMovementController : MonoBehaviour {
             rb2d.velocity = new Vector2(horizontalVelocity, 0f);
             rb2d.AddForce(new Vector2(0f, JumpForce));
             setIsHoldingJump(true);
-            animator.SetBool("IsJumping", true);
-            animator.SetBool("IsRunning", false);
+            animator.AnimationSetBool("IsJumping", true);
+            animator.AnimationSetBool("IsRunning", false);
             StopRun();
             AirActionsLeft--;
             SoundManagerController.playSFX(SoundManagerController.jumpSound);
@@ -286,29 +289,33 @@ public class PlayerMovementController : MonoBehaviour {
         isHoldingJump = state;
     }
 
-    public Vector2 GetVelocity()
-    {
-        return rb2d.velocity;
-    }
-    public void SetVelocity(Vector2 movement)
-    {
+    /**
+    How should movement behave on throw hit?
+    */
+    public void ThrowHit() {
         rb2d.velocity = new Vector2(0f, 0f);
+        rb2d.bodyType = RigidbodyType2D.Kinematic;
     }
-    public void AnimationSetBool(string animationId, bool setValue)
-    {
-        animator.SetBool(animationId, setValue);
+
+    /**
+    How should movement behave after throw ends?
+    */
+    public void ThrowEnd() {
+        rb2d.bodyType = RigidbodyType2D.Dynamic;
     }
-    public bool AnimationGetBool(string animationId)
+
+    public Vector2 FreezePlayer()
     {
-        return animator.GetBool(animationId);
+        rb2d.bodyType = RigidbodyType2D.Kinematic;
+        Vector2 oldVelocity = rb2d.velocity;
+        rb2d.velocity = new Vector2(0f, 0f);
+        return oldVelocity;
     }
-    public void AnimationSetTrigger(string animationId)
+
+    public void UnFreezePlayer(Vector2 oldVelocity)
     {
-        animator.SetTrigger(animationId);
-    }
-    public void AnimationResetTrigger(string animationId)
-    {
-        animator.ResetTrigger(animationId);
+        rb2d.bodyType = RigidbodyType2D.Dynamic;
+        rb2d.velocity = oldVelocity;
     }
 
     /// Reevaluate facing direction, update if necessary
