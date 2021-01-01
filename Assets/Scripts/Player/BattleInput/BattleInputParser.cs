@@ -20,6 +20,8 @@ namespace BattleInput {
         private static AttackMotionInput N5C;
         private static MotionInput M66;
         private static MotionInput M44;
+        private static MotionInput M4;
+        private static MotionInput M6;
         private static AttackMotionInput ForwardThrow;
         private static AttackMotionInput BackwardThrow;
 
@@ -49,6 +51,13 @@ namespace BattleInput {
             list44.Add ("7854");
             list44.Add ("7454");
             M44 = new MotionInput (list44, Time66);
+
+            IList<string> list4 = new List<string> ();
+            list4.Add ("4");
+            M4 = new MotionInput (list4, 0);
+            IList<string> list6 = new List<string> ();
+            list6.Add ("6");
+            M6 = new MotionInput (list6, 0);
 
             IList<string> list5B = new List<string> ();
             list5B.Add ("5");
@@ -96,17 +105,17 @@ namespace BattleInput {
                 return true;
             }
 
-            // // normals
-            // if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5B)) {
-            //     Debug.Log(N5B.ToString());
-            //     inputActions.N5(Button.B);
-            //     return true;
-            // }
-            // if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5C)) {
-            //     Debug.Log(N5C.ToString());
-            //     inputActions.N5(Button.C);
-            //     return true;
-            // }
+            // normals
+            if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5B)) {
+                Debug.Log(N5B.ToString());
+                inputActions.N5(Button.B);
+                return true;
+            }
+            if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5C)) {
+                Debug.Log(N5C.ToString());
+                inputActions.N5(Button.C);
+                return true;
+            }
             // if (buttonsDown.Contains(Button.A))
             // {
             //     InterpretSpecial(Button.A);
@@ -145,6 +154,18 @@ namespace BattleInput {
         }
 
         private bool InterpretMovement (InputHistory inputHistory) {
+            if (InterpretUtil.InterpretMotionInput(inputHistory, M6))
+            {
+                Debug.Log(M6.ToString());
+                inputActions.Walk(Numpad.N6);
+                return true;
+            }
+            if (InterpretUtil.InterpretMotionInput(inputHistory, M4))
+            {
+                Debug.Log(M4.ToString());
+                inputActions.Walk(Numpad.N4);
+                return true;
+            }
             // if (IsNumpadUp(firstInput))
             // {
             //     playerState.SetCancelAction(CancelAction.Jump, firstInput);

@@ -13,7 +13,7 @@ namespace BattleInput {
         void BackDash ();
         void Run ();
         void Skid ();
-        void Walk ();
+        void Walk (Numpad direction);
         void Jump ();
 
         // Universal Actions
