@@ -148,7 +148,6 @@ namespace BattleInput {
                 // find next input in inputHistory to consider
                 historyIndex++;
                 if (historyIndex >= inputHistory.GetSize ()) {
-                    Debug.LogWarning ("end of input history reached during interpretation. Probably a bug!");
                     return false;
                 }
                 InputHistoryEntry currEntry = inputHistory.GetEntry (historyIndex);
@@ -261,3 +260,4 @@ namespace BattleInput {
     }
 
 }
+

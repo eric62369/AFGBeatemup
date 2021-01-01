@@ -6,9 +6,11 @@ using UnityEngine;
 namespace BattleInput {
     public class RedBattleInputActions : MonoBehaviour, IBattleInputActions {
         private PlayerAttackController playerAttack;
+        private PlayerMovementController playerMovement;
 
         void Start () {
             playerAttack = GetComponent<PlayerAttackController> ();
+            playerMovement = GetComponent<PlayerMovementController>();
         }
 
         void Update () {
@@ -21,7 +23,9 @@ namespace BattleInput {
         public void BackDash () { }
         public void Run () { }
         public void Skid () { }
-        public void Walk () { }
+        public void Walk (Numpad direction) {
+            playerMovement.Walk(direction);
+        }
         public void Jump () { }
 
         // Universal Actions
