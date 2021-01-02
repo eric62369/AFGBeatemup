@@ -22,11 +22,11 @@ namespace BattleInput {
         public void AirDash (bool direction) { }
         public void BackDash () { }
         public void Run () { }
-        public void Skid () { }
+        public void Skid () { } 
         public void Walk (Numpad direction) {
             playerMovement.Walk(direction);
         }
-        public void Jump () { }
+        public void Jump (Numpad direction) { }
 
         // Universal Actions
         public void Throw (bool direction) { }

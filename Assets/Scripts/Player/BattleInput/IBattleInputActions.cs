@@ -14,7 +14,7 @@ namespace BattleInput {
         void Run ();
         void Skid ();
         void Walk (Numpad direction);
-        void Jump ();
+        void Jump (Numpad direction);
 
         // Universal Actions
         void Throw (bool direction);

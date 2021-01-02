@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
-using System.Threading.Tasks;
 using BattleInput;
 
 public class PlayerMovementController : MonoBehaviour {
@@ -20,6 +19,8 @@ public class PlayerMovementController : MonoBehaviour {
     public float MaxRunSpeed;
     public float SkidSpeed;
     public bool isRunning;
+    // 4 for back, 6 for forward, 5 for no walk
+    public Numpad IsWalking;
     public bool isAirDashing;
     public bool isBackDashing;
     public int MaxAirActions;
@@ -51,6 +52,7 @@ public class PlayerMovementController : MonoBehaviour {
         playerState = GetComponent<PlayerStateManager>();
         rb2d.gravityScale = GravityScale;
         animator = GetComponent<PlayerAnimationController>();
+        IsWalking = Numpad.N5;
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -93,25 +95,42 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new ArgumentException(direction + " is not a horizontal direction");
         }
-        int walkDirection = 0;
-        if (direction == Numpad.N6) {
-            walkDirection = 1;
-        }
-        else if (direction == Numpad.N4)
-        {
-            walkDirection = -1;
-        }
-        if (!playerState.GetCurrentFacingDirection())
-        {
-            walkDirection *= -1;
-        }
         bool canWalk = isGrounded && !attackController.isAttacking && !isBackDashing &&
             !animator.AnimationGetBool("IsJumping");
         if (canWalk) {
-            rb2d.velocity = new Vector2(walkDirection * WalkSpeed, 0f);
+            int walkDirection = 0;
+            if (direction == Numpad.N6) {
+                walkDirection = 1;
+            }
+            else if (direction == Numpad.N4)
+            {
+                walkDirection = -1;
+            }
+            if (!playerState.GetCurrentFacingDirection())
+            {
+                walkDirection *= -1;
+            }
+
+            if (walkDirection > 0) {
+                IsWalking = Numpad.N6;
+            } else {
+                IsWalking = Numpad.N4;
+            }
+        }
+        
+    }
+    private void WalkUpdate() {
+        if (IsWalking == Numpad.N6) {
+            rb2d.velocity = new Vector2(1 * WalkSpeed, 0f);
             UpdateFacingDirection();
+        } else if (IsWalking == Numpad.N4) {
+            rb2d.velocity = new Vector2(-1 * WalkSpeed, 0f);
+            UpdateFacingDirection();
+        } else {
+            throw new InvalidProgramException("Tried to Dash while airborne!");
         }
     }
+
     public void Dash(Numpad direction)
     {
         if (direction != Numpad.N6)
