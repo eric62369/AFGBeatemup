@@ -81,6 +81,7 @@ public class PlayerMovementController : MonoBehaviour {
                 UpdateFacingDirection();
             }
             WalkUpdate();
+            Run(Numpad.N6);
         }
     }
 
@@ -144,11 +145,8 @@ public class PlayerMovementController : MonoBehaviour {
         if (isGrounded) {
             Dash(Numpad.N6);
         } else {
-
+            AirDash(true);
         }
-    }
-    public void RunUpdate() {
-
     }
 
     public void Dash(Numpad direction)
@@ -242,11 +240,13 @@ public class PlayerMovementController : MonoBehaviour {
     }
     public void Run(Numpad direction)
     {
-        if (direction != Numpad.N6 && direction != Numpad.N3)
+        if (direction != Numpad.N6)
         {
             throw new ArgumentException(direction + " is not a horizontal direction");
         }
-        if (isGrounded && !attackController.isAttacking && !isBackDashing) {
+        if (animator.AnimationGetBool("IsRunning") &&
+            !animator.AnimationGetBool("IsSkidding") &&
+            isGrounded && !attackController.isAttacking && !isBackDashing) {
             float horizontalVelocity = Math.Abs(rb2d.velocity.x);
             float horizontalForce = RunForce;
             if (horizontalVelocity > MaxRunSpeed)
@@ -258,7 +258,7 @@ public class PlayerMovementController : MonoBehaviour {
                 horizontalVelocity *= -1;
                 horizontalForce *= -1;
             }
-            rb2d.velocity = new Vector2(horizontalVelocity, 0f);
+            // rb2d.velocity = new Vector2(horizontalVelocity, 0f);
             rb2d.AddForce(new Vector2(horizontalForce, 0f), ForceMode2D.Force);
         }
     }

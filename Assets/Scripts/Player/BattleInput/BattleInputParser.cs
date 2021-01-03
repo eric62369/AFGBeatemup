@@ -172,6 +172,17 @@ namespace BattleInput {
         }
 
         private bool InterpretMovement (InputHistory inputHistory) {
+            if (InterpretUtil.InterpretMotionInput(inputHistory, M66))
+            {
+                DebugMessage(M66.ToString());
+                inputActions.Dash();
+                return true;
+
+                // playerMovement.Run(firstInput);
+            } else {
+                inputActions.StopRun();
+            }
+
             if (InterpretUtil.InterpretMotionInput(inputHistory, MJump))
             {
                 DebugMessage(MJump.ToString());
@@ -192,14 +203,6 @@ namespace BattleInput {
                 DebugMessage(M4.ToString());
                 inputActions.Walk(Numpad.N4);
                 return true;
-            }
-            if (InterpretUtil.InterpretMotionInput(inputHistory, M66))
-            {
-                DebugMessage(M66.ToString());
-                inputActions.Dash();
-                return true;
-
-                // playerMovement.Run(firstInput);
             }
             // else if (playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N3) && !animator.AnimationGetBool("IsSkidding"))
             // {

@@ -8,21 +8,26 @@ namespace BattleInput {
         private PlayerAttackController playerAttack;
         private PlayerMovementController playerMovement;
         private PlayerStateManager playerState;
+        private PlayerAnimationController playerAnimator;
 
         void Start () {
             playerAttack = GetComponent<PlayerAttackController> ();
             playerMovement = GetComponent<PlayerMovementController>();
             playerState = GetComponent<PlayerStateManager>();
+            playerAnimator = GetComponent<PlayerAnimationController>();
         }
 
         // Universal Movement
         public void Dash () {
-            playerMovement.();
+            playerMovement.StartForwardDash();
         }
         // public void AirDash (bool direction) { }
         public void BackDash () { }
-        // public void Run () { }
-        public void Skid () { } 
+        public void StopRun () {
+            if (playerAnimator.AnimationGetBool("IsRunning")) {
+                playerMovement.Skid();
+            }
+        } 
         public void Walk (Numpad direction) {
             playerMovement.Walk(direction);
         }
