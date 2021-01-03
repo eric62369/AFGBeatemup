@@ -20,6 +20,7 @@ namespace BattleInput {
 
         // Universal Actions
         void Throw (bool direction);
+        void InputBufferCancel();
 
         // Normals
         void N5 (Button button);

@@ -50,6 +50,9 @@ namespace BattleInput {
         public void Throw (bool direction) {
             playerAttack.Throw(direction);
         }
+        public void InputBufferCancel() {
+            playerAttack.InputBufferCancel();
+        }
 
         // Normals
         public void N5 (Button button) {

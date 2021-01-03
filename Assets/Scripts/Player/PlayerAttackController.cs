@@ -113,6 +113,11 @@ public class PlayerAttackController : MonoBehaviour {
         animator.AnimationSetBool("CanCancel", false);
     }
 
+    public void InputBufferCancel() {
+        ResetAttackStateToNeutral();
+        animator.AnimationSetTrigger("InputBufferCancel");
+    }
+
     public Vector2 FreezePlayer()
     {
         animator.AnimatorEnable(false);

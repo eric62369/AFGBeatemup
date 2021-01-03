@@ -257,6 +257,126 @@ namespace BattleInput {
             return InterpretMotionInput (inputHistory, motionInput);
         }
 
+        /// <summary>
+        /// i.e. won't detect negative edge
+        /// Great for detecting FD, not so great for detecting throw
+        /// </summary>
+        /// <param name="inputHistory"></param>
+        /// <param name="motionInput"></param>
+        /// <returns></returns>
+        public static bool InterpretTapButtonCombo (InputHistory inputHistory, AttackMotionInput motionInput) {
+            int index = 0;
+            int totalFrames = 0;
+
+            InputHistoryEntry entry = null;
+            IList<ButtonStatus> buttons = null;
+            ButtonStatus[] reference = motionInput.buttons;
+            int[] frameLimits = new int[reference.Length];
+
+            bool noMatchesFound = true; // has the input history matched a button combo yet?
+            while (noMatchesFound) {
+                if (index >= inputHistory.GetSize ()) {
+                    return false;
+                }
+
+                entry = inputHistory.GetEntry (index);
+                buttons = entry.buttons;
+
+                for (int i = 0; i < buttons.Count; i++) {
+                    ButtonStatus currStatus = buttons[i];
+                    if (reference[i] == ButtonStatus.Down) {
+                        if (currStatus == ButtonStatus.Down) {
+                            frameLimits[i] = motionInput.frameLimit + 1;
+                        } else {
+                            // ignore everything else
+                        }
+                    } else {
+                        // reference up doesn't affect button combo
+                        frameLimits[i] = 100; // indicate safe state
+                    }
+                }
+                if (index > 0) {
+                    // i.e. first input has running frames since last input.
+                    // Only factor in if motion input is longer than 1 input (ie. 46A)
+                    totalFrames += inputHistory.GetEntry (index - 1).runningFrames;
+                    if (totalFrames > motionInput.frameLimit) {
+                        return false;
+                    }
+                }
+
+                bool buttonComboDetected = true;
+                for (int i = 0 ; i < frameLimits.Length; i++) {
+                    if (frameLimits[i] <= 0) {
+                        buttonComboDetected = false;
+                    }
+                    frameLimits[i] = frameLimits[i] - 1;
+                }
+                if (buttonComboDetected) {
+                    return InterpretMotionInput (inputHistory, motionInput);
+                }
+
+                index++;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// i.e. won't detect negative edge
+        /// Great for detecting FD, not so great for detecting throw
+        /// </summary>
+        /// <param name="inputHistory"></param>
+        /// <param name="motionInput"></param>
+        /// <returns></returns>
+        public static bool InterpretHoldButtonCombo (InputHistory inputHistory, AttackMotionInput motionInput) {
+            int index = 0;
+            int totalFrames = 0;
+
+            InputHistoryEntry entry = null;
+            IList<ButtonStatus> buttons = null;
+            ButtonStatus[] reference = motionInput.buttons;
+
+            bool noMatchesFound = true; // has the input history matched a button combo yet?
+            while (noMatchesFound) {
+                if (index >= inputHistory.GetSize ()) {
+                    return false;
+                }
+
+                entry = inputHistory.GetEntry (index);
+                buttons = entry.buttons;
+
+                bool noMismatch = true;
+
+                for (int i = 0; i < buttons.Count; i++) {
+                    ButtonStatus currStatus = buttons[i];
+                    if (reference[i] == ButtonStatus.Down &&
+                        (currStatus == ButtonStatus.Down || currStatus == ButtonStatus.Hold)) {
+                        // held[i] = true;
+                    } else if (reference[i] == ButtonStatus.Up) {
+                        // Up ignored
+                    } else {
+                        // mismatch!
+                        // TODO: might lead to strange behavior currently. i.e. 632AB might not give nothing instead of A DP
+                        noMismatch = false;
+                    }
+                }
+                if (index > 0) {
+                    // i.e. first input has running frames since last input.
+                    // Only factor in if motion input is longer than 1 input (ie. 46A)
+                    totalFrames += inputHistory.GetEntry (index - 1).runningFrames;
+                    if (totalFrames > motionInput.frameLimit) {
+                        return false;
+                    }
+                }
+
+                if (noMismatch) {
+                    return InterpretMotionInput (inputHistory, motionInput);
+                }
+
+                index++;
+            }
+            return false;
+        }
+
     }
 
 }

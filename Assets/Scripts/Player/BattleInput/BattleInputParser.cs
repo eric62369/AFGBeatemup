@@ -89,11 +89,11 @@ namespace BattleInput {
 
             IList<string> listForwardThrow = new List<string> ();
             listForwardThrow.Add ("6");
-            ForwardThrow = new AttackMotionInput (listForwardThrow, "AD", 0);
+            ForwardThrow = new AttackMotionInput (listForwardThrow, "BD", 2);
 
             IList<string> listBackwardThrow = new List<string> ();
             listBackwardThrow.Add ("4");
-            BackwardThrow = new AttackMotionInput (listBackwardThrow, "AD", 0);
+            BackwardThrow = new AttackMotionInput (listBackwardThrow, "BD", 2);
         }
 
         /**
@@ -117,13 +117,16 @@ namespace BattleInput {
             // invul moves
 
             // button combos
-            if (InterpretUtil.InterpretNormalAttackInput(inputHistory, ForwardThrow)) {
+            if (InterpretUtil.InterpretTapButtonCombo(inputHistory, ForwardThrow)) {
                 DebugMessage(ForwardThrow.ToString());
+                inputActions.InputBufferCancel();
                 inputActions.Throw(true);
                 return true;
             }
-            if (InterpretUtil.InterpretNormalAttackInput(inputHistory, BackwardThrow)) {
+
+            if (InterpretUtil.InterpretTapButtonCombo(inputHistory, BackwardThrow)) {
                 DebugMessage(BackwardThrow.ToString());
+                inputActions.InputBufferCancel();
                 inputActions.Throw(false);
                 return true;
             }

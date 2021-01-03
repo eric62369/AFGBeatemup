@@ -44,6 +44,54 @@ namespace Tests
             Assert.False(InterpretUtil.InterpretNormalAttackInput(history, S236B));
         }
 
+        [Test]
+        public void ThrowInputBuffer()
+        {
+            InputHistory history = new InputHistory(10, 4);
+            IList<ButtonStatus> buttons1 = new List<ButtonStatus>();
+            buttons1.Add(ButtonStatus.Up);
+            buttons1.Add(ButtonStatus.Down);
+            buttons1.Add(ButtonStatus.Up);
+            buttons1.Add(ButtonStatus.Up);
+
+            IList<ButtonStatus> buttons2 = new List<ButtonStatus>();
+            buttons2.Add(ButtonStatus.Up);
+            buttons2.Add(ButtonStatus.Hold);
+            buttons2.Add(ButtonStatus.Up);
+            buttons2.Add(ButtonStatus.Down);
+
+            IList<ButtonStatus> buttons3 = new List<ButtonStatus>();
+            buttons3.Add(ButtonStatus.Up);
+            buttons3.Add(ButtonStatus.Release);
+            buttons3.Add(ButtonStatus.Up);
+            buttons3.Add(ButtonStatus.Hold);
+
+            for (int i = 2; i < history.GetSize(); i++) {
+                history.AddNewEntry(
+                    Numpad.N6,
+                    buttons3,
+                    125
+                );
+            }
+            
+            history.AddNewEntry(
+                Numpad.N6,
+                buttons2,
+                125
+            );
+            history.AddNewEntry(
+                Numpad.N6,
+                buttons1,
+                2
+            );
+
+            IList<string> listForwardThrow = new List<string> ();
+            listForwardThrow.Add ("6");
+            AttackMotionInput ForwardThrow = new AttackMotionInput (listForwardThrow, "BD", 2);
+
+            Assert.True(InterpretUtil.InterpretTapButtonCombo(history, ForwardThrow));
+        }
+
         // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
         // `yield return null;` to skip a frame.
         [UnityTest]
