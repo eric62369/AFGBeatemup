@@ -190,7 +190,7 @@
                 {
                     "name": "",
                     "id": "e00dfecf-2268-4c16-97a3-741bbeadfe3b",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

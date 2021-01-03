@@ -10,6 +10,8 @@ public class EnemyMovementController : MonoBehaviour
 
     private EnemyStateManager enemyState;
 
+    
+
     // Use this for initialization
     void Start()
     {
@@ -44,10 +46,9 @@ public class EnemyMovementController : MonoBehaviour
 
     public void LaunchEnemy(int direction)
     {
-        rb2d.AddForce(new Vector2(
+        rb2d.velocity = new Vector2(
             AttackConstants.LightLaunchForce[0] * direction,
-            AttackConstants.LightLaunchForce[1]),
-            ForceMode2D.Force);
+            AttackConstants.LightLaunchForce[1]);
     }
 
     // Must always be called before Recovery frames
@@ -78,7 +79,12 @@ public class EnemyMovementController : MonoBehaviour
         }
         else
         {
-            rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
+            // normal attack
+            if (!enemyState.isGrounded) {
+                enemyState.GetLaunched(attackData);
+            } else {
+                rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
+            }
         }
     }
 }

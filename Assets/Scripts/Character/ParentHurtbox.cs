@@ -30,9 +30,14 @@ public class ParentHurtbox : MonoBehaviour
                 // Attack landed!
                 if (attackData.Type == AttackType.Throw)
                 {
-                    EnemyState.TakeThrow(attackData.playerState);
-                    EnemyMovement.FreezeEnemy();
-                    currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
+                    if (EnemyState.isGrounded) {
+                        EnemyState.TakeThrow(attackData.playerState);
+                        EnemyMovement.FreezeEnemy();
+                        currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
+                    } else {
+
+                    }
+                    
                 }
                 else
                 {

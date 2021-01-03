@@ -8,6 +8,11 @@ public class EnemyStateManager : MonoBehaviour
 
     private EnemyMovementController movementController;
 
+    public Transform groundCheck;
+    public float groundCheckRadius;
+    public LayerMask groundLayers;
+    public bool isGrounded;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +22,21 @@ public class EnemyStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        bool newGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayers);
+
+        if (newGrounded != isGrounded && newGrounded == true)
+        {
+            // // Landed!
+            // animator.AnimationSetBool("IsJumping", false);
+            // hasDashMomentum = false;
+            // AirActionsLeft = MaxAirActions;
+
+            // if (isHoldingJump) {
+            //     isHoldingJump = false;
+            //     Jump(PrevJumpInput);
+            // }
+        }
+        isGrounded = newGrounded;
     }
 
     public void TakeThrow(PlayerStateManager playerState)
