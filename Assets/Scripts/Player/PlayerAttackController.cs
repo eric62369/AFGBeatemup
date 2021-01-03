@@ -45,7 +45,6 @@ public class PlayerAttackController : MonoBehaviour {
             else
             {
                 isAttacking = true;
-                movementController.isRunning = false;
                 animator.AnimationSetBool(attackName, true);
                 currentActiveAttack = attackName;
                 animator.AnimationSetBool("IsRunning", false);
@@ -69,7 +68,6 @@ public class PlayerAttackController : MonoBehaviour {
             {
                 isAttacking = true; // TODO: Do we need a throw flag?
                 playerState.SetThrowDirection(isForward);
-                movementController.isRunning = false;
                 animator.AnimationSetBool("ThrowWhiff", true);
                 animator.AnimationSetBool("IsRunning", false);
                 movementController.StopRun();

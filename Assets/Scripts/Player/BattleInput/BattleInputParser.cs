@@ -177,8 +177,6 @@ namespace BattleInput {
                 DebugMessage(M66.ToString());
                 inputActions.Dash();
                 return true;
-
-                // playerMovement.Run(firstInput);
             } else {
                 inputActions.StopRun();
             }
@@ -204,11 +202,6 @@ namespace BattleInput {
                 inputActions.Walk(Numpad.N4);
                 return true;
             }
-            // else if (playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N3) && !animator.AnimationGetBool("IsSkidding"))
-            // {
-            //     // Holding run check
-            //     playerMovement.Run(firstInput);
-            // }
             // else
             // {
             //     if (animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding"))

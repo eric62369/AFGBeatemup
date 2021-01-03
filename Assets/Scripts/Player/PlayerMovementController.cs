@@ -18,7 +18,6 @@ public class PlayerMovementController : MonoBehaviour {
     public float RunForce;
     public float MaxRunSpeed;
     public float SkidSpeed;
-    public bool isRunning;
     // 4 for back, 6 for forward, 5 for no walk
     public Numpad IsWalking;
     public bool isAirDashing;
@@ -38,7 +37,7 @@ public class PlayerMovementController : MonoBehaviour {
     private Rigidbody2D rb2d;
     
     private PlayerAttackController attackController;
-    private PlayerInputManager playerInput;
+    // private PlayerInputManager playerInput;
     private PlayerStateManager playerState;
 
     private PlayerAnimationController animator;
@@ -49,7 +48,7 @@ public class PlayerMovementController : MonoBehaviour {
         //Get and store a reference to the Rigidbody2D component so that we can access it.
         rb2d = GetComponent<Rigidbody2D>();
         attackController = GetComponent<PlayerAttackController>();
-        playerInput = GetComponent<PlayerInputManager>();
+        // playerInput = GetComponent<PlayerInputManager>();
         playerState = GetComponent<PlayerStateManager>();
         rb2d.gravityScale = GravityScale;
         animator = GetComponent<PlayerAnimationController>();
@@ -87,7 +86,6 @@ public class PlayerMovementController : MonoBehaviour {
 
     public void ResetMovementStateToNeutral()
     {
-        isRunning = false;
         isAirDashing = false;
         isBackDashing = false;
         animator.AnimationSetBool("IsJumping", false);
@@ -166,7 +164,6 @@ public class PlayerMovementController : MonoBehaviour {
                 horizontalVelocity *= -1;
             }
             rb2d.velocity = new Vector2(horizontalVelocity, 0f);
-            isRunning = true;
             hasDashMomentum = true;
             animator.AnimationSetBool("IsRunning", true);
         }
@@ -266,7 +263,6 @@ public class PlayerMovementController : MonoBehaviour {
     /// Called at the end of the skidding animation, and used to cancel Run state
     public void StopRun()
     {
-        isRunning = false;
         animator.AnimationSetBool("IsSkidding", false);
         animator.AnimationSetBool("IsRunning", false);
     }
