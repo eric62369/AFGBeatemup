@@ -47,7 +47,9 @@ namespace BattleInput {
         }
 
         // Universal Actions
-        public void Throw (bool direction) { }
+        public void Throw (bool direction) {
+            playerAttack.Throw(direction);
+        }
 
         // Normals
         public void N5 (Button button) {

@@ -117,6 +117,16 @@ namespace BattleInput {
             // invul moves
 
             // button combos
+            if (InterpretUtil.InterpretNormalAttackInput(inputHistory, ForwardThrow)) {
+                DebugMessage(ForwardThrow.ToString());
+                inputActions.Throw(true);
+                return true;
+            }
+            if (InterpretUtil.InterpretNormalAttackInput(inputHistory, BackwardThrow)) {
+                DebugMessage(BackwardThrow.ToString());
+                inputActions.Throw(false);
+                return true;
+            }
 
             // specials
             if (InterpretUtil.InterpretSpecialAttackInput (inputHistory, S236B)) {
@@ -164,12 +174,6 @@ namespace BattleInput {
             //     }
             // }
 
-            // // empty out button bag
-            // while (!buttonDownBag.IsEmpty)
-            // {
-            //     Button button;
-            //     buttonDownBag.TryTake(out button);
-            // }
             return false;
         }
 
