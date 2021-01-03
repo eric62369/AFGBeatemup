@@ -9,12 +9,14 @@ namespace BattleInput {
     public interface IBattleInputActions {
         // Universal Movement
         void Dash ();
-        void AirDash (bool direction);
+        // void AirDash (bool direction);
         void BackDash ();
-        void Run ();
-        void Skid ();
+        // void Run ();
+        void StopRun();
         void Walk (Numpad direction);
+        void StopWalk();
         void Jump (Numpad direction);
+        void ReleaseJump();
 
         // Universal Actions
         void Throw (bool direction);

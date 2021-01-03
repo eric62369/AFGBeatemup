@@ -32,6 +32,7 @@ public class PlayerMovementController : MonoBehaviour {
     public LayerMask groundLayers;
     public bool isGrounded { get; private set; }
     public bool isHoldingJump { get; private set; }
+    private Numpad PrevJumpInput;
     private bool hasDashMomentum;
 
     private Rigidbody2D rb2d;
@@ -65,9 +66,12 @@ public class PlayerMovementController : MonoBehaviour {
             {
                 // Landed!
                 animator.AnimationSetBool("IsJumping", false);
-                isHoldingJump = false;
                 hasDashMomentum = false;
                 AirActionsLeft = MaxAirActions;
+                if (isHoldingJump) {
+                    isHoldingJump = false;
+                    Jump(PrevJumpInput);
+                }
             }
             isGrounded = newGrounded;
 
@@ -76,6 +80,7 @@ public class PlayerMovementController : MonoBehaviour {
             {
                 UpdateFacingDirection();
             }
+            WalkUpdate();
         }
     }
 
@@ -95,40 +100,55 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new ArgumentException(direction + " is not a horizontal direction");
         }
-        bool canWalk = isGrounded && !attackController.isAttacking && !isBackDashing &&
+        int walkDirection = -10;
+        if (direction == Numpad.N6) {
+            walkDirection = 1;
+        }
+        else if (direction == Numpad.N4)
+        {
+            walkDirection = -1;
+        }
+        if (!playerState.GetCurrentFacingDirection())
+        {
+            walkDirection *= -1;
+        }
+
+        if (walkDirection > 0) {
+            IsWalking = Numpad.N6;
+        } else {
+            IsWalking = Numpad.N4;
+        }
+    }
+    public void StopWalk() {
+        IsWalking = Numpad.N0;
+    }
+
+    private void WalkUpdate() {
+        bool canWalk =
+            isGrounded &&
+            !attackController.isAttacking &&
+            !isBackDashing &&
             !animator.AnimationGetBool("IsJumping");
         if (canWalk) {
-            int walkDirection = 0;
-            if (direction == Numpad.N6) {
-                walkDirection = 1;
-            }
-            else if (direction == Numpad.N4)
-            {
-                walkDirection = -1;
-            }
-            if (!playerState.GetCurrentFacingDirection())
-            {
-                walkDirection *= -1;
-            }
-
-            if (walkDirection > 0) {
-                IsWalking = Numpad.N6;
-            } else {
-                IsWalking = Numpad.N4;
+            if (IsWalking == Numpad.N6) {
+                rb2d.velocity = new Vector2(1 * WalkSpeed, 0f);
+                UpdateFacingDirection();
+            } else if (IsWalking == Numpad.N4) {
+                rb2d.velocity = new Vector2(-1 * WalkSpeed, 0f);
+                UpdateFacingDirection();
             }
         }
-        
     }
-    private void WalkUpdate() {
-        if (IsWalking == Numpad.N6) {
-            rb2d.velocity = new Vector2(1 * WalkSpeed, 0f);
-            UpdateFacingDirection();
-        } else if (IsWalking == Numpad.N4) {
-            rb2d.velocity = new Vector2(-1 * WalkSpeed, 0f);
-            UpdateFacingDirection();
+
+    public void StartForwardDash() {
+        if (isGrounded) {
+            Dash(Numpad.N6);
         } else {
-            throw new InvalidProgramException("Tried to Dash while airborne!");
+
         }
+    }
+    public void RunUpdate() {
+
     }
 
     public void Dash(Numpad direction)
@@ -267,6 +287,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new ArgumentException(direction + " is not an upwards direction");
         }
+        PrevJumpInput = direction;
         // TODO: can you fix this later?
         bool canJump = !attackController.isAttacking && !isHoldingJump && AirActionsLeft > 0  && !isBackDashing;
         if (canJump) {

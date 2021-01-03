@@ -7,26 +7,35 @@ namespace BattleInput {
     public class RedBattleInputActions : MonoBehaviour, IBattleInputActions {
         private PlayerAttackController playerAttack;
         private PlayerMovementController playerMovement;
+        private PlayerStateManager playerState;
 
         void Start () {
             playerAttack = GetComponent<PlayerAttackController> ();
             playerMovement = GetComponent<PlayerMovementController>();
-        }
-
-        void Update () {
-
+            playerState = GetComponent<PlayerStateManager>();
         }
 
         // Universal Movement
-        public void Dash () { }
-        public void AirDash (bool direction) { }
+        public void Dash () {
+            playerMovement.();
+        }
+        // public void AirDash (bool direction) { }
         public void BackDash () { }
-        public void Run () { }
+        // public void Run () { }
         public void Skid () { } 
         public void Walk (Numpad direction) {
             playerMovement.Walk(direction);
         }
-        public void Jump (Numpad direction) { }
+        public void StopWalk() {
+            playerMovement.StopWalk();
+        }
+        public void Jump (Numpad direction) {
+            playerState.SetCancelAction(CancelAction.Jump, direction);
+            playerMovement.Jump(direction);
+        }
+        public void ReleaseJump () {
+            playerMovement.setIsHoldingJump(false);
+        }
 
         // Universal Actions
         public void Throw (bool direction) { }

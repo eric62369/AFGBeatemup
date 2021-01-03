@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using BattleInput;
 
+public class PlayerChangeDirectionEventArgs {
+
+}
+
 public class PlayerStateManager : MonoBehaviour
 {
     [SerializeField]  // TODO: What's this?
@@ -19,6 +23,9 @@ public class PlayerStateManager : MonoBehaviour
     private PlayerAnimationController animator;
     private bool forwardThrowing;
     private Numpad cancelActionInput;
+
+    public delegate void PlayerChangeDirection(object sender, PlayerChangeDirectionEventArgs args);
+    public event PlayerChangeDirection ChangeDirectionEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -94,7 +101,16 @@ public class PlayerStateManager : MonoBehaviour
         if (oldDirection != isFacingRight)
         {
             this.gameObject.transform.localScale = newScale;
+            RaisePlayerChangeDirectionEvent(new PlayerChangeDirectionEventArgs());
             // inputManager.FacingDirectionChanged(); // TODO:
+        }
+    }
+
+    protected virtual void RaisePlayerChangeDirectionEvent(PlayerChangeDirectionEventArgs e) {
+        PlayerChangeDirection raiseEvent = ChangeDirectionEvent;
+
+        if (raiseEvent != null) {
+            raiseEvent(this, e);
         }
     }
 

@@ -33,6 +33,7 @@ namespace BattleInput {
         private int runningFrames; // How much time (in frames) since last input?
 
         private BattleInputParser parser;
+        private PlayerStateManager ChangeDirectionEventSource; // TODO: Change this out for a module later
 
         // Input history data
         private InputHistory inputHistory;
@@ -47,6 +48,8 @@ namespace BattleInput {
             runningFrames = 0; // Frame 1 will be first update frame
 
             parser = GetComponent<BattleInputParser> ();
+            ChangeDirectionEventSource = GetComponent<PlayerStateManager>();
+            ChangeDirectionEventSource.ChangeDirectionEvent += ChangeDirectionEventHandler;
 
             nextDirection = Numpad.N5;
             nextButtons = new List<ButtonStatus> ();
@@ -128,35 +131,38 @@ namespace BattleInput {
             newInputs = true;
         }
 
-        // TODO: Connect to player's turnaround event somehow
-        // public void FacingDirectionChanged()
-        // {
-        //     // TODO: can be switch case or something else
-        //     if (currentInput == Numpad.N7)
-        //     {
-        //         InterpretNewStickInput(Numpad.N9);
-        //     }
-        //     else if (currentInput == Numpad.N4)
-        //     {
-        //         InterpretNewStickInput(Numpad.N6);
-        //     }
-        //     else if (currentInput == Numpad.N1)
-        //     {
-        //         InterpretNewStickInput(Numpad.N3);
-        //     }
-        //     else if (currentInput == Numpad.N9)
-        //     {
-        //         InterpretNewStickInput(Numpad.N7);
-        //     }
-        //     else if (currentInput == Numpad.N6)
-        //     {
-        //         InterpretNewStickInput(Numpad.N4);
-        //     }
-        //     else if (currentInput == Numpad.N3)
-        //     {
-        //         InterpretNewStickInput(Numpad.N1);
-        //     }
-        //     newInputs = true;
-        // }
+        private void ChangeDirectionEventHandler(object sender, PlayerChangeDirectionEventArgs e) {
+            FacingDirectionChanged();
+        }
+
+        private void FacingDirectionChanged()
+        {
+            Numpad currentInput = inputHistory.GetEntry(0).direction;
+            // TODO: can be switch case or something else
+            if (currentInput == Numpad.N7)
+            {
+                InterpretNewStickInput(Numpad.N9);
+            }
+            else if (currentInput == Numpad.N4)
+            {
+                InterpretNewStickInput(Numpad.N6);
+            }
+            else if (currentInput == Numpad.N1)
+            {
+                InterpretNewStickInput(Numpad.N3);
+            }
+            else if (currentInput == Numpad.N9)
+            {
+                InterpretNewStickInput(Numpad.N7);
+            }
+            else if (currentInput == Numpad.N6)
+            {
+                InterpretNewStickInput(Numpad.N4);
+            }
+            else if (currentInput == Numpad.N3)
+            {
+                InterpretNewStickInput(Numpad.N1);
+            }
+        }
     }
 }

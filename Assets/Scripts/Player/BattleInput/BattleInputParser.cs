@@ -11,6 +11,8 @@ namespace BattleInput {
         public int Time66; // in (frames) window to input 66 (dash)
         public int Time236; // in (frames) window to input 236
 
+        public bool DEBUG; // Print Debug Messages
+
         public IBattleInputActions inputActions;
 
         // TODO: Move initialization for these inputs somewhere else (these are universal inputs)
@@ -22,6 +24,7 @@ namespace BattleInput {
         private static MotionInput M44;
         private static MotionInput M4;
         private static MotionInput M6;
+        private static MotionInput MJump;
         private static AttackMotionInput ForwardThrow;
         private static AttackMotionInput BackwardThrow;
 
@@ -29,6 +32,12 @@ namespace BattleInput {
             // Might not work, interface might need to be a component
             inputActions = GetComponent<IBattleInputActions> ();
             initMotionInputs ();
+        }
+
+        private void DebugMessage(String message) {
+            if (DEBUG) {
+                Debug.Log(message);
+            }
         }
 
         private void initMotionInputs () {
@@ -58,13 +67,22 @@ namespace BattleInput {
             IList<string> list6 = new List<string> ();
             list6.Add ("6");
             M6 = new MotionInput (list6, 0);
+            IList<string> listJump = new List<string> ();
+            listJump.Add ("8");
+            listJump.Add ("7");
+            listJump.Add ("9");
+            MJump = new MotionInput (listJump, 0);
 
             IList<string> list5B = new List<string> ();
             list5B.Add ("5");
+            list5B.Add ("6");
+            list5B.Add ("4");
             N5B = new AttackMotionInput (list5B, "B", 0);
 
             IList<string> list5C = new List<string> ();
             list5C.Add ("5");
+            list5C.Add ("6");
+            list5C.Add ("4");
             N5C = new AttackMotionInput (list5C, "C", 0);
 
             IList<string> listForwardThrow = new List<string> ();
@@ -100,19 +118,19 @@ namespace BattleInput {
 
             // specials
             if (InterpretUtil.InterpretSpecialAttackInput (inputHistory, S236B)) {
-                Debug.Log (S236B.ToString ());
+                DebugMessage(S236B.ToString());
                 inputActions.S236 (Button.B);
                 return true;
             }
 
             // normals
             if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5B)) {
-                Debug.Log(N5B.ToString());
+                DebugMessage(N5B.ToString());
                 inputActions.N5(Button.B);
                 return true;
             }
             if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5C)) {
-                Debug.Log(N5C.ToString());
+                DebugMessage(N5C.ToString());
                 inputActions.N5(Button.C);
                 return true;
             }
@@ -154,28 +172,35 @@ namespace BattleInput {
         }
 
         private bool InterpretMovement (InputHistory inputHistory) {
+            if (InterpretUtil.InterpretMotionInput(inputHistory, MJump))
+            {
+                DebugMessage(MJump.ToString());
+                inputActions.Jump(inputHistory.GetEntry(0).direction);
+                return true;
+            } else {
+                inputActions.ReleaseJump();
+            }
+
             if (InterpretUtil.InterpretMotionInput(inputHistory, M6))
             {
-                Debug.Log(M6.ToString());
+                DebugMessage(M6.ToString());
                 inputActions.Walk(Numpad.N6);
                 return true;
             }
             if (InterpretUtil.InterpretMotionInput(inputHistory, M4))
             {
-                Debug.Log(M4.ToString());
+                DebugMessage(M4.ToString());
                 inputActions.Walk(Numpad.N4);
                 return true;
             }
-            // if (IsNumpadUp(firstInput))
-            // {
-            //     playerState.SetCancelAction(CancelAction.Jump, firstInput);
-            //     playerMovement.Jump(firstInput);
-            // }
-            // else if (!playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N4))
-            // {
-            //     // Walk check
-            //     playerMovement.Walk(firstInput);
-            // }
+            if (InterpretUtil.InterpretMotionInput(inputHistory, M66))
+            {
+                DebugMessage(M66.ToString());
+                inputActions.Dash();
+                return true;
+
+                // playerMovement.Run(firstInput);
+            }
             // else if (playerMovement.isRunning && (firstInput == Numpad.N6 || firstInput == Numpad.N3) && !animator.AnimationGetBool("IsSkidding"))
             // {
             //     // Holding run check
@@ -190,14 +215,10 @@ namespace BattleInput {
             //     // Nothing / Idle
             // }
 
-            // if (!IsNumpadUp(firstInput))
-            // {
-            //     playerMovement.setIsHoldingJump(false);
-            // }
-            return false;
-        }
-        private bool IsNumpadUp (Numpad num) {
-            return num == Numpad.N7 || num == Numpad.N8 || num == Numpad.N9;
+            inputActions.StopWalk();
+            inputActions.ReleaseJump();
+            return true;
+            // return false;
         }
 
         // private void InterpretDash()
