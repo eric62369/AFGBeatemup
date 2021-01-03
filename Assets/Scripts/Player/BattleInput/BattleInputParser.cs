@@ -14,6 +14,7 @@ namespace BattleInput {
         public bool DEBUG; // Print Debug Messages
 
         public IBattleInputActions inputActions;
+        public BattleInputScanner scanner; // TODO: try to remove this if possible
 
         // TODO: Move initialization for these inputs somewhere else (these are universal inputs)
         // Full list of attack commands to interpret will probably come from the input actions
@@ -31,6 +32,7 @@ namespace BattleInput {
         void Start () {
             // Might not work, interface might need to be a component
             inputActions = GetComponent<IBattleInputActions> ();
+            scanner = GetComponent<BattleInputScanner>();
             initMotionInputs ();
         }
 
@@ -181,6 +183,14 @@ namespace BattleInput {
                 inputActions.StopRun();
             }
 
+            if (InterpretUtil.InterpretMotionInput(inputHistory, M44))
+            {
+                DebugMessage(M44.ToString());
+                inputActions.BackDash();
+                return true;
+            }
+
+
             if (InterpretUtil.InterpretMotionInput(inputHistory, MJump))
             {
                 DebugMessage(MJump.ToString());
@@ -202,19 +212,9 @@ namespace BattleInput {
                 inputActions.Walk(Numpad.N4);
                 return true;
             }
-            // else
-            // {
-            //     if (animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding"))
-            //     {
-            //         playerMovement.Skid();
-            //     }
-            //     // Nothing / Idle
-            // }
-
             inputActions.StopWalk();
-            inputActions.ReleaseJump();
-            return true;
-            // return false;
+            
+            return false;
         }
 
         // private void InterpretDash()

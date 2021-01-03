@@ -28,6 +28,7 @@ namespace BattleInput {
 
     /// Mainly responsible for managing input history
     public class BattleInputScanner : MonoBehaviour {
+        public bool DEBUG;
         private static readonly int ButtonCount = 4; // A B C D
         public static readonly int InputHistorySize = 18; // size for input history
         private int runningFrames; // How much time (in frames) since last input?
@@ -82,7 +83,9 @@ namespace BattleInput {
                 parser.ParseNewInput (inputHistory);
 
                 // // print input history to console
-                // Debug.Log (inputHistory.ToString ());
+                if (DEBUG) {
+                    Debug.Log (inputHistory.ToString ());
+                }
 
                 // reset flags and running state
                 newInputs = false;

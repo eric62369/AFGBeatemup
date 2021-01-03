@@ -20,9 +20,13 @@ namespace BattleInput {
         // Universal Movement
         public void Dash () {
             playerMovement.StartForwardDash();
+            Walk(Numpad.N6);
         }
         // public void AirDash (bool direction) { }
-        public void BackDash () { }
+        public void BackDash () {
+            playerMovement.StartBackwardDash();
+            Walk(Numpad.N4);
+        }
         public void StopRun () {
             if (playerAnimator.AnimationGetBool("IsRunning")) {
                 playerMovement.Skid();

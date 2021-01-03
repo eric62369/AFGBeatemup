@@ -30,7 +30,7 @@ public class PlayerMovementController : MonoBehaviour {
     public float groundCheckRadius;
     public LayerMask groundLayers;
     public bool isGrounded { get; private set; }
-    public bool isHoldingJump { get; private set; }
+    public bool isHoldingJump;
     private Numpad PrevJumpInput;
     private bool hasDashMomentum;
 
@@ -61,12 +61,18 @@ public class PlayerMovementController : MonoBehaviour {
         if (!isAirDashing)
         {
             bool newGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayers);
+            
+            if (isHoldingJump) {
+                Jump(PrevJumpInput);
+            }
+
             if (newGrounded != isGrounded && newGrounded == true)
             {
                 // Landed!
                 animator.AnimationSetBool("IsJumping", false);
                 hasDashMomentum = false;
                 AirActionsLeft = MaxAirActions;
+
                 if (isHoldingJump) {
                     isHoldingJump = false;
                     Jump(PrevJumpInput);
@@ -79,6 +85,7 @@ public class PlayerMovementController : MonoBehaviour {
             {
                 UpdateFacingDirection();
             }
+
             WalkUpdate();
             Run(Numpad.N6);
         }
@@ -127,7 +134,9 @@ public class PlayerMovementController : MonoBehaviour {
             isGrounded &&
             !attackController.isAttacking &&
             !isBackDashing &&
-            !animator.AnimationGetBool("IsJumping");
+            !animator.AnimationGetBool("IsJumping") &&
+            !animator.AnimationGetBool("IsSkidding") && 
+            !animator.AnimationGetBool("IsRunning");
         if (canWalk) {
             if (IsWalking == Numpad.N6) {
                 rb2d.velocity = new Vector2(1 * WalkSpeed, 0f);
@@ -144,6 +153,14 @@ public class PlayerMovementController : MonoBehaviour {
             Dash(Numpad.N6);
         } else {
             AirDash(true);
+        }
+    }
+
+    public void StartBackwardDash() {
+        if (isGrounded) {
+            BackDash(Numpad.N4);
+        } else {
+            AirDash(false);
         }
     }
 
@@ -166,6 +183,7 @@ public class PlayerMovementController : MonoBehaviour {
             rb2d.velocity = new Vector2(horizontalVelocity, 0f);
             hasDashMomentum = true;
             animator.AnimationSetBool("IsRunning", true);
+            animator.AnimationSetBool("IsSkidding", false);
         }
     }
     public void BackDash(Numpad direction)
@@ -275,6 +293,7 @@ public class PlayerMovementController : MonoBehaviour {
         }
         rb2d.velocity = new Vector2(SkidSpeed * direction, 0f);
         animator.AnimationSetBool("IsSkidding", true);
+        animator.AnimationSetBool("IsRunning", false);
     }
 
     public void Jump(Numpad direction)
@@ -285,8 +304,10 @@ public class PlayerMovementController : MonoBehaviour {
         }
         PrevJumpInput = direction;
         // TODO: can you fix this later?
-        bool canJump = !attackController.isAttacking && !isHoldingJump && AirActionsLeft > 0  && !isBackDashing;
-        if (canJump) {
+        bool canJump = isGrounded && !attackController.isAttacking && AirActionsLeft == MaxAirActions && !isBackDashing;
+        bool canDoubleJump = !isGrounded && !attackController.isAttacking && !isHoldingJump && AirActionsLeft > 0  && !isBackDashing;
+        setIsHoldingJump(true);
+        if (canJump || canDoubleJump) {
             float horizontalVelocity = 0;
             if (hasDashMomentum) 
             {
@@ -311,7 +332,6 @@ public class PlayerMovementController : MonoBehaviour {
             }
             rb2d.velocity = new Vector2(horizontalVelocity, 0f);
             rb2d.AddForce(new Vector2(0f, JumpForce));
-            setIsHoldingJump(true);
             animator.AnimationSetBool("IsJumping", true);
             animator.AnimationSetBool("IsRunning", false);
             StopRun();

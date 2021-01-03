@@ -928,7 +928,7 @@ Transform:
   m_GameObject: {fileID: 7814688488446206493}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.21, y: -0.88, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_Children:
   - {fileID: 7814688487690997638}
   - {fileID: 7814688488305153988}
@@ -1033,10 +1033,10 @@ MonoBehaviour:
   BackDashUpSpeed: 8
   HorizontalJumpSpeed: 3.5
   JumpForce: 1000
-  RunForce: 15
+  RunForce: 40
   MaxRunSpeed: 12
   SkidSpeed: 8
-  isRunning: 0
+  IsWalking: 0
   isAirDashing: 0
   isBackDashing: 0
   MaxAirActions: 2
@@ -1046,6 +1046,7 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 256
+  isHoldingJump: 0
 --- !u!95 &7814688488446206483
 Animator:
   serializedVersion: 3
@@ -1172,6 +1173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3b72f7da45dc537ab14690fc8410cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DEBUG: 0
 --- !u!114 &3909351404058856867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1184,8 +1186,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2330a31b4ca91d970b474bc9da8e11d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Time66: 30
-  Time236: 100
+  Time66: 15
+  Time236: 30
+  DEBUG: 0
+  scanner: {fileID: 0}
 --- !u!114 &5583650266419778372
 MonoBehaviour:
   m_ObjectHideFlags: 0
