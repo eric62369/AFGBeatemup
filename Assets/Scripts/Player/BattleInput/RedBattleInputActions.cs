@@ -50,8 +50,8 @@ namespace BattleInput {
         public void Throw (bool direction) {
             playerAttack.Throw(direction);
         }
-        public void InputBufferCancel() {
-            playerAttack.InputBufferCancel();
+        public void InputBufferCancel(int frameLimit) {
+            playerAttack.InputBufferCancel(frameLimit);
         }
 
         // Normals

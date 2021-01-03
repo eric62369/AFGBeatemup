@@ -119,14 +119,14 @@ namespace BattleInput {
             // button combos
             if (InterpretUtil.InterpretTapButtonCombo(inputHistory, ForwardThrow)) {
                 DebugMessage(ForwardThrow.ToString());
-                inputActions.InputBufferCancel();
+                inputActions.InputBufferCancel(ForwardThrow.frameLimit);
                 inputActions.Throw(true);
                 return true;
             }
 
             if (InterpretUtil.InterpretTapButtonCombo(inputHistory, BackwardThrow)) {
                 DebugMessage(BackwardThrow.ToString());
-                inputActions.InputBufferCancel();
+                inputActions.InputBufferCancel(BackwardThrow.frameLimit);
                 inputActions.Throw(false);
                 return true;
             }

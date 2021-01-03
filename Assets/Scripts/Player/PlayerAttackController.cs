@@ -19,6 +19,9 @@ public class PlayerAttackController : MonoBehaviour {
 
     private PlayerAnimationController animator;
 
+    // How many frames since the player attacked?
+    private int framesIntoAttack;
+
     void Start()
     {
         movementController = GetComponent<PlayerMovementController>();
@@ -27,6 +30,11 @@ public class PlayerAttackController : MonoBehaviour {
         isAttacking = false;
         currentCancelAction = null;
         currentActiveAttack = null;
+        framesIntoAttack = 0;
+    }
+
+    void Update() {
+        framesIntoAttack++;
     }
     
     public void GroundedAttackFlags(string attackName)
@@ -49,6 +57,7 @@ public class PlayerAttackController : MonoBehaviour {
                 currentActiveAttack = attackName;
                 animator.AnimationSetBool("IsRunning", false);
                 movementController.StopRun();
+                framesIntoAttack = 0;
             }
         }
     }
@@ -113,9 +122,15 @@ public class PlayerAttackController : MonoBehaviour {
         animator.AnimationSetBool("CanCancel", false);
     }
 
-    public void InputBufferCancel() {
-        ResetAttackStateToNeutral();
-        animator.AnimationSetTrigger("InputBufferCancel");
+    public void InputBufferCancel(int frameLimit) {
+        if (
+            framesIntoAttack <= frameLimit &&
+            !animator.AnimationGetBool("ThrowHit") &&
+            !animator.AnimationGetBool("ThrowWhiff")
+        ) {
+            ResetAttackStateToNeutral();
+            animator.AnimationSetTrigger("InputBufferCancel");
+        }
     }
 
     public Vector2 FreezePlayer()
