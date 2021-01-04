@@ -68,7 +68,7 @@ public class PlayerAttackController : MonoBehaviour {
 
     public void AirAttackFlags(string attackName)
     {
-        if (!movementController.isGrounded && animator.AnimationGetBool("IsJumping"))
+        if (!movementController.isGrounded && animator.AnimationGetBool("IsJumping") && !movementController.isBackDashing)
         {
             if (isAttacking)
             {

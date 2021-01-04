@@ -144,7 +144,6 @@ namespace BattleInput {
             // button combos
             if (InterpretUtil.InterpretTapButtonCombo(inputHistory, RC)) {
                 DebugMessage(RC.ToString());
-                // inputActions.InputBufferCancel(RC.frameLimit);
                 inputActions.RC(RC.frameLimit);
                 return true;
             }
