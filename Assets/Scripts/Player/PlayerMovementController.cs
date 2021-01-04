@@ -67,6 +67,9 @@ public class PlayerMovementController : MonoBehaviour {
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
     void FixedUpdate()
     {
+        if (!isGrounded) {
+            animator.AnimationSetBool("IsJumping", true);
+        }
         if (!isAirDashing)
         {
             bool newGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayers);
@@ -352,7 +355,6 @@ public class PlayerMovementController : MonoBehaviour {
             }
             rb2d.velocity = new Vector2(horizontalVelocity, 0f);
             rb2d.AddForce(new Vector2(0f, JumpForce));
-            animator.AnimationSetBool("IsJumping", true);
             animator.AnimationSetBool("IsRunning", false);
             StopRun();
             AirActionsLeft--;

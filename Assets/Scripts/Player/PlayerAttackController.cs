@@ -247,7 +247,6 @@ public class PlayerAttackController : MonoBehaviour {
         animator.AnimationResetTrigger("J5B");
         animator.AnimationSetBool("ThrowWhiff", false);
         animator.AnimationSetBool("ThrowHit", false);
-        // animator.AnimationResetTrigger("ExecutingCancel");
         currentActiveAttack = null;
         isAttacking = false;
     }

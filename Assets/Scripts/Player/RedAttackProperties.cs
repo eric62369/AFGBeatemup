@@ -16,6 +16,7 @@ public class RedAttackProperties : ScriptableObject {
     {
         JumpCancellable = new HashSet<string>();
         JumpCancellable.Add("5B");
+        JumpCancellable.Add("J5B");
     }
 
     public bool CanJumpCancel(string move) {
