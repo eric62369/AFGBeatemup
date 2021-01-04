@@ -26,7 +26,7 @@ public class PlayerMovementController : MonoBehaviour {
     public Numpad IsWalking;
     public bool isAirDashing;
     private IEnumerator AirDashCoroutine;
-    public bool isBackDashing;
+    public bool isBackDashing { get; private set; }
     public int MaxAirActions;
     public int AirActionsLeft { get; private set; }
     public float GravityScale;
@@ -37,7 +37,7 @@ public class PlayerMovementController : MonoBehaviour {
     public bool isGrounded { get; private set; }
     public bool isHoldingJump { get; private set; }
     private Numpad PrevJumpInput;
-    public bool hasDashMomentum;
+    private bool hasDashMomentum;
 
     private bool inHitStop;
 

@@ -9,8 +9,7 @@ public enum CancelAction
 }
 
 public class PlayerAttackController : MonoBehaviour {
-    
-    public bool isAttacking { get; private set; }
+    public bool isAttacking; // TODO: Reset this!
     public RedAttackProperties attackProperties;
     private PlayerMovementController movementController;
     private PlayerStateManager playerState;
@@ -33,8 +32,6 @@ public class PlayerAttackController : MonoBehaviour {
         framesIntoAttack = 0;
 
         movementController.LandEvent += LandCancelHandler;
-
-
     }
 
     void Update() {
@@ -129,7 +126,7 @@ public class PlayerAttackController : MonoBehaviour {
     public void ThrowUnFreeze()
     {
         movementController.ThrowEnd();
-        MoveDone();
+        // MoveDone();
     }
 
     public void Startup()
