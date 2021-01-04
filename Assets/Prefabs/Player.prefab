@@ -1206,11 +1206,10 @@ MonoBehaviour:
   MaxAirActions: 2
   GravityScale: 5
   groundCheck: {fileID: 7814688487690997638}
-  groundCheckRadius: 0.08
+  groundCheckRadius: 0.02
   groundLayers:
     serializedVersion: 2
     m_Bits: 256
-  isHoldingJump: 0
 --- !u!95 &7814688488446206483
 Animator:
   serializedVersion: 3
@@ -1352,7 +1351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Time66: 15
   Time236: 30
-  DEBUG: 0
+  DEBUG: 1
   scanner: {fileID: 0}
 --- !u!114 &5583650266419778372
 MonoBehaviour:

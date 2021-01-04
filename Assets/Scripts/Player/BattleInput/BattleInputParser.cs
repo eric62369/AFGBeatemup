@@ -188,6 +188,7 @@ namespace BattleInput {
         }
 
         private bool InterpretMovement (InputHistory inputHistory) {
+            inputActions.StopWalk();
             if (InterpretUtil.InterpretMotionInput(inputHistory, M66))
             {
                 DebugMessage(M66.ToString());
@@ -226,7 +227,6 @@ namespace BattleInput {
                 inputActions.Walk(Numpad.N4);
                 return true;
             }
-            inputActions.StopWalk();
             
             return false;
         }

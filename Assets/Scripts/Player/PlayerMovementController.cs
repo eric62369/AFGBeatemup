@@ -36,7 +36,7 @@ public class PlayerMovementController : MonoBehaviour {
     public bool isGrounded { get; private set; }
     public bool isHoldingJump { get; private set; }
     private Numpad PrevJumpInput;
-    private bool hasDashMomentum;
+    public bool hasDashMomentum;
 
     private bool inHitStop;
 
@@ -117,6 +117,7 @@ public class PlayerMovementController : MonoBehaviour {
     {
         isAirDashing = false;
         isBackDashing = false;
+        hasDashMomentum = false;
         animator.AnimationSetBool("IsJumping", false);
         animator.AnimationSetBool("IsRunning", false);
         animator.AnimationSetBool("IsSkidding", false);
@@ -304,9 +305,15 @@ public class PlayerMovementController : MonoBehaviour {
     /// Called at the end of the skidding animation, and used to cancel Run state
     public void StopRun()
     {
+        hasDashMomentum = false;
         animator.AnimationSetBool("IsSkidding", false);
         animator.AnimationSetBool("IsRunning", false);
     }
+    private void JumpCancelRun() {
+        animator.AnimationSetBool("IsSkidding", false);
+        animator.AnimationSetBool("IsRunning", false);
+    }
+
     public void Skid()
     {
         int direction = 1;
@@ -375,7 +382,7 @@ public class PlayerMovementController : MonoBehaviour {
         rb2d.AddForce(new Vector2(0f, JumpForce));
         animator.AnimationSetBool("IsRunning", false);
         animator.AnimationSetBool("IsJumping", true);
-        StopRun();
+        JumpCancelRun();
         AirActionsLeft--;
         SoundManagerController.playSFX(SoundManagerController.jumpSound);
     }
