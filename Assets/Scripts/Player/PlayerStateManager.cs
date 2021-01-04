@@ -175,7 +175,8 @@ public class PlayerStateManager : MonoBehaviour
         ResetStateToNeutral();
         if (action == CancelAction.Jump)
         {
-            movementController.Jump(cancelActionInput);
+            // movementController.setIsHoldingJump(false);
+            movementController.JumpCancel(cancelActionInput);
         }
         animator.AnimationSetBool("CanCancel", false);
     }

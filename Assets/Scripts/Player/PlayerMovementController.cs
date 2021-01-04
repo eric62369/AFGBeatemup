@@ -27,7 +27,7 @@ public class PlayerMovementController : MonoBehaviour {
     public bool isAirDashing;
     public bool isBackDashing;
     public int MaxAirActions;
-    private int AirActionsLeft;
+    public int AirActionsLeft { get; private set; }
     public float GravityScale;
 
     public Transform groundCheck;
@@ -67,9 +67,9 @@ public class PlayerMovementController : MonoBehaviour {
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
     void FixedUpdate()
     {
-        if (!isGrounded) {
-            animator.AnimationSetBool("IsJumping", true);
-        }
+        // if (!isGrounded) {
+            // animator.AnimationSetBool("IsJumping", true);
+        // }
         if (!isAirDashing)
         {
             bool newGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayers);
@@ -86,7 +86,6 @@ public class PlayerMovementController : MonoBehaviour {
                 AirActionsLeft = MaxAirActions;
 
                 if (isHoldingJump) {
-                    isHoldingJump = false;
                     Jump(PrevJumpInput);
                 }
 
@@ -319,8 +318,7 @@ public class PlayerMovementController : MonoBehaviour {
         animator.AnimationSetBool("IsRunning", false);
     }
 
-    public void Jump(Numpad direction)
-    {
+    public void Jump(Numpad direction) {
         if (direction != Numpad.N7 && direction != Numpad.N8 && direction != Numpad.N9)
         {
             throw new ArgumentException(direction + " is not an upwards direction");
@@ -329,37 +327,56 @@ public class PlayerMovementController : MonoBehaviour {
         // TODO: can you fix this later?
         bool canJump = isGrounded && !attackController.isAttacking && !inHitStop && AirActionsLeft == MaxAirActions && !isBackDashing;
         bool canDoubleJump = !isGrounded && !attackController.isAttacking && !inHitStop && !isHoldingJump && AirActionsLeft > 0  && !isBackDashing;
-        setIsHoldingJump(true);
         if (canJump || canDoubleJump) {
-            float horizontalVelocity = 0;
-            if (hasDashMomentum) 
-            {
-                // Slight dash momentum factored in
-                // Could be negative too
-                horizontalVelocity = Math.Abs(rb2d.velocity.x / 2);
-            }
-            if (direction == Numpad.N7)
-            {
-                // Dash momentum not factored in
-                horizontalVelocity = -HorizontalJumpSpeed;
-                hasDashMomentum = false;
-            }
-            else if (direction == Numpad.N9)
-            {
-                horizontalVelocity += HorizontalJumpSpeed;
-            }
-            // P1 or P2 side
-            if (!playerState.GetCurrentFacingDirection())
-            {
-                horizontalVelocity *= -1;
-            }
-            rb2d.velocity = new Vector2(horizontalVelocity, 0f);
-            rb2d.AddForce(new Vector2(0f, JumpForce));
-            animator.AnimationSetBool("IsRunning", false);
-            StopRun();
-            AirActionsLeft--;
-            SoundManagerController.playSFX(SoundManagerController.jumpSound);
+            JumpMove(direction);
         }
+    }
+
+    public void JumpCancel(Numpad direction) {
+        if (direction != Numpad.N7 && direction != Numpad.N8 && direction != Numpad.N9)
+        {
+            throw new ArgumentException(direction + " is not an upwards direction");
+        }
+        PrevJumpInput = direction;
+        // TODO: can you fix this later?
+        bool canJump = isGrounded && !attackController.isAttacking && !inHitStop && AirActionsLeft == MaxAirActions && !isBackDashing;
+        bool canDoubleJump = !isGrounded && !attackController.isAttacking && !inHitStop && AirActionsLeft > 0  && !isBackDashing;
+        if (canJump || canDoubleJump) {
+            JumpMove(direction);
+        }
+    }
+
+    private void JumpMove(Numpad direction)
+    {
+        float horizontalVelocity = 0;
+        if (hasDashMomentum) 
+        {
+            // Slight dash momentum factored in
+            // Could be negative too
+            horizontalVelocity = Math.Abs(rb2d.velocity.x / 2);
+        }
+        if (direction == Numpad.N7)
+        {
+            // Dash momentum not factored in
+            horizontalVelocity = -HorizontalJumpSpeed;
+            hasDashMomentum = false;
+        }
+        else if (direction == Numpad.N9)
+        {
+            horizontalVelocity += HorizontalJumpSpeed;
+        }
+        // P1 or P2 side
+        if (!playerState.GetCurrentFacingDirection())
+        {
+            horizontalVelocity *= -1;
+        }
+        rb2d.velocity = new Vector2(horizontalVelocity, 0f);
+        rb2d.AddForce(new Vector2(0f, JumpForce));
+        animator.AnimationSetBool("IsRunning", false);
+        animator.AnimationSetBool("IsJumping", true);
+        StopRun();
+        AirActionsLeft--;
+        SoundManagerController.playSFX(SoundManagerController.jumpSound);
     }
 
     public void setIsHoldingJump(bool state)

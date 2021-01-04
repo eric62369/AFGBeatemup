@@ -41,6 +41,7 @@ namespace BattleInput {
         public void Jump (Numpad direction) {
             playerState.SetCancelAction(CancelAction.Jump, direction);
             playerMovement.Jump(direction);
+            playerMovement.setIsHoldingJump(true);
         }
         public void ReleaseJump () {
             playerMovement.setIsHoldingJump(false);
