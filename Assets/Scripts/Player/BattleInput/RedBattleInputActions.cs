@@ -56,19 +56,36 @@ namespace BattleInput {
 
         // Normals
         public void N5 (Button button) {
-            switch (button) {
-                case Button.A:
-                    break;
-                case Button.B:
-                    playerAttack.Attack5B ();
-                    break;
-                case Button.C:
-                    playerAttack.Attack5C ();
-                    break;
-                case Button.D:
-                    break;
-                default:
-                    throw new InvalidOperationException (button + " was not an expected normal button!");
+            if (playerMovement.isGrounded) {
+                switch (button) {
+                    case Button.A:
+                        break;
+                    case Button.B:
+                        playerAttack.Attack5B ();
+                        break;
+                    case Button.C:
+                        playerAttack.Attack5C ();
+                        break;
+                    case Button.D:
+                        break;
+                    default:
+                        throw new InvalidOperationException (button + " was not an expected normal button!");
+                }
+            } else {
+                switch (button) {
+                    case Button.A:
+                        break;
+                    case Button.B:
+                        playerAttack.AttackJ5B ();
+                        break;
+                    case Button.C:
+                        playerAttack.AttackJ5C ();
+                        break;
+                    case Button.D:
+                        break;
+                    default:
+                        throw new InvalidOperationException (button + " was not an expected normal button!");
+                }
             }
 
         }

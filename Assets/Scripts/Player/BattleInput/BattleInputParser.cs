@@ -79,12 +79,24 @@ namespace BattleInput {
             list5B.Add ("5");
             list5B.Add ("6");
             list5B.Add ("4");
+            list5B.Add ("1");
+            list5B.Add ("2");
+            list5B.Add ("3");
+            list5B.Add ("7");
+            list5B.Add ("8");
+            list5B.Add ("9");
             N5B = new AttackMotionInput (list5B, "B", 0);
 
             IList<string> list5C = new List<string> ();
             list5C.Add ("5");
             list5C.Add ("6");
             list5C.Add ("4");
+            list5C.Add ("1");
+            list5C.Add ("2");
+            list5C.Add ("3");
+            list5C.Add ("7");
+            list5C.Add ("8");
+            list5C.Add ("9");
             N5C = new AttackMotionInput (list5C, "C", 0);
 
             IList<string> listForwardThrow = new List<string> ();
@@ -138,6 +150,8 @@ namespace BattleInput {
                 return true;
             }
 
+            // command normals
+
             // normals
             if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5B)) {
                 DebugMessage(N5B.ToString());
@@ -149,33 +163,6 @@ namespace BattleInput {
                 inputActions.N5(Button.C);
                 return true;
             }
-            // if (buttonsDown.Contains(Button.A))
-            // {
-            //     InterpretSpecial(Button.A);
-            // }
-            // else if (buttonsDown.Contains(Button.B))
-            // {
-            //     InterpretSpecial(Button.B);
-            // }
-            // else if (buttonsDown.Contains(Button.C))
-            // {
-            //     InterpretSpecial(Button.C);
-            // }
-            // else if (buttonsDown.Contains(Button.D))
-            // {
-            //     Numpad firstInput = inputHistory[0];
-            //     switch (firstInput)
-            //     {
-            //         case Numpad.N6:
-            //             playerAttack.Throw(true);
-            //             break;
-            //         case Numpad.N4:
-            //             playerAttack.Throw(false);
-            //             break;
-            //         default:
-            //             break;
-            //     }
-            // }
 
             return false;
         }
@@ -223,102 +210,5 @@ namespace BattleInput {
             
             return false;
         }
-
-        // private void InterpretDash()
-        // {
-        //     Numpad firstInput = inputHistory[0];
-        //     Numpad secondInput = inputHistory[1];
-        //     Numpad thirdInput = inputHistory[2];
-        //     Numpad fourthInput = inputHistory[3];
-        //     float firstTime = timeHistory[0];
-        //     float secondTime = timeHistory[1];
-
-        //     if (!playerAttack.isAttacking)
-        //     {
-        //         bool forwardDash = 
-        //             (firstInput == Numpad.N6 && secondInput == Numpad.N5 && (thirdInput == Numpad.N6 || thirdInput == Numpad.N9)) ||
-        //             (firstInput == Numpad.N6 && secondInput == Numpad.N5 && thirdInput == Numpad.N8 && fourthInput == Numpad.N9);
-        //         bool backwardDash = 
-        //             (firstInput == Numpad.N4 && secondInput == Numpad.N5 && (thirdInput == Numpad.N4 || thirdInput == Numpad.N7)) ||
-        //             (firstInput == Numpad.N4 && secondInput == Numpad.N5 && thirdInput == Numpad.N8 && fourthInput == Numpad.N7);
-        //         if (forwardDash && !animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding"))
-        //         {
-        //             if (firstTime + secondTime <= Time66)
-        //             {
-        //                 if (playerMovement.isGrounded)
-        //                 {
-        //                     // Grounded forward step dash
-        //                     playerMovement.Dash(firstInput);
-        //                 }
-        //                 else
-        //                 {
-        //                     // forward airdash
-        //                     playerMovement.AirDash(true);
-        //                 }
-        //             }
-        //         }
-        //         else if (backwardDash)
-        //         {
-        //             if (firstTime + secondTime <= Time66)
-        //             {
-        //                 if (playerMovement.isGrounded)
-        //                 {
-        //                     // Grounded backdash
-        //                     playerMovement.BackDash(firstInput);
-        //                 }
-        //                 else
-        //                 {
-        //                     // back airdash
-        //                     playerMovement.AirDash(false);
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-        // private void InterpretSpecial(Button button)
-        // {
-        //     Numpad firstInput = inputHistory[0];
-        //     Numpad secondInput = inputHistory[1];
-        //     Numpad thirdInput = inputHistory[2];
-        //     Numpad fourthInput = inputHistory[3];
-        //     float firstTime = timeHistory[0];
-        //     float secondTime = timeHistory[1];
-        //     float thirdTime = timeHistory[2];
-        //     // 236 or 236? motion
-        //     if (thirdInput == Numpad.N2 && secondInput == Numpad.N3 && firstInput == Numpad.N6)
-        //     {
-        //         // Motion detected!
-        //         if (firstTime + runningTime <= Time236)
-        //         {
-        //             if (button == Button.A)
-        //             {
-        //                 Debug.Log("Stun Edge!");
-        //             }
-        //         }
-        //     }
-        //     else if (fourthInput == Numpad.N2 && thirdInput == Numpad.N3 && secondInput == Numpad.N6) 
-        //     {
-        //         // Motion detected!
-        //         if (secondTime + firstTime + runningTime <= Time236)
-        //         {
-        //             if (button == Button.A)
-        //             {
-        //                 Debug.Log("Stun Edge Extra!");
-        //             }
-        //         }
-        //     }
-        //     else
-        //     {
-        //         // Normals
-        //         if (button == Button.A)
-        //         {
-        //             playerAttack.Attack5B();
-        //         }
-        //         else if (button == Button.B)
-        //         {
-        //             playerAttack.Attack5C();
-        //         }
-        //     }
-        // }
     }
 }

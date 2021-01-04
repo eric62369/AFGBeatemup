@@ -31,6 +31,10 @@ public class PlayerAttackController : MonoBehaviour {
         currentCancelAction = null;
         currentActiveAttack = null;
         framesIntoAttack = 0;
+
+        movementController.LandEvent += LandCancelHandler;
+
+
     }
 
     void Update() {
@@ -61,6 +65,32 @@ public class PlayerAttackController : MonoBehaviour {
             }
         }
     }
+
+    public void AirAttackFlags(string attackName)
+    {
+        if (!movementController.isGrounded && animator.AnimationGetBool("IsJumping"))
+        {
+            if (isAttacking)
+            {
+                // Player is already attacking, is a cancel possible?
+                if (animator.AnimationGetBool("CanCancel"))
+                {
+                    animator.AnimationSetTrigger(attackName);
+                    currentActiveAttack = attackName;
+                }
+            }
+            else
+            {
+                isAttacking = true;
+                animator.AnimationSetTrigger(attackName);
+                currentActiveAttack = attackName;
+                // animator.AnimationSetBool("IsRunning", false);
+                // movementController.StopRun();
+                framesIntoAttack = 0;
+            }
+        }
+    }
+
     public void Attack5B()
     {
         GroundedAttackFlags("5B");
@@ -68,6 +98,14 @@ public class PlayerAttackController : MonoBehaviour {
     public void Attack5C()
     {
         GroundedAttackFlags("5C");
+    }
+    public void AttackJ5B()
+    {
+        AirAttackFlags("J5B");
+    }
+    public void AttackJ5C()
+    {
+        // GroundedAttackFlags("5C");
     }
     public void Throw(bool isForward)
     {
@@ -193,12 +231,23 @@ public class PlayerAttackController : MonoBehaviour {
         }
     }
 
+    private void LandCancelHandler(object sender, LandEventArgs e) {
+        if (isAttacking) {
+            ResetAttackStateToNeutral();
+            animator.AnimationSetTrigger("ExecutingCancel");
+            animator.AnimationSetBool("CanCancel", false);
+        }
+    }
+
+
     public void ResetAttackStateToNeutral()
     {
         animator.AnimationSetBool("5B", false);
         animator.AnimationSetBool("5C", false);
+        animator.AnimationResetTrigger("J5B");
         animator.AnimationSetBool("ThrowWhiff", false);
         animator.AnimationSetBool("ThrowHit", false);
+        // animator.AnimationResetTrigger("ExecutingCancel");
         currentActiveAttack = null;
         isAttacking = false;
     }

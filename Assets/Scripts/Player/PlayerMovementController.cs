@@ -3,6 +3,10 @@ using System;
 using System.Collections;
 using BattleInput;
 
+public class LandEventArgs {
+
+}
+
 public class PlayerMovementController : MonoBehaviour {
 
     public float WalkSpeed;
@@ -34,13 +38,17 @@ public class PlayerMovementController : MonoBehaviour {
     private Numpad PrevJumpInput;
     private bool hasDashMomentum;
 
+    private bool inHitStop;
+
     private Rigidbody2D rb2d;
-    
     private PlayerAttackController attackController;
     // private PlayerInputManager playerInput;
     private PlayerStateManager playerState;
-
     private PlayerAnimationController animator;
+
+    // events
+    public delegate void Land(object sender, LandEventArgs args);
+    public event Land LandEvent;
 
     // Use this for initialization
     void Start()
@@ -53,6 +61,7 @@ public class PlayerMovementController : MonoBehaviour {
         rb2d.gravityScale = GravityScale;
         animator = GetComponent<PlayerAnimationController>();
         IsWalking = Numpad.N5;
+        inHitStop = false;
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -77,6 +86,8 @@ public class PlayerMovementController : MonoBehaviour {
                     isHoldingJump = false;
                     Jump(PrevJumpInput);
                 }
+
+                RaiseLandEvent(new LandEventArgs());
             }
             isGrounded = newGrounded;
 
@@ -88,6 +99,14 @@ public class PlayerMovementController : MonoBehaviour {
 
             WalkUpdate();
             Run(Numpad.N6);
+        }
+    }
+
+    protected virtual void RaiseLandEvent(LandEventArgs e) {
+        Land raiseEvent = LandEvent;
+
+        if (raiseEvent != null) {
+            raiseEvent(this, e);
         }
     }
 
@@ -132,6 +151,7 @@ public class PlayerMovementController : MonoBehaviour {
     private void WalkUpdate() {
         bool canWalk =
             isGrounded &&
+            !inHitStop &&
             !attackController.isAttacking &&
             !isBackDashing &&
             !animator.AnimationGetBool("IsJumping") &&
@@ -174,7 +194,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new InvalidProgramException("Tried to Dash while airborne!");
         }
-        if (isGrounded && !attackController.isAttacking && !isBackDashing && !animator.AnimationGetBool("IsJumping")) {
+        if (isGrounded && !inHitStop && !attackController.isAttacking && !isBackDashing && !animator.AnimationGetBool("IsJumping")) {
             float horizontalVelocity = InitialDashSpeed;
             if (!playerState.GetCurrentFacingDirection())
             {
@@ -196,7 +216,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new InvalidProgramException("Tried to Backdash while airborne!");
         }
-        if (isGrounded && !isBackDashing && !attackController.isAttacking && !animator.AnimationGetBool("IsJumping")) {
+        if (isGrounded && !isBackDashing && !inHitStop && !attackController.isAttacking && !animator.AnimationGetBool("IsJumping")) {
             StopRun();
             float horizontalVelocity = -BackDashBackSpeed;
             if (!playerState.GetCurrentFacingDirection())
@@ -217,7 +237,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             throw new InvalidProgramException("Tried to Airdash while grounded!");
         }
-        if (AirActionsLeft > 0 && !isBackDashing)
+        if (AirActionsLeft > 0 && !isBackDashing && !inHitStop && !attackController.isAttacking)
         {
             isAirDashing = true;
             rb2d.gravityScale = 0f;
@@ -261,7 +281,7 @@ public class PlayerMovementController : MonoBehaviour {
         }
         if (animator.AnimationGetBool("IsRunning") &&
             !animator.AnimationGetBool("IsSkidding") &&
-            isGrounded && !attackController.isAttacking && !isBackDashing) {
+            isGrounded && !attackController.isAttacking && !inHitStop && !isBackDashing) {
             float horizontalVelocity = Math.Abs(rb2d.velocity.x);
             float horizontalForce = RunForce;
             if (horizontalVelocity > MaxRunSpeed)
@@ -304,8 +324,8 @@ public class PlayerMovementController : MonoBehaviour {
         }
         PrevJumpInput = direction;
         // TODO: can you fix this later?
-        bool canJump = isGrounded && !attackController.isAttacking && AirActionsLeft == MaxAirActions && !isBackDashing;
-        bool canDoubleJump = !isGrounded && !attackController.isAttacking && !isHoldingJump && AirActionsLeft > 0  && !isBackDashing;
+        bool canJump = isGrounded && !attackController.isAttacking && !inHitStop && AirActionsLeft == MaxAirActions && !isBackDashing;
+        bool canDoubleJump = !isGrounded && !attackController.isAttacking && !inHitStop && !isHoldingJump && AirActionsLeft > 0  && !isBackDashing;
         setIsHoldingJump(true);
         if (canJump || canDoubleJump) {
             float horizontalVelocity = 0;
@@ -365,6 +385,7 @@ public class PlayerMovementController : MonoBehaviour {
         rb2d.bodyType = RigidbodyType2D.Kinematic;
         Vector2 oldVelocity = rb2d.velocity;
         rb2d.velocity = new Vector2(0f, 0f);
+        inHitStop = true;
         return oldVelocity;
     }
 
@@ -372,6 +393,7 @@ public class PlayerMovementController : MonoBehaviour {
     {
         rb2d.bodyType = RigidbodyType2D.Dynamic;
         rb2d.velocity = oldVelocity;
+        inHitStop = false;
     }
 
     /// Reevaluate facing direction, update if necessary
