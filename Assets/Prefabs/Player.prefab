@@ -1202,7 +1202,6 @@ MonoBehaviour:
   SkidSpeed: 8
   IsWalking: 0
   isAirDashing: 0
-  isBackDashing: 0
   MaxAirActions: 2
   GravityScale: 5
   groundCheck: {fileID: 7814688487690997638}
@@ -1267,6 +1266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e157c5f4d45d91551962858215739051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAttacking: 0
   attackProperties: {fileID: 11400000, guid: 415d576e4dd15e54aa11a38c6d137a77, type: 2}
 --- !u!114 &3245736410817360008
 MonoBehaviour:
@@ -1351,7 +1351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Time66: 15
   Time236: 30
-  DEBUG: 1
+  DEBUG: 0
   scanner: {fileID: 0}
 --- !u!114 &5583650266419778372
 MonoBehaviour:
