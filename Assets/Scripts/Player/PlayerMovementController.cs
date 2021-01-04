@@ -34,7 +34,7 @@ public class PlayerMovementController : MonoBehaviour {
     public float groundCheckRadius;
     public LayerMask groundLayers;
     public bool isGrounded { get; private set; }
-    public bool isHoldingJump;
+    public bool isHoldingJump { get; private set; }
     private Numpad PrevJumpInput;
     private bool hasDashMomentum;
 
@@ -42,7 +42,6 @@ public class PlayerMovementController : MonoBehaviour {
 
     private Rigidbody2D rb2d;
     private PlayerAttackController attackController;
-    // private PlayerInputManager playerInput;
     private PlayerStateManager playerState;
     private PlayerAnimationController animator;
 
@@ -67,9 +66,6 @@ public class PlayerMovementController : MonoBehaviour {
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
     void FixedUpdate()
     {
-        // if (!isGrounded) {
-            // animator.AnimationSetBool("IsJumping", true);
-        // }
         if (!isAirDashing)
         {
             bool newGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayers);

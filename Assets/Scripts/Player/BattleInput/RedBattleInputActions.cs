@@ -39,7 +39,9 @@ namespace BattleInput {
             playerMovement.StopWalk();
         }
         public void Jump (Numpad direction) {
-            playerState.SetCancelAction(CancelAction.Jump, direction);
+            if (!playerMovement.isHoldingJump) {
+                playerState.SetCancelAction(CancelAction.Jump, direction);
+            }
             playerMovement.Jump(direction);
             playerMovement.setIsHoldingJump(true);
         }
