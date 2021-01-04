@@ -25,6 +25,7 @@ public class PlayerMovementController : MonoBehaviour {
     // 4 for back, 6 for forward, 5 for no walk
     public Numpad IsWalking;
     public bool isAirDashing;
+    private IEnumerator AirDashCoroutine;
     public bool isBackDashing;
     public int MaxAirActions;
     public int AirActionsLeft { get; private set; }
@@ -61,6 +62,7 @@ public class PlayerMovementController : MonoBehaviour {
         animator = GetComponent<PlayerAnimationController>();
         IsWalking = Numpad.N5;
         inHitStop = false;
+        AirDashCoroutine = null;
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -121,6 +123,15 @@ public class PlayerMovementController : MonoBehaviour {
         animator.AnimationSetBool("IsJumping", false);
         animator.AnimationSetBool("IsRunning", false);
         animator.AnimationSetBool("IsSkidding", false);
+    }
+
+    public void RC() {
+        ResetMovementStateToNeutral();
+        rb2d.gravityScale = GravityScale;
+        // stop potential airdash coroutine
+        if (AirDashCoroutine != null) {
+            StopCoroutine(AirDashCoroutine);
+        }
     }
 
     public void Walk(Numpad direction)
@@ -245,7 +256,6 @@ public class PlayerMovementController : MonoBehaviour {
         {
             isAirDashing = true;
             rb2d.gravityScale = 0f;
-            IEnumerator coroutine;
             float AirDashVelocity = -AirDashSpeed;
             float AirDashDuration = BackwardAirDashDuration;
             if (isForward)
@@ -258,10 +268,10 @@ public class PlayerMovementController : MonoBehaviour {
                 AirDashVelocity *= -1;
             }
             rb2d.velocity = new Vector2(AirDashVelocity, 0f);
-            coroutine = StopAirDashCoroutine(AirDashDuration);
+            AirDashCoroutine = StopAirDashCoroutine(AirDashDuration);
             AirActionsLeft--;
             SoundManagerController.playSFX(SoundManagerController.airdashSound);
-            StartCoroutine(coroutine);
+            StartCoroutine(AirDashCoroutine);
         }
     }
 
@@ -271,7 +281,13 @@ public class PlayerMovementController : MonoBehaviour {
         rb2d.gravityScale = GravityScale;
         rb2d.velocity = new Vector2(rb2d.velocity.x / 2, rb2d.velocity.y);
         isAirDashing = false;
+        AirDashCoroutine = null;
     }
+    private void InterruptAirDash() {
+        rb2d.gravityScale = GravityScale;
+        isAirDashing = false;
+    }
+
     private IEnumerator StopBackDashCoroutine()
     {
         yield return new WaitForSeconds(BackDashDuration);

@@ -173,7 +173,7 @@ public class PlayerAttackController : MonoBehaviour {
 
     public void RC(int frameLimit) {
         ResetAttackStateToNeutral();
-        movementController.ResetMovementStateToNeutral();
+        movementController.RC();
         // stop airdash movement
         animator.AnimationSetTrigger("InputBufferCancel");
     }
