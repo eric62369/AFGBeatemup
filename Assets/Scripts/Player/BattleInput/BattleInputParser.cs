@@ -28,6 +28,7 @@ namespace BattleInput {
         private static MotionInput MJump;
         private static AttackMotionInput ForwardThrow;
         private static AttackMotionInput BackwardThrow;
+        private static AttackMotionInput RC;
 
         void Start () {
             // Might not work, interface might need to be a component
@@ -101,11 +102,23 @@ namespace BattleInput {
 
             IList<string> listForwardThrow = new List<string> ();
             listForwardThrow.Add ("6");
-            ForwardThrow = new AttackMotionInput (listForwardThrow, "BD", 2);
+            ForwardThrow = new AttackMotionInput (listForwardThrow, "AD", 2);
 
             IList<string> listBackwardThrow = new List<string> ();
             listBackwardThrow.Add ("4");
-            BackwardThrow = new AttackMotionInput (listBackwardThrow, "BD", 2);
+            BackwardThrow = new AttackMotionInput (listBackwardThrow, "AD", 2);
+
+            IList<string> listRC = new List<string> ();
+            listRC.Add ("5");
+            listRC.Add ("6");
+            listRC.Add ("4");
+            listRC.Add ("1");
+            listRC.Add ("2");
+            listRC.Add ("3");
+            listRC.Add ("7");
+            listRC.Add ("8");
+            listRC.Add ("9");
+            RC = new AttackMotionInput (listRC, "ABD", 3);
         }
 
         /**
@@ -129,6 +142,13 @@ namespace BattleInput {
             // invul moves
 
             // button combos
+            if (InterpretUtil.InterpretTapButtonCombo(inputHistory, RC)) {
+                DebugMessage(RC.ToString());
+                // inputActions.InputBufferCancel(RC.frameLimit);
+                inputActions.RC(RC.frameLimit);
+                return true;
+            }
+
             if (InterpretUtil.InterpretTapButtonCombo(inputHistory, ForwardThrow)) {
                 DebugMessage(ForwardThrow.ToString());
                 inputActions.InputBufferCancel(ForwardThrow.frameLimit);

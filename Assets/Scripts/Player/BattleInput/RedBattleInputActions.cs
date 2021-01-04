@@ -56,6 +56,9 @@ namespace BattleInput {
         public void InputBufferCancel(int frameLimit) {
             playerAttack.InputBufferCancel(frameLimit);
         }
+        public void RC(int frameLimit) {
+            playerAttack.RC(frameLimit);
+        }
 
         // Normals
         public void N5 (Button button) {

@@ -42,7 +42,6 @@ namespace BattleInput {
             IEnumerable<PlayerStateManager> stateManagers =
                 (IEnumerable<PlayerStateManager>) FindObjectsOfType<PlayerStateManager> ();
             playerStateManager = stateManagers.FirstOrDefault (s => s.GetPlayerIndex () == playerIndex);
-            // playerInputManager = playerStateManager.GetInputManager();
             scanner = playerStateManager.GetInputScanner ();
         }
 
