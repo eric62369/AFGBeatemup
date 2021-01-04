@@ -172,10 +172,12 @@ public class PlayerAttackController : MonoBehaviour {
     }
 
     public void RC(int frameLimit) {
-        ResetAttackStateToNeutral();
-        movementController.RC();
-        // stop airdash movement
-        animator.AnimationSetTrigger("InputBufferCancel");
+        if (!animator.AnimationGetBool("ThrowHit")) {
+            ResetAttackStateToNeutral();
+            movementController.RC();
+            // stop airdash movement
+            animator.AnimationSetTrigger("InputBufferCancel");
+        }
     }
 
     public Vector2 FreezePlayer()

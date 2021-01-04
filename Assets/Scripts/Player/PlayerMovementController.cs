@@ -394,6 +394,7 @@ public class PlayerMovementController : MonoBehaviour {
         {
             horizontalVelocity *= -1;
         }
+        gameObject.transform.Translate(0, 0.2f, 0);
         rb2d.velocity = new Vector2(horizontalVelocity, 0f);
         rb2d.AddForce(new Vector2(0f, JumpForce));
         animator.AnimationSetBool("IsRunning", false);
@@ -401,6 +402,7 @@ public class PlayerMovementController : MonoBehaviour {
         JumpCancelRun();
         AirActionsLeft--;
         SoundManagerController.playSFX(SoundManagerController.jumpSound);
+        isGrounded = false;
     }
 
     public void setIsHoldingJump(bool state)
