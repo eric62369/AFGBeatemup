@@ -123,7 +123,9 @@ public class PlayerMovementController : MonoBehaviour {
     {
         isAirDashing = false;
         isBackDashing = false;
-        hasDashMomentum = false;
+        if (isGrounded) {
+            hasDashMomentum = false;
+        }
         animator.AnimationSetBool("IsJumping", false);
         animator.AnimationSetBool("IsRunning", false);
         animator.AnimationSetBool("IsSkidding", false);
