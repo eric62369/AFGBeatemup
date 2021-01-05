@@ -38,6 +38,14 @@ public class PlayerMovementController : MonoBehaviour {
     public bool isHoldingJump { get; private set; }
     public bool hasNotUsedJump { get; set; }
     public Numpad PrevJumpInput { get; set; }
+
+    // How many frames should the player rise for?
+    public int risingJumpFrames;
+    // How many frames since the player jumped?
+    private int framesIntoJump;
+    private float xRisingJumpVelocity;
+    public float yRisingJumpVelocity;
+
     private bool hasDashMomentum;
 
     private bool inHitStop;
@@ -65,6 +73,7 @@ public class PlayerMovementController : MonoBehaviour {
         inHitStop = false;
         AirDashCoroutine = null;
         hasNotUsedJump = false;
+        framesIntoJump = risingJumpFrames + 1;
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
@@ -92,10 +101,6 @@ public class PlayerMovementController : MonoBehaviour {
                 AirActionsLeft = MaxAirActions;
                 hasNotUsedJump = true;
 
-                // if (isHoldingJump) {
-                //     Jump(PrevJumpInput);
-                // }
-
                 RaiseLandEvent(new LandEventArgs());
             }
             isGrounded = newGrounded;
@@ -107,6 +112,7 @@ public class PlayerMovementController : MonoBehaviour {
             }
 
             WalkUpdate();
+            JumpUpdate();
             Run(Numpad.N6);
         }
     }
@@ -260,6 +266,7 @@ public class PlayerMovementController : MonoBehaviour {
         }
         if (AirActionsLeft > 0 && !isBackDashing && !inHitStop && !attackController.isAttacking)
         {
+            framesIntoJump = risingJumpFrames + 1;
             isAirDashing = true;
             rb2d.gravityScale = 0f;
             float AirDashVelocity = -AirDashSpeed;
@@ -387,14 +394,27 @@ public class PlayerMovementController : MonoBehaviour {
             horizontalVelocity *= -1;
         }
         gameObject.transform.Translate(0, 0.2f, 0);
-        rb2d.velocity = new Vector2(horizontalVelocity, 0f);
-        rb2d.AddForce(new Vector2(0f, JumpForce));
+
+        // rb2d.velocity = new Vector2(horizontalVelocity, 0f);
+        // rb2d.AddForce(new Vector2(0f, JumpForce));
+        xRisingJumpVelocity = horizontalVelocity;
+        yRisingJumpVelocity = yRisingJumpVelocity;
+        framesIntoJump = 0;
+
         animator.AnimationSetBool("IsRunning", false);
         animator.AnimationSetBool("IsJumping", true);
         JumpCancelRun();
         AirActionsLeft--;
         SoundManagerController.playSFX(SoundManagerController.jumpSound);
         hasNotUsedJump = false;
+    }
+
+    private void JumpUpdate() {
+        if (framesIntoJump <= risingJumpFrames) {
+            // player is rising from jump
+            rb2d.velocity = new Vector2(xRisingJumpVelocity, yRisingJumpVelocity);
+        }
+        framesIntoJump++;
     }
 
     public void setIsHoldingJump(bool state)

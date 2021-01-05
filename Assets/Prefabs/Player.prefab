@@ -1199,7 +1199,7 @@ MonoBehaviour:
   JumpForce: 1000
   RunForce: 30
   MaxRunSpeed: 12
-  SkidSpeed: 8
+  SkidSpeed: 10
   IsWalking: 0
   isAirDashing: 0
   MaxAirActions: 2
@@ -1209,6 +1209,8 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 256
+  risingJumpFrames: 10
+  yRisingJumpVelocity: 18
 --- !u!95 &7814688488446206483
 Animator:
   serializedVersion: 3
