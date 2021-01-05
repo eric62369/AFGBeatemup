@@ -53,6 +53,9 @@ public class PlayerAttackController : MonoBehaviour {
             }
             else
             {
+                if (animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding")) {
+                    movementController.Skid();
+                }
                 isAttacking = true;
                 animator.AnimationSetBool(attackName, true);
                 currentActiveAttack = attackName;

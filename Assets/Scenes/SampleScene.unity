@@ -777,6 +777,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: SkidSpeed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7814688488446206493, guid: 37e9a37824157947fb579dd60e393050, type: 3}
       propertyPath: m_Name
       value: Player
@@ -790,25 +794,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8103845997996031812, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8103845998288296121, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
       propertyPath: m_Name
       value: Korie
-      objectReference: {fileID: 0}
-    - target: {fileID: 8103845998288296123, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
-      propertyPath: m_Size.x
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8103845998288296123, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
-      propertyPath: m_Size.y
-      value: 9.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8103845998288296123, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
-      propertyPath: m_Offset.y
-      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 8103845998288296125, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -816,7 +804,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8103845998288296125, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.47
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 8103845998288296125, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
       propertyPath: m_LocalPosition.z
