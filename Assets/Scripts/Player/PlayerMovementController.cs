@@ -35,8 +35,9 @@ public class PlayerMovementController : MonoBehaviour {
     public float groundCheckRadius;
     public LayerMask groundLayers;
     public bool isGrounded { get; private set; }
-    public bool isHoldingJump { get; private set; }
-    private Numpad PrevJumpInput;
+    public bool isHoldingJump;
+    public bool hasNotUsedJump;
+    public Numpad PrevJumpInput { get; set; }
     private bool hasDashMomentum;
 
     private bool inHitStop;
@@ -63,10 +64,11 @@ public class PlayerMovementController : MonoBehaviour {
         IsWalking = Numpad.N5;
         inHitStop = false;
         AirDashCoroutine = null;
+        hasNotUsedJump = false;
     }
 
     //FixedUpdate is called at a fixed interval and is independent of frame rate. Put physics code here.
-    void FixedUpdate()
+    void Update()
     {
         if (!isGrounded) {
             animator.AnimationSetBool("IsJumping", true);
@@ -85,12 +87,14 @@ public class PlayerMovementController : MonoBehaviour {
             {
                 // Landed!
                 animator.AnimationSetBool("IsJumping", false);
+                gameObject.transform.Translate(0, -0.3f, 0);
                 hasDashMomentum = false;
                 AirActionsLeft = MaxAirActions;
+                hasNotUsedJump = true;
 
-                if (isHoldingJump) {
-                    Jump(PrevJumpInput);
-                }
+                // if (isHoldingJump) {
+                //     Jump(PrevJumpInput);
+                // }
 
                 RaiseLandEvent(new LandEventArgs());
             }
@@ -350,22 +354,8 @@ public class PlayerMovementController : MonoBehaviour {
         PrevJumpInput = direction;
         // TODO: can you fix this later?
         bool canJump = isGrounded && !attackController.isAttacking && !inHitStop && AirActionsLeft == MaxAirActions && !isBackDashing;
-        bool canDoubleJump = !isGrounded && !attackController.isAttacking && !inHitStop && !isHoldingJump && AirActionsLeft > 0  && !isBackDashing;
-        if (canJump || canDoubleJump) {
-            JumpMove(direction);
-        }
-    }
-
-    public void JumpCancel(Numpad direction) {
-        if (direction != Numpad.N7 && direction != Numpad.N8 && direction != Numpad.N9)
-        {
-            throw new ArgumentException(direction + " is not an upwards direction");
-        }
-        PrevJumpInput = direction;
-        // TODO: can you fix this later?
-        bool canJump = isGrounded && !attackController.isAttacking && !inHitStop && AirActionsLeft == MaxAirActions && !isBackDashing;
         bool canDoubleJump = !isGrounded && !attackController.isAttacking && !inHitStop && AirActionsLeft > 0  && !isBackDashing;
-        if (canJump || canDoubleJump) {
+        if (hasNotUsedJump && (canJump || canDoubleJump)) {
             JumpMove(direction);
         }
     }
@@ -402,7 +392,7 @@ public class PlayerMovementController : MonoBehaviour {
         JumpCancelRun();
         AirActionsLeft--;
         SoundManagerController.playSFX(SoundManagerController.jumpSound);
-        isGrounded = false;
+        hasNotUsedJump = false;
     }
 
     public void setIsHoldingJump(bool state)

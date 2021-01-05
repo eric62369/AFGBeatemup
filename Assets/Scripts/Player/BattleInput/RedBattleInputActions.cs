@@ -42,11 +42,13 @@ namespace BattleInput {
             if (!playerMovement.isHoldingJump) {
                 playerState.SetCancelAction(CancelAction.Jump, direction);
             }
-            playerMovement.Jump(direction);
+            // playerMovement.Jump(direction);
+            playerMovement.PrevJumpInput = direction;
             playerMovement.setIsHoldingJump(true);
         }
         public void ReleaseJump () {
             playerMovement.setIsHoldingJump(false);
+            playerMovement.hasNotUsedJump = true;
         }
 
         // Universal Actions
