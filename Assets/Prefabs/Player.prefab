@@ -1020,7 +1020,7 @@ MonoBehaviour:
   IsWalking: 0
   isAirDashing: 0
   MaxAirActions: 2
-  GravityScale: 5
+  GravityScale: 5.5
   groundCheck: {fileID: 7814688487690997638}
   groundCheckRadius: 0.02
   groundLayers:
