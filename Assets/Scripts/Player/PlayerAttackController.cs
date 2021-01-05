@@ -113,6 +113,9 @@ public class PlayerAttackController : MonoBehaviour {
         {
             if (!isAttacking)
             {
+                if (animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding")) {
+                    movementController.Skid();
+                }
                 isAttacking = true; // TODO: Do we need a throw flag?
                 playerState.SetThrowDirection(isForward);
                 animator.AnimationSetBool("ThrowWhiff", true);
