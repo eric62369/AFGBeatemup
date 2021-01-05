@@ -319,7 +319,7 @@ public class PlayerMovementController : MonoBehaviour {
                 horizontalVelocity *= -1;
                 horizontalForce *= -1;
             }
-            // rb2d.velocity = new Vector2(horizontalVelocity, 0f);
+            rb2d.velocity = new Vector2(horizontalVelocity, 0f);
             rb2d.AddForce(new Vector2(horizontalForce, 0f), ForceMode2D.Force);
         }
     }

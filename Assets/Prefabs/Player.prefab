@@ -740,7 +740,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1927672684}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: b6632c3432419cf62be70b97976e6d3a, type: 2}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -778,7 +778,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1927672684}
   m_Enabled: 0
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: b6632c3432419cf62be70b97976e6d3a, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -1197,7 +1197,7 @@ MonoBehaviour:
   BackDashUpSpeed: 8
   HorizontalJumpSpeed: 3.5
   JumpForce: 1000
-  RunForce: 40
+  RunForce: 30
   MaxRunSpeed: 12
   SkidSpeed: 8
   IsWalking: 0
