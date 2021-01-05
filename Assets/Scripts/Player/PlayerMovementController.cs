@@ -35,8 +35,8 @@ public class PlayerMovementController : MonoBehaviour {
     public float groundCheckRadius;
     public LayerMask groundLayers;
     public bool isGrounded { get; private set; }
-    public bool isHoldingJump;
-    public bool hasNotUsedJump;
+    public bool isHoldingJump { get; private set; }
+    public bool hasNotUsedJump { get; set; }
     public Numpad PrevJumpInput { get; set; }
     private bool hasDashMomentum;
 
