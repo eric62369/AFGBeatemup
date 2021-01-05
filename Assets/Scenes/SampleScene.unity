@@ -790,10 +790,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8103845998288296120, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
-      propertyPath: m_GravityScale
-      value: 5.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8103845998288296121, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
       propertyPath: m_Name
       value: Korie
