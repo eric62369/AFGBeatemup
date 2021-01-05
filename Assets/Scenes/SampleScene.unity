@@ -207,7 +207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1303806412}
   - component: {fileID: 1303806410}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Floor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 38.399998, y: 10.799999}
+  m_Size: {x: 50, y: 100}
   m_EdgeRadius: 0
 --- !u!4 &1303806412
 Transform:
@@ -248,8 +248,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1303806409}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.07, y: 0.375, z: 0}
-  m_LocalScale: {x: 0.06064003, y: 10, z: 1}
+  m_LocalPosition: {x: -34.05, y: 0.375, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -386,7 +386,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1647290114}
   - component: {fileID: 1647290112}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Floor (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +417,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 38.399998, y: 10.799999}
+  m_Size: {x: 50, y: 100}
   m_EdgeRadius: 0
 --- !u!4 &1647290114
 Transform:
@@ -427,8 +427,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1647290111}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.57, y: 0.16, z: 0}
-  m_LocalScale: {x: 0.03768648, y: 10, z: 1}
+  m_LocalPosition: {x: 34.12, y: 0.16, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -733,14 +733,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 152385163, guid: 37e9a37824157947fb579dd60e393050, type: 3}
-      propertyPath: m_ColliderMask.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170188294, guid: 37e9a37824157947fb579dd60e393050, type: 3}
-      propertyPath: m_ColliderMask.m_Bits
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7814688488446206480, guid: 37e9a37824157947fb579dd60e393050, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.14
@@ -789,8 +781,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1927672688, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37e9a37824157947fb579dd60e393050, type: 3}
 --- !u!1001 &8103845997942588977
 PrefabInstance:
