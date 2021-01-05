@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AttackDamage: 10
-  AttackLevel: 2
+  AttackLevel: 0
   AttackId: ThrowStrike
   Type: 1
 --- !u!1 &1513836250
@@ -965,7 +965,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 6.75, y: 6.75}
+  m_Size: {x: 17.56, y: 12.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1065,7 +1065,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 17.56, y: 12.4}
-    newSize: {x: 6.75, y: 6.75}
+    newSize: {x: 17.56, y: 12.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
