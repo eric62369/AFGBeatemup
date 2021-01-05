@@ -16,7 +16,7 @@ public class PushOutEnemy : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (playerMovement.isGrounded && other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        if (playerMovement.isGrounded && other.gameObject.layer == LayerMask.NameToLayer("Enemy") && other.gameObject.GetComponent<EnemyStateManager>().isGrounded)
         {
             enemyPushOutBox.enabled = true;
         }

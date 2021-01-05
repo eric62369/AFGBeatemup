@@ -10,8 +10,6 @@ public class EnemyMovementController : MonoBehaviour
 
     private EnemyStateManager enemyState;
 
-    
-
     // Use this for initialization
     void Start()
     {
@@ -68,7 +66,7 @@ public class EnemyMovementController : MonoBehaviour
         // Trigger animation's hitstun 
         FreezeEnemy();
         // TODO: Do we need to be able to interrupt hitstop? Probably
-        await Task.Delay(attackData.GetHitstun());
+        await Task.Delay(attackData.GetHitStop());
         UnFreezeEnemy();
         int pushback = attackData.GetPushback();
         int direction = attackData.GetPushBackDirection();
