@@ -86,23 +86,24 @@ public class PlayerStateManager : MonoBehaviour
 
     public void UpdateFacingDirection()
     {
-        Vector3 newScale = this.gameObject.transform.localScale;
-        newScale.x = Math.Abs(newScale.x);
-        bool oldDirection = isFacingRight;
-        if (!GetIsP1Side())
-        {
-            newScale.x *= -1;
-            isFacingRight = false;
-        }
-        else
-        {
-            isFacingRight = true;
-        }
-        if (oldDirection != isFacingRight)
-        {
-            this.gameObject.transform.localScale = newScale;
-            RaisePlayerChangeDirectionEvent(new PlayerChangeDirectionEventArgs());
-            // inputManager.FacingDirectionChanged(); // TODO:
+        if (!animator.AnimationGetBool("IsRunning")) {
+            Vector3 newScale = this.gameObject.transform.localScale;
+            newScale.x = Math.Abs(newScale.x);
+            bool oldDirection = isFacingRight;
+            if (!GetIsP1Side())
+            {
+                newScale.x *= -1;
+                isFacingRight = false;
+            }
+            else
+            {
+                isFacingRight = true;
+            }
+            if (oldDirection != isFacingRight)
+            {
+                this.gameObject.transform.localScale = newScale;
+                RaisePlayerChangeDirectionEvent(new PlayerChangeDirectionEventArgs());
+            }
         }
     }
 
