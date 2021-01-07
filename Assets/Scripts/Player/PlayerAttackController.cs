@@ -251,7 +251,6 @@ public class PlayerAttackController : MonoBehaviour {
         }
     }
 
-
     public void ResetAttackStateToNeutral()
     {
         animator.AnimationSetBool("5B", false);
