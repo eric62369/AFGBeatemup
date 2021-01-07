@@ -1007,8 +1007,8 @@ MonoBehaviour:
   WalkSpeed: 3
   InitialDashSpeed: 5
   AirDashSpeed: 10
-  ForwardAirDashDuration: 0.25
-  BackwardAirDashDuration: 0.15
+  ForwardAirDashDuration: 18
+  BackwardAirDashDuration: 8
   BackDashDuration: 0.4
   BackDashBackSpeed: 6
   BackDashUpSpeed: 8
@@ -1026,8 +1026,6 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 256
-  risingJumpFrames: 10
-  yRisingJumpVelocity: 18
 --- !u!95 &7814688488446206483
 Animator:
   serializedVersion: 3
