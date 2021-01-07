@@ -33,18 +33,14 @@ public class PushOutEnemy : MonoBehaviour
         Vector2 otherBoxSize = ((BoxCollider2D) other).size;
 
         float boxXDiff = otherPosition.x - selfPosition.x;
-        // TODO: refactor this if statement
+        float halfSelfBoxLen = (selfBoxSize.x / 2.0f) * Math.Abs(self.transform.root.transform.localScale.x);
+        float halfOtherBoxLen = (otherBoxSize.x / 2.0f) * Math.Abs(other.transform.root.transform.localScale.x);
+        float pushBoxOverlap = 0f;
         if (boxXDiff >= 0) {
-            float halfSelfBoxLen = (selfBoxSize.x / 2.0f) * Math.Abs(self.transform.root.transform.localScale.x);
-            float halfOtherBoxLen = (otherBoxSize.x / 2.0f) * Math.Abs(other.transform.root.transform.localScale.x);
-            float pushBoxOverlap = (boxXDiff) - ((boxXDiff - halfOtherBoxLen) + (boxXDiff - halfSelfBoxLen));
-            return new Vector3 (-pushBoxOverlap / 2.0f, 0f, 0f);
+            pushBoxOverlap = (boxXDiff) - ((boxXDiff - halfOtherBoxLen) + (boxXDiff - halfSelfBoxLen));
         } else {
-            boxXDiff = selfPosition.x - otherPosition.x;
-            float halfSelfBoxLen = (selfBoxSize.x / 2.0f) * Math.Abs(self.transform.root.transform.localScale.x);
-            float halfOtherBoxLen = (otherBoxSize.x / 2.0f) * Math.Abs(other.transform.root.transform.localScale.x);
-            float pushBoxOverlap = (boxXDiff) - ((boxXDiff - halfOtherBoxLen) + (boxXDiff - halfSelfBoxLen));
-            return new Vector3 (pushBoxOverlap / 2.0f, 0f, 0f);
+            pushBoxOverlap = (boxXDiff) - ((boxXDiff + halfOtherBoxLen) + (boxXDiff + halfSelfBoxLen));
         }
+        return new Vector3 (-pushBoxOverlap / 2.0f, 0f, 0f);
     }
 }
