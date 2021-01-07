@@ -80,6 +80,7 @@ namespace BattleInput {
             } else {
                 switch (button) {
                     case Button.A:
+                        playerAttack.AttackJ5A ();
                         break;
                     case Button.B:
                         playerAttack.AttackJ5B ();

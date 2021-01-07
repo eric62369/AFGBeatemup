@@ -97,6 +97,10 @@ public class PlayerAttackController : MonoBehaviour {
     {
         GroundedAttackFlags("5C");
     }
+    public void AttackJ5A()
+    {
+        AirAttackFlags("J5A");
+    }
     public void AttackJ5B()
     {
         AirAttackFlags("J5B");
@@ -130,7 +134,6 @@ public class PlayerAttackController : MonoBehaviour {
     public void ThrowUnFreeze()
     {
         movementController.ThrowEnd();
-        // MoveDone();
     }
 
     public void Startup()
@@ -253,6 +256,7 @@ public class PlayerAttackController : MonoBehaviour {
         animator.AnimationResetTrigger("5B");
         animator.AnimationResetTrigger("5C");
         animator.AnimationResetTrigger("J5B");
+        animator.AnimationResetTrigger("J5A");
         animator.AnimationSetBool("CanCancel", false);
         animator.AnimationSetBool("ThrowWhiff", false);
         animator.AnimationSetBool("ThrowHit", false);

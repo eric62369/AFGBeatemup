@@ -19,6 +19,7 @@ namespace BattleInput {
         // TODO: Move initialization for these inputs somewhere else (these are universal inputs)
         // Full list of attack commands to interpret will probably come from the input actions
         private static AttackMotionInput S236B;
+        private static AttackMotionInput N5A;
         private static AttackMotionInput N5B;
         private static AttackMotionInput N5C;
         private static MotionInput M66;
@@ -75,6 +76,18 @@ namespace BattleInput {
             listJump.Add ("7");
             listJump.Add ("9");
             MJump = new MotionInput (listJump, 0);
+
+            IList<string> list5A = new List<string> ();
+            list5A.Add ("5");
+            list5A.Add ("6");
+            list5A.Add ("4");
+            list5A.Add ("1");
+            list5A.Add ("2");
+            list5A.Add ("3");
+            list5A.Add ("7");
+            list5A.Add ("8");
+            list5A.Add ("9");
+            N5A = new AttackMotionInput (list5A, "A", 0);
 
             IList<string> list5B = new List<string> ();
             list5B.Add ("5");
@@ -172,6 +185,11 @@ namespace BattleInput {
             // command normals
 
             // normals
+            if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5A)) {
+                DebugMessage(N5A.ToString());
+                inputActions.N5(Button.A);
+                return true;
+            }
             if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5B)) {
                 DebugMessage(N5B.ToString());
                 inputActions.N5(Button.B);
