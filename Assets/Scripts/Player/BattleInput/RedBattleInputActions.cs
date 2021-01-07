@@ -22,7 +22,6 @@ namespace BattleInput {
             playerMovement.StartForwardDash();
             Walk(Numpad.N6);
         }
-        // public void AirDash (bool direction) { }
         public void BackDash () {
             playerMovement.StartBackwardDash();
             Walk(Numpad.N4);
@@ -42,7 +41,6 @@ namespace BattleInput {
             if (!playerMovement.isHoldingJump) {
                 playerState.SetCancelAction(CancelAction.Jump, direction);
             }
-            // playerMovement.Jump(direction);
             playerMovement.PrevJumpInput = direction;
             playerMovement.setIsHoldingJump(true);
         }

@@ -781,6 +781,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: ForwardAirDashDuration
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7814688488446206492, guid: 37e9a37824157947fb579dd60e393050, type: 3}
+      propertyPath: BackwardAirDashDuration
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 7814688488446206493, guid: 37e9a37824157947fb579dd60e393050, type: 3}
       propertyPath: m_Name
       value: Player
@@ -796,7 +804,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8103845998288296120, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
       propertyPath: m_GravityScale
-      value: 0
+      value: 5.5
       objectReference: {fileID: 0}
     - target: {fileID: 8103845998288296121, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
       propertyPath: m_Name

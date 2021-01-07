@@ -12,8 +12,13 @@ public class PlayerMovementController : MonoBehaviour {
     public float WalkSpeed;
     public float InitialDashSpeed;
     public float AirDashSpeed;
-    public float ForwardAirDashDuration;
-    public float BackwardAirDashDuration;
+
+    // in frames
+    public int ForwardAirDashDuration;
+    public int BackwardAirDashDuration;
+    private int maxAirDashFrames;
+    private int framesIntoAirdash;
+
     public float BackDashDuration;
     public float BackDashBackSpeed;
     public float BackDashUpSpeed;
@@ -25,7 +30,6 @@ public class PlayerMovementController : MonoBehaviour {
     // 4 for back, 6 for forward, 5 for no walk
     public Numpad IsWalking;
     public bool isAirDashing;
-    private IEnumerator AirDashCoroutine;
     public bool isBackDashing { get; private set; }
     public int MaxAirActions;
     public int AirActionsLeft { get; private set; }
@@ -64,7 +68,7 @@ public class PlayerMovementController : MonoBehaviour {
         animator = GetComponent<PlayerAnimationController>();
         IsWalking = Numpad.N5;
         inHitStop = false;
-        AirDashCoroutine = null;
+        framesIntoAirdash = 0;
         hasNotUsedJump = false;
     }
 
@@ -105,6 +109,16 @@ public class PlayerMovementController : MonoBehaviour {
 
             WalkUpdate();
             Run(Numpad.N6);
+        } else {
+            if (framesIntoAirdash > maxAirDashFrames) {
+                // stop airdash
+                rb2d.gravityScale = GravityScale;
+                rb2d.velocity = new Vector2(rb2d.velocity.x / 2, rb2d.velocity.y);
+                isAirDashing = false;
+            }
+            if (!inHitStop) {
+                framesIntoAirdash++;
+            }
         }
     }
 
@@ -132,9 +146,7 @@ public class PlayerMovementController : MonoBehaviour {
         ResetMovementStateToNeutral();
         rb2d.gravityScale = GravityScale;
         // stop potential airdash coroutine
-        if (AirDashCoroutine != null) {
-            StopCoroutine(AirDashCoroutine);
-        }
+        framesIntoAirdash = maxAirDashFrames + 1;
     }
 
     public void Walk(Numpad direction)
@@ -260,7 +272,7 @@ public class PlayerMovementController : MonoBehaviour {
             isAirDashing = true;
             rb2d.gravityScale = 0f;
             float AirDashVelocity = -AirDashSpeed;
-            float AirDashDuration = BackwardAirDashDuration;
+            int AirDashDuration = BackwardAirDashDuration;
             if (isForward)
             {
                 AirDashVelocity = AirDashSpeed;
@@ -271,24 +283,11 @@ public class PlayerMovementController : MonoBehaviour {
                 AirDashVelocity *= -1;
             }
             rb2d.velocity = new Vector2(AirDashVelocity, 0f);
-            AirDashCoroutine = StopAirDashCoroutine(AirDashDuration);
             AirActionsLeft--;
             SoundManagerController.playSFX(SoundManagerController.airdashSound);
-            StartCoroutine(AirDashCoroutine);
+            framesIntoAirdash = 0;
+            maxAirDashFrames = AirDashDuration;
         }
-    }
-
-    private IEnumerator StopAirDashCoroutine(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        rb2d.gravityScale = GravityScale;
-        rb2d.velocity = new Vector2(rb2d.velocity.x / 2, rb2d.velocity.y);
-        isAirDashing = false;
-        AirDashCoroutine = null;
-    }
-    private void InterruptAirDash() {
-        rb2d.gravityScale = GravityScale;
-        isAirDashing = false;
     }
 
     private IEnumerator StopBackDashCoroutine()
