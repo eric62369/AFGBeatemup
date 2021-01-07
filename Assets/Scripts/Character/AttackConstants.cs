@@ -10,7 +10,7 @@ public class AttackConstants
     public static readonly int[] AttackLevelHitStun = { 150, 250, 350, 500, 700 };
 
     /// AttackLevel to HitStop in (ms)
-    public static readonly int[] AttackLevelHitStop = { 116, 400, 133, 150, 166 };
+    public static readonly int[] AttackLevelHitStop = { 116, 116, 133, 150, 166 };
 
     /// AttackLevel to Counter Hit HitStop in (ms)
     // public static readonly int[] AttackLevelCHHitStop = { 116, 116, 133.3, 150, 166.6 };

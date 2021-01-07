@@ -47,7 +47,7 @@ public class PlayerAttackController : MonoBehaviour {
                 // Player is already attacking, is a cancel possible?
                 if (animator.AnimationGetBool("CanCancel"))
                 {
-                    animator.AnimationSetBool(attackName, true);
+                    animator.AnimationSetTrigger(attackName);
                     currentActiveAttack = attackName;
                 }
             }
@@ -57,7 +57,7 @@ public class PlayerAttackController : MonoBehaviour {
                     movementController.Skid();
                 }
                 isAttacking = true;
-                animator.AnimationSetBool(attackName, true);
+                animator.AnimationSetTrigger(attackName);
                 currentActiveAttack = attackName;
                 animator.AnimationSetBool("IsRunning", false);
                 movementController.StopRun();
@@ -84,8 +84,6 @@ public class PlayerAttackController : MonoBehaviour {
                 isAttacking = true;
                 animator.AnimationSetTrigger(attackName);
                 currentActiveAttack = attackName;
-                // animator.AnimationSetBool("IsRunning", false);
-                // movementController.StopRun();
                 framesIntoAttack = 0;
             }
         }
@@ -178,7 +176,6 @@ public class PlayerAttackController : MonoBehaviour {
         if (!animator.AnimationGetBool("ThrowHit")) {
             ResetAttackStateToNeutral();
             movementController.RC();
-            // stop airdash movement
             animator.AnimationSetTrigger("InputBufferCancel");
         }
     }
@@ -253,10 +250,10 @@ public class PlayerAttackController : MonoBehaviour {
 
     public void ResetAttackStateToNeutral()
     {
-        animator.AnimationSetBool("5B", false);
-        animator.AnimationSetBool("5C", false);
-        animator.AnimationSetBool("CanCancel", false);
+        animator.AnimationResetTrigger("5B");
+        animator.AnimationResetTrigger("5C");
         animator.AnimationResetTrigger("J5B");
+        animator.AnimationSetBool("CanCancel", false);
         animator.AnimationSetBool("ThrowWhiff", false);
         animator.AnimationSetBool("ThrowHit", false);
         currentActiveAttack = null;
