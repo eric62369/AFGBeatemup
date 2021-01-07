@@ -238,7 +238,7 @@ public class PlayerAttackController : MonoBehaviour {
     {
         if (currentCancelAction != null)
         {
-            animator.AnimationSetTrigger("ExecutingCancel");
+            animator.AnimationSetTrigger("InputBufferCancel");
             playerState.UseCancelAction(currentCancelAction);
             currentCancelAction = null;
         }
@@ -247,8 +247,7 @@ public class PlayerAttackController : MonoBehaviour {
     private void LandCancelHandler(object sender, LandEventArgs e) {
         if (isAttacking) {
             ResetAttackStateToNeutral();
-            animator.AnimationSetTrigger("ExecutingCancel");
-            animator.AnimationSetBool("CanCancel", false);
+            animator.AnimationSetTrigger("InputBufferCancel");
         }
     }
 
@@ -257,6 +256,7 @@ public class PlayerAttackController : MonoBehaviour {
     {
         animator.AnimationSetBool("5B", false);
         animator.AnimationSetBool("5C", false);
+        animator.AnimationSetBool("CanCancel", false);
         animator.AnimationResetTrigger("J5B");
         animator.AnimationSetBool("ThrowWhiff", false);
         animator.AnimationSetBool("ThrowHit", false);
