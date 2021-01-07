@@ -2,12 +2,13 @@
 using System;
 using System.Collections;
 using BattleInput;
+using System.Threading.Tasks;
 
 public class LandEventArgs {
 
 }
 
-public class PlayerMovementController : MonoBehaviour {
+public class PlayerMovementController : MonoBehaviour, IMovementController {
 
     public float WalkSpeed;
     public float InitialDashSpeed;
@@ -120,6 +121,10 @@ public class PlayerMovementController : MonoBehaviour {
                 framesIntoAirdash++;
             }
         }
+    }
+
+    public void Pushback(Vector2 force) {
+        rb2d.AddForce(force, ForceMode2D.Impulse);
     }
 
     protected virtual void RaiseLandEvent(LandEventArgs e) {
@@ -414,7 +419,7 @@ public class PlayerMovementController : MonoBehaviour {
         rb2d.bodyType = RigidbodyType2D.Dynamic;
     }
 
-    public Vector2 FreezePlayer()
+    public Vector2 FreezeCharacter()
     {
         rb2d.bodyType = RigidbodyType2D.Kinematic;
         Vector2 oldVelocity = rb2d.velocity;
@@ -423,7 +428,7 @@ public class PlayerMovementController : MonoBehaviour {
         return oldVelocity;
     }
 
-    public void UnFreezePlayer(Vector2 oldVelocity)
+    public void UnFreezeCharacter(Vector2 oldVelocity)
     {
         rb2d.bodyType = RigidbodyType2D.Dynamic;
         rb2d.velocity = oldVelocity;

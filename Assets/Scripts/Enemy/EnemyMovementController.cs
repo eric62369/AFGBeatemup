@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 
-public class EnemyMovementController : MonoBehaviour
+public class EnemyMovementController : MonoBehaviour, IMovementController
 {
     private Rigidbody2D rb2d;
     public Animator animator;
@@ -19,8 +19,37 @@ public class EnemyMovementController : MonoBehaviour
         enemyState = GetComponent<EnemyStateManager>();
     }
 
+    public void Pushback(Vector2 force) {
+        rb2d.AddForce(force, ForceMode2D.Impulse);
+    }
+
+    public async Task TriggerHitStun(Attack attackData)
+    {
+        // Trigger animation's hitstun 
+        FreezeCharacter();
+        // TODO: Do we need to be able to interrupt hitstop? Probably
+        await Task.Delay(attackData.GetHitStop());
+        UnFreezeCharacter();
+        int pushback = attackData.GetPushback();
+        int direction = attackData.GetPushBackDirection();
+        if (attackData.Type == AttackType.Launcher)
+        {
+            // Launch enemy uP!
+            enemyState.GetLaunched(attackData);
+        }
+        else
+        {
+            // normal attack
+            if (!enemyState.isGrounded) {
+                enemyState.GetLaunched(attackData);
+            } else {
+                rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
+            }
+        }
+    }
+
     /// Returns the velocity before freezing
-    public Vector2 FreezeEnemy()
+    public Vector2 FreezeCharacter()
     {
         animator.enabled=false;
         rb2d.bodyType = RigidbodyType2D.Kinematic;
@@ -29,13 +58,13 @@ public class EnemyMovementController : MonoBehaviour
         return oldVelocity;
     }
 
-    public void UnFreezeEnemy(Vector2 oldVelocity)
+    public void UnFreezeCharacter(Vector2 oldVelocity)
     {
         animator.enabled=true;
         rb2d.bodyType = RigidbodyType2D.Dynamic;
         rb2d.velocity = oldVelocity;
     }
-    public void UnFreezeEnemy()
+    public void UnFreezeCharacter()
     {
         animator.enabled=true;
         rb2d.bodyType = RigidbodyType2D.Dynamic;
@@ -54,35 +83,10 @@ public class EnemyMovementController : MonoBehaviour
     {
         // Get animator
         // Pause animator for x seconds
-        Vector2 oldVelocity = FreezeEnemy();
+        Vector2 oldVelocity = FreezeCharacter();
         // TODO: Do we need to be able to interrupt hitstop? Probably
         await Task.Delay(attackData.GetHitStop());
-        UnFreezeEnemy(oldVelocity);
+        UnFreezeCharacter(oldVelocity);
         // resume animation
-    }
-
-    public async Task TriggerHitStun(Attack attackData)
-    {
-        // Trigger animation's hitstun 
-        FreezeEnemy();
-        // TODO: Do we need to be able to interrupt hitstop? Probably
-        await Task.Delay(attackData.GetHitStop());
-        UnFreezeEnemy();
-        int pushback = attackData.GetPushback();
-        int direction = attackData.GetPushBackDirection();
-        if (attackData.Type == AttackType.Launcher)
-        {
-            // Launch enemy uP!
-            enemyState.GetLaunched(attackData);
-        }
-        else
-        {
-            // normal attack
-            if (!enemyState.isGrounded) {
-                enemyState.GetLaunched(attackData);
-            } else {
-                rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
-            }
-        }
     }
 }

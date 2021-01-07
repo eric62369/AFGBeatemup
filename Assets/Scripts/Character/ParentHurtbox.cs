@@ -5,18 +5,21 @@ using UnityEngine;
 public class ParentHurtbox : MonoBehaviour
 {
     private EnemyHealthManager HpManager;
-    private EnemyMovementController EnemyMovement;
+    private IMovementController EnemyMovement;
     private EnemyStateManager EnemyState;
     private Rigidbody2D Rigidbody;
     private IDictionary<string, int> currRegisteredAttacks;
     private readonly object registerAttackLock = new object();
+
+    // public delegate void Land(object sender, LandEventArgs args);
+    // public event Land LandEvent;
 
     // Start is called before the first frame update
     void Start()
     {
         HpManager = GetComponent<EnemyHealthManager>();
         Rigidbody = GetComponent<Rigidbody2D>();
-        EnemyMovement = GetComponent<EnemyMovementController>();
+        EnemyMovement = GetComponent<IMovementController>();
         EnemyState = GetComponent<EnemyStateManager>();
         currRegisteredAttacks = new Dictionary<string, int>();
     }
@@ -32,7 +35,7 @@ public class ParentHurtbox : MonoBehaviour
                 {
                     if (EnemyState.isGrounded) {
                         EnemyState.TakeThrow(attackData.playerState);
-                        EnemyMovement.FreezeEnemy();
+                        EnemyMovement.FreezeCharacter();
                         currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     } else {
 
@@ -46,6 +49,7 @@ public class ParentHurtbox : MonoBehaviour
                     EnemyMovement.TriggerHitStun(attackData);
                     currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     HpManager.DealDamage(attackData.Damage);
+                    // Trigger pushback event in pushbackscript
                 }
             }
         }

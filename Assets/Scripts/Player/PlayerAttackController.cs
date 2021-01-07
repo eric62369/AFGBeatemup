@@ -9,7 +9,7 @@ public enum CancelAction
 }
 
 public class PlayerAttackController : MonoBehaviour {
-    public bool isAttacking; // TODO: Reset this!
+    public bool isAttacking { get; private set; }
     public RedAttackProperties attackProperties;
     private PlayerMovementController movementController;
     private PlayerStateManager playerState;
@@ -186,13 +186,13 @@ public class PlayerAttackController : MonoBehaviour {
     public Vector2 FreezePlayer()
     {
         animator.AnimatorEnable(false);
-        return movementController.FreezePlayer();
+        return movementController.FreezeCharacter();
     }
 
     public void UnFreezePlayer(Vector2 oldVelocity)
     {
         animator.AnimatorEnable(true);
-        movementController.UnFreezePlayer(oldVelocity);
+        movementController.UnFreezeCharacter(oldVelocity);
     }
 
     // Must always be called before Recovery frames
