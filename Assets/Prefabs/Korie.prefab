@@ -289,6 +289,7 @@ GameObject:
   - component: {fileID: 8103845998288296097}
   - component: {fileID: 8103845998288296096}
   - component: {fileID: 1038990548}
+  - component: {fileID: 475768007}
   m_Layer: 9
   m_Name: Korie
   m_TagString: Boss
@@ -507,3 +508,15 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
+--- !u!114 &475768007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8103845998288296121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 106e1e7451804bf3ea84e52a3f7eba9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
