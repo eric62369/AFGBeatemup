@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 
+public delegate void GetHit(object sender, GetHitEventArgs args);
+
 public interface IMovementController
 {
+    
+    event GetHit GetHitEvent;
+
     Task TriggerHitStun(Attack attackData);
 
     void Pushback(Vector2 force);

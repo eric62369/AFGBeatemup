@@ -8,6 +8,15 @@ public enum CancelAction
     Attack
 }
 
+public class SendHitEventArgs
+{
+    public Attack attackData { get; private set; }
+
+    public SendHitEventArgs(Attack attackData_) {
+        attackData = attackData_;
+    }
+}
+
 public class PlayerAttackController : MonoBehaviour {
     public bool isAttacking { get; private set; }
     public RedAttackProperties attackProperties;
@@ -17,6 +26,9 @@ public class PlayerAttackController : MonoBehaviour {
     private string currentActiveAttack;
 
     private PlayerAnimationController animator;
+
+    public delegate void SendHit(object sender, SendHitEventArgs args);
+    public event SendHit SendHitEvent;
 
     // How many frames since the player attacked?
     private int framesIntoAttack;
@@ -202,8 +214,17 @@ public class PlayerAttackController : MonoBehaviour {
         Vector2 oldVelocity = FreezePlayer();
         // TODO: Do we need to be able to interrupt hitstop? Probably
         await Task.Delay(AttackData.GetHitStop());
+        // TODO: Raise SendHit event
         UnFreezePlayer(oldVelocity);
+        RaiseSendHitEvent(new SendHitEventArgs(AttackData));
         UseCancelAction();
+    }
+    protected virtual void RaiseSendHitEvent(SendHitEventArgs e) {
+        SendHit raiseEvent = SendHitEvent;
+
+        if (raiseEvent != null) {
+            raiseEvent(this, e);
+        }
     }
 
     public void SetCancelAction(CancelAction action)

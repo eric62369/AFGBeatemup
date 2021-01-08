@@ -8,9 +8,23 @@ public class HitStunPush : MonoBehaviour
 
     void Start() {
         self = GetComponent<IMovementController>();
+        // ParentHurtbox parentHurtbox = GetComponent<ParentHurtbox>();
+        PlayerAttackController selfAttackSender = GetComponent<PlayerAttackController>();
+        if (selfAttackSender != null) {
+            selfAttackSender.SendHitEvent += PushbackSendHit;
+        }
+        self.GetHitEvent += PushbackGetHit;
     }
 
-    private void Pushback() {
-        self.Pushback(new Vector2(30f, 0f));
+    private void PushbackSendHit(object sender, SendHitEventArgs e) {
+        int pushback = e.attackData.GetPushback();
+        int direction = e.attackData.GetPushBackDirection();
+        self.Pushback(new Vector2(-pushback * direction, 0f));
+    }
+
+    private void PushbackGetHit(object sender, GetHitEventArgs e) {
+        int pushback = e.attackData.GetPushback();
+        int direction = e.attackData.GetPushBackDirection();
+        self.Pushback(new Vector2(pushback * direction, 0f));
     }
 }

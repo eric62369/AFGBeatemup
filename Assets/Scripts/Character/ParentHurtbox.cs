@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class GetHitEventArgs
+{
+    public Attack attackData { get; private set; }
+
+    public GetHitEventArgs(Attack attackData_) {
+        attackData = attackData_;
+    }
+}
+
 public class ParentHurtbox : MonoBehaviour
 {
     private EnemyHealthManager HpManager;
@@ -10,9 +19,6 @@ public class ParentHurtbox : MonoBehaviour
     private Rigidbody2D Rigidbody;
     private IDictionary<string, int> currRegisteredAttacks;
     private readonly object registerAttackLock = new object();
-
-    // public delegate void Land(object sender, LandEventArgs args);
-    // public event Land LandEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -49,7 +55,6 @@ public class ParentHurtbox : MonoBehaviour
                     EnemyMovement.TriggerHitStun(attackData);
                     currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     HpManager.DealDamage(attackData.Damage);
-                    // Trigger pushback event in pushbackscript
                 }
             }
         }

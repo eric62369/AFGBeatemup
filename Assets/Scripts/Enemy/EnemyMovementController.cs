@@ -10,6 +10,8 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
 
     private EnemyStateManager enemyState;
 
+    public event GetHit GetHitEvent;
+
     // Use this for initialization
     void Start()
     {
@@ -30,8 +32,6 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         // TODO: Do we need to be able to interrupt hitstop? Probably
         await Task.Delay(attackData.GetHitStop());
         UnFreezeCharacter();
-        int pushback = attackData.GetPushback();
-        int direction = attackData.GetPushBackDirection();
         if (attackData.Type == AttackType.Launcher)
         {
             // Launch enemy uP!
@@ -43,8 +43,17 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
             if (!enemyState.isGrounded) {
                 enemyState.GetLaunched(attackData);
             } else {
-                rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
+                // rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
             }
+        }
+        RaiseGetHitEvent(new GetHitEventArgs(attackData));
+    }
+
+    protected virtual void RaiseGetHitEvent(GetHitEventArgs e) {
+        GetHit raiseEvent = GetHitEvent;
+
+        if (raiseEvent != null) {
+            raiseEvent(this, e);
         }
     }
 

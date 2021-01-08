@@ -48,6 +48,8 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
 
     private bool inHitStop;
 
+    public event GetHit GetHitEvent;
+
     private Rigidbody2D rb2d;
     private PlayerAttackController attackController;
     private PlayerStateManager playerState;
@@ -121,6 +123,33 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
                 framesIntoAirdash++;
             }
         }
+    }
+
+    // NOTE: Not used yet
+    public async Task TriggerHitStun(Attack attackData)
+    {
+        // // Trigger animation's hitstun 
+        // FreezeCharacter();
+        // // TODO: Do we need to be able to interrupt hitstop? Probably
+        // await Task.Delay(attackData.GetHitStop());
+        // UnFreezeCharacter();
+        // int pushback = attackData.GetPushback();
+        // int direction = attackData.GetPushBackDirection();
+        // if (attackData.Type == AttackType.Launcher)
+        // {
+        //     // Launch enemy uP!
+        //     enemyState.GetLaunched(attackData);
+        // }
+        // else
+        // {
+        //     // normal attack
+        //     if (!enemyState.isGrounded) {
+        //         enemyState.GetLaunched(attackData);
+        //     } else {
+        //         rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
+        //     }
+        // }
+        await Task.Delay(attackData.GetHitStop());
     }
 
     public void Pushback(Vector2 force) {
