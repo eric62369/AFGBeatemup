@@ -12,6 +12,8 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
 
     public event GetHit GetHitEvent;
 
+    public bool isGrounded { get; private set; }
+
     // Use this for initialization
     void Start()
     {

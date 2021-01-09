@@ -7,7 +7,8 @@ public delegate void GetHit(object sender, GetHitEventArgs args);
 
 public interface IMovementController
 {
-    
+    bool isGrounded { get; }
+
     event GetHit GetHitEvent;
 
     Task TriggerHitStun(Attack attackData);
