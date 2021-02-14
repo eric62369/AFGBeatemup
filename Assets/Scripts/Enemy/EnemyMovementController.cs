@@ -39,13 +39,19 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
             // Launch enemy uP!
             enemyState.GetLaunched(attackData);
         }
+        else if (attackData.Type == AttackType.Dunk) {
+            // Launch enemy Down!
+            enemyState.GetDunked(attackData);
+        }
         else
         {
             // normal attack
             if (!enemyState.isGrounded) {
                 enemyState.GetLaunched(attackData);
             } else {
-                // rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
+                rb2d.AddForce(new Vector2(
+                    attackData.GetPushback() * attackData.GetPushBackDirection(), 0),
+                    ForceMode2D.Force);
             }
         }
         RaiseGetHitEvent(new GetHitEventArgs(attackData));
@@ -89,15 +95,22 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
             AttackConstants.LightLaunchForce[1]);
     }
 
-    // Must always be called before Recovery frames
-    public async Task TriggerHitStop(Attack attackData)
+    public void DunkEnemy(int direction)
     {
-        // Get animator
-        // Pause animator for x seconds
-        Vector2 oldVelocity = FreezeCharacter();
-        // TODO: Do we need to be able to interrupt hitstop? Probably
-        await Task.Delay(attackData.GetHitStop());
-        UnFreezeCharacter(oldVelocity);
-        // resume animation
+        rb2d.velocity = new Vector2(
+            AttackConstants.DunkForce[0] * direction,
+            AttackConstants.DunkForce[1]);
     }
+
+    // Must always be called before Recovery frames
+    // public async Task TriggerHitStop(Attack attackData)
+    // {
+    //     // Get animator
+    //     // Pause animator for x seconds
+    //     Vector2 oldVelocity = FreezeCharacter();
+    //     // TODO: Do we need to be able to interrupt hitstop? Probably
+    //     await Task.Delay(attackData.GetHitStop());
+    //     UnFreezeCharacter(oldVelocity);
+    //     // resume animation
+    // }
 }

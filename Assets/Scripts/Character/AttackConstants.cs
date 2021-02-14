@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class AttackConstants
 {
     /// AttackLevel to Pushback Force
-    public static readonly int[] AttackLevelPushback = { 10, 10, 10, 10, 10 };
+    public static readonly int[] AttackLevelPushback = { 5, 5, 5, 5, 5 };
 
     /// AttackLevel to Hit / Block stun time (ms)
     public static readonly int[] AttackLevelHitStun = { 150, 250, 350, 500, 700 };
@@ -17,5 +17,8 @@ public class AttackConstants
     public static readonly int CHHitstopModifier = 2;
 
     /// {X, Y} Force in ForceMode
-    public static readonly int[] LightLaunchForce = { 0, 15 }; // 200 500
+    public static readonly int[] LightLaunchForce = { 1, 15 }; // 200 500
+
+    /// {X, Y} Force in ForceMode
+    public static readonly int[] DunkForce = { 2, -10 }; // 200 500
 }

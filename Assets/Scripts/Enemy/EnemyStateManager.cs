@@ -58,4 +58,9 @@ public class EnemyStateManager : MonoBehaviour
     {
         movementController.LaunchEnemy(attackData.GetPushBackDirection());
     }
+
+    public void GetDunked(Attack attackData)
+    {
+        movementController.DunkEnemy(attackData.GetPushBackDirection());
+    }
 }
