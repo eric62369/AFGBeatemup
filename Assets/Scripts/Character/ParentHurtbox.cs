@@ -43,13 +43,13 @@ public class ParentHurtbox : MonoBehaviour
                         EnemyState.TakeThrow(attackData.playerState);
                         EnemyMovement.FreezeCharacter();
                         currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
-                    } else {
-                        // enemy is airborne
+                    }
+                } else if (attackData.Type == AttackType.AntiAirThrow) {
+                    if (!EnemyState.isGrounded) {
                         EnemyState.TakeThrow(attackData.playerState);
                         EnemyMovement.FreezeCharacter();
                         currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     }
-                    
                 }
                 else
                 {
