@@ -136,6 +136,19 @@ public class PlayerAttackController : MonoBehaviour {
                 animator.AnimationSetBool("IsRunning", false);
                 movementController.StopRun();
             }
+        } else {
+            // Air throw TODO: change later for a more robust airthrow
+            if (!isAttacking)
+            {
+                if (animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding")) {
+                    movementController.Skid();
+                }
+                isAttacking = true; // TODO: Do we need a throw flag?
+                playerState.SetThrowDirection(isForward);
+                animator.AnimationSetBool("ThrowWhiff", true);
+                animator.AnimationSetBool("IsRunning", false);
+                movementController.StopRun();
+            }
         }
     }
     

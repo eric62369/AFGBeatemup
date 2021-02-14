@@ -44,7 +44,10 @@ public class ParentHurtbox : MonoBehaviour
                         EnemyMovement.FreezeCharacter();
                         currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     } else {
-
+                        // enemy is airborne
+                        EnemyState.TakeThrow(attackData.playerState);
+                        EnemyMovement.FreezeCharacter();
+                        currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     }
                     
                 }

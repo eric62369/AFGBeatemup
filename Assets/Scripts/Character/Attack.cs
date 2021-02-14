@@ -5,7 +5,8 @@ public enum AttackType
 {
     Strike,
     Launcher,
-    Throw
+    Throw,
+    AntiAirThrow
 }
 
 public class Attack
