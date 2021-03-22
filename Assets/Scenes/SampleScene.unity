@@ -618,6 +618,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.67, y: 5.89}
   m_EdgeRadius: 0
+--- !u!1 &1745143022 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8103845998288296121, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
+  m_PrefabInstance: {fileID: 8103845997942588977}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &1745143023
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745143022}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &2028823785
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025,7 +1045,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8103845998288296121, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
       propertyPath: m_Name
-      value: Korie
+      value: Boss
       objectReference: {fileID: 0}
     - target: {fileID: 8103845998288296125, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1070,6 +1090,14 @@ PrefabInstance:
     - target: {fileID: 8103845998288296125, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8103845998288296125, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8103845998288296125, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
