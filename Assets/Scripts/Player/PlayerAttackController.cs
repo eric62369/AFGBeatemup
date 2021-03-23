@@ -142,7 +142,7 @@ public class PlayerAttackController : MonoBehaviour {
             }
         } else {
             // Air throw TODO: change later for a more robust airthrow
-            if (!isAttacking)
+            if (true) // !isAttacking)
             {
                 if (animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("IsSkidding")) {
                     movementController.Skid();
@@ -287,6 +287,7 @@ public class PlayerAttackController : MonoBehaviour {
             ResetAttackStateToNeutral();
             animator.AnimationSetTrigger("InputBufferCancel");
         }
+        playerState.ExitThrowHit(); // TODO: Not a perfect solution
     }
 
     public void ResetAttackStateToNeutral()
