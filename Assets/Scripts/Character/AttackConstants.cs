@@ -20,5 +20,8 @@ public class AttackConstants
     public static readonly int[] LightLaunchForce = { 1, 15 }; // 200 500
 
     /// {X, Y} Force in ForceMode
-    public static readonly int[] DunkForce = { 2, -15 }; // 200 500
+    public static readonly int[] HeavyLaunchForce = { 8, 15 }; // 200 500
+
+    /// {X, Y} Force in ForceMode
+    public static readonly int[] DunkForce = { 2, -10 }; // 200 500
 }

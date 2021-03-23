@@ -8,6 +8,7 @@ public enum AttackType
     Throw,
     AntiAirThrow,
     Dunk,
+    HeavyLauncher
 }
 
 public class Attack

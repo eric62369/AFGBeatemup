@@ -101,6 +101,10 @@ public class PlayerAttackController : MonoBehaviour {
         }
     }
 
+    public void Attack5A()
+    {
+        GroundedAttackFlags("5A");
+    }
     public void Attack5B()
     {
         GroundedAttackFlags("5B");
@@ -119,7 +123,7 @@ public class PlayerAttackController : MonoBehaviour {
     }
     public void AttackJ5C()
     {
-        // GroundedAttackFlags("5C");
+        AirAttackFlags("J5C");
     }
     public void Throw(bool isForward)
     {
@@ -287,10 +291,12 @@ public class PlayerAttackController : MonoBehaviour {
 
     public void ResetAttackStateToNeutral()
     {
+        animator.AnimationResetTrigger("5A");
         animator.AnimationResetTrigger("5B");
         animator.AnimationResetTrigger("5C");
-        animator.AnimationResetTrigger("J5B");
         animator.AnimationResetTrigger("J5A");
+        animator.AnimationResetTrigger("J5B");
+        animator.AnimationResetTrigger("J5C");
         animator.AnimationSetBool("CanCancel", false);
         animator.AnimationSetBool("ThrowWhiff", false);
         animator.AnimationSetBool("ThrowHit", false);

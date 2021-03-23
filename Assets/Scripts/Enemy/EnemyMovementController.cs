@@ -43,6 +43,9 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
             // Launch enemy Down!
             enemyState.GetDunked(attackData);
         }
+        else if (attackData.Type == AttackType.HeavyLauncher) {
+            enemyState.GetHeavyLaunched(attackData);
+        }
         else
         {
             // normal attack
@@ -93,6 +96,13 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         rb2d.velocity = new Vector2(
             AttackConstants.LightLaunchForce[0] * direction,
             AttackConstants.LightLaunchForce[1]);
+    }
+
+    public void HeavyLaunchEnemy(int direction)
+    {
+        rb2d.velocity = new Vector2(
+            AttackConstants.HeavyLaunchForce[0] * direction,
+            AttackConstants.HeavyLaunchForce[1]);
     }
 
     public void DunkEnemy(int direction)

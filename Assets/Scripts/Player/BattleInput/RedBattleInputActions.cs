@@ -65,6 +65,7 @@ namespace BattleInput {
             if (playerMovement.isGrounded) {
                 switch (button) {
                     case Button.A:
+                        playerAttack.Attack5A ();
                         break;
                     case Button.B:
                         playerAttack.Attack5B ();
