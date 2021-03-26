@@ -25,7 +25,7 @@ public class PlayerAttackController : MonoBehaviour {
     private CancelAction? currentCancelAction;
     private string currentActiveAttack;
 
-    private PlayerAnimationController animator;
+    private CharacterAnimationController animator;
 
     public delegate void SendHit(object sender, SendHitEventArgs args);
     public event SendHit SendHitEvent;
@@ -37,7 +37,7 @@ public class PlayerAttackController : MonoBehaviour {
     {
         movementController = GetComponent<PlayerMovementController>();
         playerState = GetComponent<PlayerStateManager>();
-        animator = GetComponent<PlayerAnimationController>();
+        animator = GetComponent<CharacterAnimationController>();
         isAttacking = false;
         currentCancelAction = null;
         currentActiveAttack = null;

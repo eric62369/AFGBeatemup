@@ -8,13 +8,13 @@ namespace BattleInput {
         private PlayerAttackController playerAttack;
         private PlayerMovementController playerMovement;
         private PlayerStateManager playerState;
-        private PlayerAnimationController playerAnimator;
+        private CharacterAnimationController playerAnimator;
 
         void Start () {
             playerAttack = GetComponent<PlayerAttackController> ();
             playerMovement = GetComponent<PlayerMovementController>();
             playerState = GetComponent<PlayerStateManager>();
-            playerAnimator = GetComponent<PlayerAnimationController>();
+            playerAnimator = GetComponent<CharacterAnimationController>();
         }
 
         // Universal Movement

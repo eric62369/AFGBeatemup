@@ -20,7 +20,7 @@ public class PlayerStateManager : MonoBehaviour
     private BattleInputScanner inputScanner;
     private PlayerMovementController movementController;
     private PlayerAttackController attackController;
-    private PlayerAnimationController animator;
+    private CharacterAnimationController animator;
     private bool forwardThrowing;
     private Numpad cancelActionInput;
 
@@ -35,7 +35,7 @@ public class PlayerStateManager : MonoBehaviour
         inputScanner = GetComponent<BattleInputScanner>();
         movementController = GetComponent<PlayerMovementController>();
         attackController = GetComponent<PlayerAttackController>();
-        animator = GetComponent<PlayerAnimationController>();
+        animator = GetComponent<CharacterAnimationController>();
     }
     
     public int GetPlayerIndex()

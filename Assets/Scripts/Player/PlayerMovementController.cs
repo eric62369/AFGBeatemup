@@ -53,7 +53,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
     private Rigidbody2D rb2d;
     private PlayerAttackController attackController;
     private PlayerStateManager playerState;
-    private PlayerAnimationController animator;
+    private CharacterAnimationController animator;
 
     // events
     public delegate void Land(object sender, LandEventArgs args);
@@ -68,7 +68,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         // playerInput = GetComponent<PlayerInputManager>();
         playerState = GetComponent<PlayerStateManager>();
         rb2d.gravityScale = GravityScale;
-        animator = GetComponent<PlayerAnimationController>();
+        animator = GetComponent<CharacterAnimationController>();
         IsWalking = Numpad.N5;
         inHitStop = false;
         framesIntoAirdash = 0;
