@@ -20,6 +20,7 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
     void Start()
     {
         movementController = GetComponent<EnemyMovementController>();
+        p1Side = false;
     }
 
     // Update is called once per frame
@@ -75,6 +76,11 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
     public void TurnCharacterAround()
     {
         p1Side = !p1Side;
+        if (p1Side) {
+            this.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+        } else {
+            this.gameObject.transform.localScale = new Vector3(1, 1, 1);
+        }
     }
 
     public void TakeThrow(IStateManager playerState)

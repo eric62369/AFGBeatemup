@@ -5,6 +5,8 @@ using UnityEngine;
 public class CoconutCrabAI : MonoBehaviour
 {
     public float StepForce;
+    public int StepsInOneDirection;
+    private int StepsTakenInOneDirection;
     private EnemyMovementController movementController;
     private IStateManager stateManager;
     
@@ -18,7 +20,7 @@ public class CoconutCrabAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     
     void StepForward() {
@@ -27,5 +29,13 @@ public class CoconutCrabAI : MonoBehaviour
             direction *= -1;
         }
         movementController.Pushback(new Vector2(direction * StepForce, 0));
+        StepsTakenInOneDirection++;
+    }
+
+    void CheckTurnAround() {
+        if (StepsTakenInOneDirection >= StepsInOneDirection) {
+            StepsTakenInOneDirection = 0;
+            stateManager.TurnCharacterAround();
+        }
     }
 }
