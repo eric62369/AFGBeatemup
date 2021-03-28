@@ -26,7 +26,7 @@ public class HitBoxController : MonoBehaviour
     {
         Anim = this.gameObject.transform.root.GetComponent<Animator>();
         Rigidbody = this.gameObject.transform.root.GetComponent<Rigidbody2D>();
-        PlayerStateManager playerState = this.gameObject.transform.root.GetComponent<PlayerStateManager>();
+        IStateManager playerState = this.gameObject.transform.root.GetComponent<IStateManager>();
         string attackIdPrefix = "P" + (playerState.GetPlayerIndex() + 1) + "-";
         AttackId = attackIdPrefix + AttackId;
         AttackData = new Attack(AttackId, AttackLevel, AttackDamage, Type, playerState);

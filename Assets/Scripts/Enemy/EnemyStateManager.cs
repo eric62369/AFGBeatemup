@@ -1,12 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStateManager : MonoBehaviour
+public class EnemyStateManager : MonoBehaviour, IStateManager
 {
     public bool isBeingThrown { get; private set; }
 
     private EnemyMovementController movementController;
+
+    private bool p1Side;
 
     public Transform groundCheck;
     public float groundCheckRadius;
@@ -38,8 +41,43 @@ public class EnemyStateManager : MonoBehaviour
         }
         isGrounded = newGrounded;
     }
+    
+    // Interface functions
 
-    public void TakeThrow(PlayerStateManager playerState)
+    public int GetPlayerIndex()
+    {
+        // TODO: Make unique enemy Ids
+        return 1;
+    }
+    public Vector3 GetCurrentPosition()
+    {
+        return this.gameObject.transform.position;
+    }
+
+    public PlayerAttackController GetAttackController()
+    {
+        throw new NotImplementedException();
+    }
+    public void ThrowHit()
+    {
+        throw new NotImplementedException();
+        // animator.AnimationSetBool("ThrowHit", true);
+        // attackController.ThrowFreeze();
+    }
+    public float GetThrowPositionOffset()
+    {
+        throw new NotImplementedException();
+    }
+    public bool GetIsP1Side()
+    {
+        return p1Side;
+    }
+    public void TurnCharacterAround()
+    {
+        p1Side = !p1Side;
+    }
+
+    public void TakeThrow(IStateManager playerState)
     {
         isBeingThrown = true;
         Vector3 playerPosition = playerState.GetCurrentPosition();

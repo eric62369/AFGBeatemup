@@ -8,7 +8,7 @@ public class PlayerChangeDirectionEventArgs {
 
 }
 
-public class PlayerStateManager : MonoBehaviour
+public class PlayerStateManager : MonoBehaviour, IStateManager
 {
     [SerializeField]  // TODO: What's this?
     private int playerIndex; // 0 is P1, 1 is P2
@@ -42,9 +42,12 @@ public class PlayerStateManager : MonoBehaviour
     {
         return playerIndex;
     }
-    // public PlayerInputManager GetInputManager() {
-    //     return inputManager;
-    // }
+
+    public void TurnCharacterAround()
+    {
+        throw new NotImplementedException("A Player might not need this");
+    }
+    
     public BattleInputScanner GetInputScanner() {
         return inputScanner;
     }

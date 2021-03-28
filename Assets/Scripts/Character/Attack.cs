@@ -18,10 +18,10 @@ public class Attack
     /// Example: P1-5B
     public string Id { get; private set; }
     public AttackType Type { get; private set; }
-    public PlayerStateManager playerState;
+    public IStateManager playerState;
 
     /// Defaults to strike attack type
-    public Attack(string attackId, int attackLevel, int attackDamage, PlayerStateManager _playerState)
+    public Attack(string attackId, int attackLevel, int attackDamage, IStateManager _playerState)
     {
         Id = attackId;
         Level = attackLevel;
@@ -30,7 +30,7 @@ public class Attack
         Type = AttackType.Strike;
     }
     /// Takes in an attack type also
-    public Attack(string attackId, int attackLevel, int attackDamage, AttackType attackType, PlayerStateManager _playerState)
+    public Attack(string attackId, int attackLevel, int attackDamage, AttackType attackType, IStateManager _playerState)
     {
         Id = attackId;
         Level = attackLevel;
