@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface IStateManager
 {
+    bool isBlocking { get; private set; }    
+
     int GetPlayerIndex();
     Vector3 GetCurrentPosition();
     PlayerAttackController GetAttackController();
