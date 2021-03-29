@@ -4,7 +4,9 @@ using UnityEngine;
 
 public interface IStateManager
 {
-    bool isBlocking { get; private set; }    
+    bool isBlocking {
+        get;
+    }
 
     int GetPlayerIndex();
     Vector3 GetCurrentPosition();

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class EnemyStateManager : MonoBehaviour, IStateManager
 {
+    public bool isBlocking { get; private set; }
+
     public bool isBeingThrown { get; private set; }
 
     private EnemyMovementController movementController;
