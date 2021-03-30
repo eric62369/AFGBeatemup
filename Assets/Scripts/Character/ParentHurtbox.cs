@@ -53,11 +53,22 @@ public class ParentHurtbox : MonoBehaviour
                 }
                 else
                 {
-                    SoundManagerController.playSFX(SoundManagerController.hitLvl1Sound);
+                    // Strike Based
+                    if (EnemyState.isBlocking) {
+                        // Chip Damage?
+                        // HpManager.DealDamage(attackData.Damage);
+                        // Block Sound
+                        // SoundManagerController.playSFX(SoundManagerController.hitLvl1Sound);
+                        // BlockStun
+                        EnemyMovement.TriggerBlockStun(attackData);
+                    } else {
+                        SoundManagerController.playSFX(SoundManagerController.hitLvl1Sound);
+                        HpManager.DealDamage(attackData.Damage);
+                        EnemyMovement.TriggerHitStun(attackData);
+                    }
                     attackData.playerState.GetAttackController().TriggerHitStop(attackData);
-                    EnemyMovement.TriggerHitStun(attackData);
                     currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
-                    HpManager.DealDamage(attackData.Damage);
+                    
                 }
             }
         }

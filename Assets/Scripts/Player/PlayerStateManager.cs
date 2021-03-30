@@ -38,6 +38,7 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
         movementController = GetComponent<PlayerMovementController>();
         attackController = GetComponent<PlayerAttackController>();
         animator = GetComponent<CharacterAnimationController>();
+        isBlocking = false;
     }
     
     public int GetPlayerIndex()

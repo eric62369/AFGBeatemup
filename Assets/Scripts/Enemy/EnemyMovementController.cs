@@ -52,13 +52,36 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
             if (!enemyState.isGrounded) {
                 enemyState.GetLaunched(attackData);
             } else {
-                rb2d.AddForce(new Vector2(
-                    attackData.GetPushback() * attackData.GetPushBackDirection(), 0),
-                    ForceMode2D.Force);
+                // TODO: See if the overlap bug is caused by this
+                // rb2d.AddForce(new Vector2(
+                //     attackData.GetPushback() * attackData.GetPushBackDirection(), 0),
+                //     ForceMode2D.Force);
             }
         }
         RaiseGetHitEvent(new GetHitEventArgs(attackData));
     }
+
+    public async Task TriggerBlockStun(Attack attackData)
+    {
+        // Trigger animation's hitstun 
+        FreezeCharacter();
+        // TODO: Do we need to be able to interrupt hitstop? Probably
+        await Task.Delay(attackData.GetHitStop());
+        UnFreezeCharacter();
+
+        // normal attack
+        if (!enemyState.isGrounded) {
+            // rb2d.AddForce(new Vector2(
+            //     attackData.GetPushback() * attackData.GetPushBackDirection(), 0),
+            //     ForceMode2D.Force);
+        } else {
+            // rb2d.AddForce(new Vector2(
+            //     attackData.GetPushback() * attackData.GetPushBackDirection(), 0),
+            //     ForceMode2D.Force);
+        }
+        RaiseGetHitEvent(new GetHitEventArgs(attackData));
+    }
+
 
     protected virtual void RaiseGetHitEvent(GetHitEventArgs e) {
         GetHit raiseEvent = GetHitEvent;

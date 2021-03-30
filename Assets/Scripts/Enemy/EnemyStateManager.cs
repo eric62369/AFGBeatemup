@@ -23,6 +23,7 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
     {
         movementController = GetComponent<EnemyMovementController>();
         p1Side = false;
+        isBlocking = true;
     }
 
     // Update is called once per frame
@@ -85,9 +86,18 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
         }
     }
 
+    public void Block() {
+        isBlocking = true;
+    }
+
+    public void RemoveBlock() {
+        isBlocking = false;
+    }
+
     public void TakeThrow(IStateManager playerState)
     {
         isBeingThrown = true;
+        isBlocking = false;
         Vector3 playerPosition = playerState.GetCurrentPosition();
         playerState.ThrowHit();
         float posOffset = playerState.GetThrowPositionOffset();

@@ -12,6 +12,7 @@ public interface IMovementController
     event GetHit GetHitEvent;
 
     Task TriggerHitStun(Attack attackData);
+    Task TriggerBlockStun(Attack attackData);
 
     void Pushback(Vector2 force);
 

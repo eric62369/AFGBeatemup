@@ -152,6 +152,33 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         await Task.Delay(attackData.GetHitStop());
     }
 
+    // NOTE: Not used yet
+    public async Task TriggerBlockStun(Attack attackData)
+    {
+        // // Trigger animation's hitstun 
+        // FreezeCharacter();
+        // // TODO: Do we need to be able to interrupt hitstop? Probably
+        // await Task.Delay(attackData.GetHitStop());
+        // UnFreezeCharacter();
+        // int pushback = attackData.GetPushback();
+        // int direction = attackData.GetPushBackDirection();
+        // if (attackData.Type == AttackType.Launcher)
+        // {
+        //     // Launch enemy uP!
+        //     enemyState.GetLaunched(attackData);
+        // }
+        // else
+        // {
+        //     // normal attack
+        //     if (!enemyState.isGrounded) {
+        //         enemyState.GetLaunched(attackData);
+        //     } else {
+        //         rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
+        //     }
+        // }
+        await Task.Delay(attackData.GetHitStop());
+    }
+
     public void Pushback(Vector2 force) {
         rb2d.AddForce(force, ForceMode2D.Impulse);
     }
