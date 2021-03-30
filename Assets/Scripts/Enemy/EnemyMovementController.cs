@@ -82,6 +82,9 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         RaiseGetHitEvent(new GetHitEventArgs(attackData));
     }
 
+    public void HighLaunch() {
+        rb2d.AddForce(new Vector2(AttackConstants.HighLaunchForce[0], AttackConstants.HighLaunchForce[1]), ForceMode2D.Impulse);
+    }
 
     protected virtual void RaiseGetHitEvent(GetHitEventArgs e) {
         GetHit raiseEvent = GetHitEvent;

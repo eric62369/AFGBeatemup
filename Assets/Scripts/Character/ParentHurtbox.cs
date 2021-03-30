@@ -13,7 +13,7 @@ public class GetHitEventArgs
 
 public class ParentHurtbox : MonoBehaviour
 {
-    private EnemyHealthManager HpManager;
+    private HealthManager HpManager;
     private IMovementController EnemyMovement;
     private EnemyStateManager EnemyState;
     private Rigidbody2D Rigidbody;
@@ -23,7 +23,7 @@ public class ParentHurtbox : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        HpManager = GetComponent<EnemyHealthManager>();
+        HpManager = GetComponent<HealthManager>();
         Rigidbody = GetComponent<Rigidbody2D>();
         EnemyMovement = GetComponent<IMovementController>();
         EnemyState = GetComponent<EnemyStateManager>();

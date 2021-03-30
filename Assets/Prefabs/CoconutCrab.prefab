@@ -491,8 +491,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29a2f448f13dd764793cf31121e6166d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxEnemyHealth: 10000
-  CurrentEnemyHealth: 0
+  MaxHealth: 10
 --- !u!61 &8103845998288296123
 BoxCollider2D:
   m_ObjectHideFlags: 0

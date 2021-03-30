@@ -17,4 +17,7 @@ public interface IMovementController
     void Pushback(Vector2 force);
 
     Vector2 FreezeCharacter();
+
+    // Useful for defeat animation
+    void HighLaunch();
 }

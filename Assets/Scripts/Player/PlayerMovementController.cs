@@ -183,6 +183,10 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         rb2d.AddForce(force, ForceMode2D.Impulse);
     }
 
+    public void HighLaunch() {
+        rb2d.AddForce(new Vector2(AttackConstants.HighLaunchForce[0], AttackConstants.HighLaunchForce[1]), ForceMode2D.Impulse);
+    }
+
     protected virtual void RaiseLandEvent(LandEventArgs e) {
         Land raiseEvent = LandEvent;
 
