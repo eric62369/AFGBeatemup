@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class DefeatProcess : MonoBehaviour
 {
-    private bool isDefeated;
+    public bool isDefeated { get; private set; }
     private IMovementController movement;
-    // Start is called before the first frame update
+    private CharacterAnimationController animationController;
+    
     public GameObject nextboss;
     void Start()
     {
         HealthManager hp = GetComponent<HealthManager>();
         movement = GetComponent<IMovementController>();
+        animationController = GetComponent<CharacterAnimationController>();
         hp.DefeatedEvent += StartDefeatProcess;
         isDefeated = false;
     }
@@ -28,7 +30,8 @@ public class DefeatProcess : MonoBehaviour
         // render.color = new Color(255, 150, 150);
         render.color = Color.blue;
         isDefeated = true;
-        movement.HighLaunch();
+        animationController.AnimationSetFloat("StunAnimationSpeed", 0f);
+        movement.HighLaunch(); // TODO: Figure out how to get this high launch off?
     }
 
     private void DeleteEnemy() {

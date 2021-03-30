@@ -10,6 +10,7 @@ public class CoconutCrabAI : MonoBehaviour
     private EnemyMovementController movementController;
     private IStateManager stateManager;
     private CharacterAnimationController animator;
+    private DefeatProcess defeat;
     
     // Start is called before the first frame update
     void Start()
@@ -17,13 +18,8 @@ public class CoconutCrabAI : MonoBehaviour
         movementController = GetComponent<EnemyMovementController>();
         stateManager = GetComponent<IStateManager>();
         animator = GetComponent<CharacterAnimationController>();
+        defeat = GetComponent<DefeatProcess>();
         movementController.GetHitEvent += CoconutCrabOnHit;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
     
     void StepForward() {
@@ -48,6 +44,12 @@ public class CoconutCrabAI : MonoBehaviour
         } else {
             animator.AnimationSetTrigger("GotHit");
         }
-        animator.AnimationSetFloat("StunAnimationSpeed", e.attackData.GetStunSpeed());
+        
+        // Infinite stun on overkill
+        if (defeat.isDefeated) {
+            animator.AnimationSetFloat("StunAnimationSpeed", 0f);
+        } else {
+            animator.AnimationSetFloat("StunAnimationSpeed", e.attackData.GetStunSpeed());
+        }
     }
 }
