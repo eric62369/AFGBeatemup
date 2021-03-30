@@ -9,14 +9,14 @@ public class CoconutCrabAI : MonoBehaviour
     private int StepsTakenInOneDirection;
     private EnemyMovementController movementController;
     private IStateManager stateManager;
-    private CharacterAnimationController animation;
+    private CharacterAnimationController animator;
     
     // Start is called before the first frame update
     void Start()
     {
         movementController = GetComponent<EnemyMovementController>();
         stateManager = GetComponent<IStateManager>();
-        animation = GetComponent<CharacterAnimationController>();
+        animator = GetComponent<CharacterAnimationController>();
         movementController.GetHitEvent += CoconutCrabOnHit;
     }
 
@@ -44,9 +44,9 @@ public class CoconutCrabAI : MonoBehaviour
 
     private void CoconutCrabOnHit(object sender, GetHitEventArgs e) {
         if (stateManager.isBlocking) {
-            animation.AnimationSetTrigger("EnterBlocking");
+            animator.AnimationSetTrigger("EnterBlocking");
         } else {
-            animation.AnimationSetTrigger("GotHit");
+            animator.AnimationSetTrigger("GotHit");
         }
     }
 }

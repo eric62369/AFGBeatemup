@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class AttackConstants
 {
     /// AttackLevel to Pushback Force
-    public static readonly int[] AttackLevelPushback = { 5, 5, 5, 5, 5 };
+    public static readonly int[] AttackLevelPushback = { 15, 15, 15, 15, 15 };
 
     /// AttackLevel to Hit / Block stun time (ms)
     public static readonly int[] AttackLevelHitStun = { 150, 250, 350, 500, 700 };
