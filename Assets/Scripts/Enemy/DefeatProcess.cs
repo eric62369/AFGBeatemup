@@ -7,6 +7,7 @@ public class DefeatProcess : MonoBehaviour
     private bool isDefeated;
     private IMovementController movement;
     // Start is called before the first frame update
+    public GameObject nextboss;
     void Start()
     {
         HealthManager hp = GetComponent<HealthManager>();
@@ -19,7 +20,6 @@ public class DefeatProcess : MonoBehaviour
     void Update()
     {
         if (isDefeated && movement.isGrounded) {
-            Debug.Log("Defeat");
             DeleteEnemy();
         }
     }
@@ -32,6 +32,10 @@ public class DefeatProcess : MonoBehaviour
     }
 
     private void DeleteEnemy() {
+        if (gameObject.tag == "Boss") {
+            // Spawn next level door / boss
+            Instantiate(nextboss);
+        }
         Destroy(gameObject);
     }
 }
