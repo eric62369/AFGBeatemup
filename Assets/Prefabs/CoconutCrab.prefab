@@ -380,6 +380,7 @@ GameObject:
   - component: {fileID: 1038990548}
   - component: {fileID: 475768007}
   - component: {fileID: 3344760547530301799}
+  - component: {fileID: 6275196076379283787}
   m_Layer: 9
   m_Name: CoconutCrab
   m_TagString: Boss
@@ -625,6 +626,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StepForce: 10
   StepsInOneDirection: 2
+--- !u!114 &6275196076379283787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8103845998288296121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7417433c94d9b6a429fbca5d7b5fa529, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9047798897518497611
 GameObject:
   m_ObjectHideFlags: 0

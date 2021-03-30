@@ -97,7 +97,7 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
     public void TakeThrow(IStateManager playerState)
     {
         isBeingThrown = true;
-        isBlocking = false;
+        RemoveBlock();
         Vector3 playerPosition = playerState.GetCurrentPosition();
         playerState.ThrowHit();
         float posOffset = playerState.GetThrowPositionOffset();
