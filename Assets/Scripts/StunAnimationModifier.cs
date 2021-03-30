@@ -8,8 +8,7 @@ public class StunAnimationModifier : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // Get current attack's attack level for frame data
-        
-        animator.speed = 0.1f;
+        animator.speed = animator.GetFloat("StunAnimationSpeed");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

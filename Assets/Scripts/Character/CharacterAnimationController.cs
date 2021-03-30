@@ -13,7 +13,10 @@ public class CharacterAnimationController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-
+    public void AnimationSetFloat(string animationId, float data)
+    {
+        animator.SetFloat(animationId, data);
+    }
     public void AnimationSetBool(string animationId, bool setValue)
     {
         animator.SetBool(animationId, setValue);

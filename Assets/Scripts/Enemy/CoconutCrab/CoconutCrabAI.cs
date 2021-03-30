@@ -48,5 +48,6 @@ public class CoconutCrabAI : MonoBehaviour
         } else {
             animator.AnimationSetTrigger("GotHit");
         }
+        animator.AnimationSetFloat("StunAnimationSpeed", e.attackData.GetStunSpeed());
     }
 }

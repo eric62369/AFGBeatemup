@@ -39,16 +39,21 @@ public class Attack
         Type = attackType;
     }
 
-    /// A force number
+    /// A force number  
     public int GetPushback()
     {
         return AttackConstants.AttackLevelPushback[Level];
     }
 
-    /// histun is in ms
-    public int GetHitstun()
+    /// hitstun is in ms
+    // public float GetHitstun()
+    // {
+    //     return AttackConstants.AttackLevelStunSpeed[Level];
+    // }
+
+    public float GetStunSpeed()
     {
-        return AttackConstants.AttackLevelHitStun[Level];
+        return AttackConstants.AttackLevelStunSpeed[Level];
     }
 
     /// hitstop is in ms

@@ -92,7 +92,6 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
 
     public void RemoveBlock() {
         isBlocking = false;
-        // animator.AnimationResetTrigger("EnterBlocking");
     }
 
     public void TakeThrow(IStateManager playerState)

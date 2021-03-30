@@ -4,10 +4,11 @@ using System.Collections.Generic;
 public class AttackConstants
 {
     /// AttackLevel to Pushback Force
-    public static readonly int[] AttackLevelPushback = { 15, 15, 15, 15, 15 };
+    public static readonly int[] AttackLevelPushback = { 10, 10, 10, 10, 10 };
 
-    /// AttackLevel to Hit / Block stun time (ms)
-    public static readonly int[] AttackLevelHitStun = { 150, 250, 350, 500, 700 };
+    /// AttackLevel to Hit / Block stun time (ms),  animation version in animation speed (f)
+    // public static readonly int[] AttackLevelHitStun = { 150, 250, 350, 500, 700 };
+    public static readonly float[] AttackLevelStunSpeed = { 1f, 0.8f, 0.6f, 0.5f, 0.1f };
 
     /// AttackLevel to HitStop in (ms)
     public static readonly int[] AttackLevelHitStop = { 116, 116, 133, 150, 166 };
