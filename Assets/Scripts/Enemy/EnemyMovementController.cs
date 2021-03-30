@@ -12,7 +12,11 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
 
     public event GetHit GetHitEvent;
 
-    public bool isGrounded { get; private set; }
+    public bool isGrounded {
+        get {
+            return enemyState.isGrounded;
+        }
+    }
 
     // Use this for initialization
     void Start()

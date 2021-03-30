@@ -19,12 +19,16 @@ public class DefeatProcess : MonoBehaviour
     void Update()
     {
         if (isDefeated && movement.isGrounded) {
+            Debug.Log("Defeat");
             DeleteEnemy();
         }
     }
     private void StartDefeatProcess(object sender, DefeatedEventArgs e) {
         SpriteRenderer render = GetComponent<SpriteRenderer>();
+        // render.color = new Color(255, 150, 150);
         render.color = Color.blue;
+        isDefeated = true;
+        movement.HighLaunch();
     }
 
     private void DeleteEnemy() {

@@ -74,10 +74,7 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
     {
         if (boss == null)
         {
-            throw new InvalidOperationException(
-                "Player state must have a boss enemy reference first (currently null)"
-            );
-
+            SearchForBoss();
         }
         float posDiff = this.gameObject.transform.position.x - boss.transform.position.x;
         return posDiff <= 0;
