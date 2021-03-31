@@ -12,8 +12,11 @@ public class SendHitEventArgs
 {
     public Attack attackData { get; private set; }
 
-    public SendHitEventArgs(Attack attackData_) {
+    public float victimXPosition { get; private set; }
+
+    public SendHitEventArgs(Attack attackData_, float victimXPosition_) {
         attackData = attackData_;
+        victimXPosition = victimXPosition_;
     }
 }
 

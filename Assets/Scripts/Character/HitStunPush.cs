@@ -18,7 +18,7 @@ public class HitStunPush : MonoBehaviour
 
     private void PushbackSendHit(object sender, SendHitEventArgs e) {
         int pushback = e.attackData.GetPushback();
-        int direction = e.attackData.GetPushBackDirection(self.xPosition);
+        int direction = e.attackData.GetPushBackDirection(e.victimXPosition);
         Vector2 pushbackVector = new Vector2 (-pushback * direction, 0f);
         if (!self.isGrounded) {
             pushbackVector = new Vector2 (-pushback * direction / 2.0f, 0f);
