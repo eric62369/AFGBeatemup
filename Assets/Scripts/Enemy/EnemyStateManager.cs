@@ -34,7 +34,7 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
         return this.gameObject.transform.position;
     }
 
-    public PlayerAttackController GetAttackController()
+    public IAttackController GetAttackController()
     {
         throw new NotImplementedException();
     }

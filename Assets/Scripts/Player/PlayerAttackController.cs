@@ -8,19 +8,7 @@ public enum CancelAction
     Attack
 }
 
-public class SendHitEventArgs
-{
-    public Attack attackData { get; private set; }
-
-    public float victimXPosition { get; private set; }
-
-    public SendHitEventArgs(Attack attackData_, float victimXPosition_) {
-        attackData = attackData_;
-        victimXPosition = victimXPosition_;
-    }
-}
-
-public class PlayerAttackController : MonoBehaviour {
+public class PlayerAttackController : MonoBehaviour, IAttackController {
     public bool isAttacking { get; private set; }
     public RedAttackProperties attackProperties;
     private PlayerMovementController movementController;
@@ -30,7 +18,6 @@ public class PlayerAttackController : MonoBehaviour {
 
     private CharacterAnimationController animator;
 
-    public delegate void SendHit(object sender, SendHitEventArgs args);
     public event SendHit SendHitEvent;
 
     // How many frames since the player attacked?

@@ -19,10 +19,10 @@ public class Attack
     public string Id { get; private set; }
     public AttackType Type { get; private set; }
     public IMovementController movement;
-    public PlayerStateManager playerState;
+    public IStateManager playerState;
 
     /// Defaults to strike attack type
-    public Attack(string attackId, int attackLevel, int attackDamage, IMovementController _movement, PlayerStateManager _playerState)
+    public Attack(string attackId, int attackLevel, int attackDamage, IMovementController _movement, IStateManager _playerState)
     {
         Id = attackId;
         Level = attackLevel;
@@ -32,7 +32,7 @@ public class Attack
         Type = AttackType.Strike;
     }
     /// Takes in an attack type also
-    public Attack(string attackId, int attackLevel, int attackDamage, AttackType attackType, IMovementController _movement, PlayerStateManager _playerState)
+    public Attack(string attackId, int attackLevel, int attackDamage, AttackType attackType, IMovementController _movement, IStateManager _playerState)
     {
         Id = attackId;
         Level = attackLevel;

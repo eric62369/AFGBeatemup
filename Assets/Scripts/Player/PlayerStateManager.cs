@@ -54,7 +54,7 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
     public BattleInputScanner GetInputScanner() {
         return inputScanner;
     }
-    public PlayerAttackController GetAttackController() {
+    public IAttackController GetAttackController() {
         return attackController;
     }
 

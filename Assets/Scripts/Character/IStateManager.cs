@@ -10,7 +10,7 @@ public interface IStateManager
 
     int GetPlayerIndex();
     Vector3 GetCurrentPosition();
-    PlayerAttackController GetAttackController();
+    IAttackController GetAttackController();
     void TakeThrow(IStateManager playerState);
     void ThrowHit();
     float GetThrowPositionOffset();

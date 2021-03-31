@@ -14,8 +14,8 @@ public class GetHitEventArgs
 public class ParentHurtbox : MonoBehaviour
 {
     private HealthManager HpManager;
-    private IMovementController EnemyMovement;
-    private IStateManager EnemyState;
+    private IMovementController Movement;
+    private IStateManager State;
     private Rigidbody2D Rigidbody;
     private IDictionary<string, int> currRegisteredAttacks;
     private readonly object registerAttackLock = new object();
@@ -25,8 +25,8 @@ public class ParentHurtbox : MonoBehaviour
     {
         HpManager = GetComponent<HealthManager>();
         Rigidbody = GetComponent<Rigidbody2D>();
-        EnemyMovement = GetComponent<IMovementController>();
-        EnemyState = GetComponent<IStateManager>();
+        Movement = GetComponent<IMovementController>();
+        State = GetComponent<IStateManager>();
         currRegisteredAttacks = new Dictionary<string, int>();
     }
 
@@ -39,34 +39,34 @@ public class ParentHurtbox : MonoBehaviour
                 // Attack landed!
                 if (attackData.Type == AttackType.Throw)
                 {
-                    if (EnemyMovement.isGrounded) {
-                        EnemyState.TakeThrow(attackData.playerState);
-                        EnemyMovement.FreezeCharacter();
+                    if (Movement.isGrounded) {
+                        State.TakeThrow(attackData.playerState);
+                        Movement.FreezeCharacter();
                         currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     }
                 } else if (attackData.Type == AttackType.AntiAirThrow) {
-                    if (!EnemyMovement.isGrounded) {
-                        EnemyState.TakeThrow(attackData.playerState);
-                        EnemyMovement.FreezeCharacter();
+                    if (!Movement.isGrounded) {
+                        State.TakeThrow(attackData.playerState);
+                        Movement.FreezeCharacter();
                         currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     }
                 }
                 else
                 {
                     // Strike Based
-                    if (EnemyState.isBlocking) {
+                    if (State.isBlocking) {
                         // Chip Damage?
                         // HpManager.DealDamage(attackData.Damage);
                         // Block Sound
                         // SoundManagerController.playSFX(SoundManagerController.hitLvl1Sound);
                         // BlockStun
-                        EnemyMovement.TriggerBlockStun(attackData);
+                        Movement.TriggerBlockStun(attackData);
                     } else {
                         SoundManagerController.playSFX(SoundManagerController.hitLvl1Sound);
                         HpManager.DealDamage(attackData.Damage);
-                        EnemyMovement.TriggerHitStun(attackData);
+                        Movement.TriggerHitStun(attackData);
                     }
-                    attackData.playerState.GetAttackController().TriggerHitStop(attackData, EnemyMovement.xPosition);
+                    attackData.playerState.GetAttackController().TriggerHitStop(attackData, Movement.xPosition);
                     currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     
                 }

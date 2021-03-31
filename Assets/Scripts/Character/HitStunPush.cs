@@ -9,10 +9,8 @@ public class HitStunPush : MonoBehaviour
     void Start() {
         self = GetComponent<IMovementController>();
         // ParentHurtbox parentHurtbox = GetComponent<ParentHurtbox>();
-        PlayerAttackController selfAttackSender = GetComponent<PlayerAttackController>();
-        if (selfAttackSender != null) {
-            selfAttackSender.SendHitEvent += PushbackSendHit;
-        }
+        IAttackController selfAttackSender = GetComponent<IAttackController>();
+        selfAttackSender.SendHitEvent += PushbackSendHit;
         self.GetHitEvent += PushbackGetHit;
     }
 
