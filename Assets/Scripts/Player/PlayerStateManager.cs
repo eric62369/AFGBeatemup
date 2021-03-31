@@ -89,7 +89,7 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
 
     public void UpdateFacingDirection()
     {
-        if (!animator.AnimationGetBool("IsRunning")) {
+        if (!animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("ThrowHit")) {
             Vector3 newScale = this.gameObject.transform.localScale;
             newScale.x = Math.Abs(newScale.x);
             bool oldDirection = isFacingRight;
@@ -102,9 +102,9 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
             {
                 isFacingRight = true;
             }
+            this.gameObject.transform.localScale = newScale;
             if (oldDirection != isFacingRight)
             {
-                this.gameObject.transform.localScale = newScale;
                 RaisePlayerChangeDirectionEvent(new PlayerChangeDirectionEventArgs());
             }
         }
@@ -130,6 +130,17 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
     {
         forwardThrowing = isForward;
     }
+    public void ResetThrowDireciton() {
+        forwardThrowing = true;
+    }
+    public void TurnAroundForBackThrow()
+    {
+        if (!forwardThrowing) {
+            Vector3 newScale = this.gameObject.transform.localScale;
+            newScale.x *= -1;
+            this.gameObject.transform.localScale = newScale;
+        }
+    }
     public float GetThrowPositionOffset()
     {
         float positionOffset = 1f;
@@ -140,7 +151,6 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
         if (!forwardThrowing)
         {
             positionOffset *= -1;
-            // isFacingRight = !isFacingRight;
         }
         return positionOffset;
     }
@@ -149,16 +159,21 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
     {
         animator.AnimationSetBool("ThrowHit", true);
         attackController.ThrowFreeze();
+        TurnAroundForBackThrow();
     }
+
     public void ExitThrowWhiff()
     {
         animator.AnimationSetBool("ThrowWhiff", false);
-        UpdateFacingDirection();
+        // UpdateFacingDirection();
     }
     public void ExitThrowHit()
     {
         animator.AnimationSetBool("ThrowHit", false);
         attackController.ThrowUnFreeze();
+        TurnAroundForBackThrow();
+        ResetThrowDireciton();
+        UpdateFacingDirection();
     }
 
     //////////////////

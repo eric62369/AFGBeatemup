@@ -100,8 +100,8 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
         isBeingThrown = true;
         RemoveBlock();
         Vector3 playerPosition = playerState.GetCurrentPosition();
-        playerState.ThrowHit();
         float posOffset = playerState.GetThrowPositionOffset();
+        playerState.ThrowHit();
         this.gameObject.transform.position = new Vector3(
             playerPosition.x + posOffset, playerPosition.y, playerPosition.z);
     }
