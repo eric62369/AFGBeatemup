@@ -175,6 +175,7 @@ public class PlayerAttackController : MonoBehaviour {
     }
     public void Active() {
         // Activate hitbox and hurtbox
+        
     }
     public void Recovery() {
         // Deactivate hitbox
@@ -208,7 +209,7 @@ public class PlayerAttackController : MonoBehaviour {
     }
 
     public void RC(int frameLimit) {
-        if (!animator.AnimationGetBool("ThrowHit")) {
+        if (!animator.AnimationGetBool("ThrowHit") || animator.AnimationGetBool("CanCancel")) {
             ResetAttackStateToNeutral();
             movementController.RC();
             animator.AnimationSetTrigger("InputBufferCancel");
