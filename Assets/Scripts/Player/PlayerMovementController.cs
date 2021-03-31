@@ -180,7 +180,9 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
     }
 
     public void Pushback(Vector2 force) {
-        rb2d.AddForce(force, ForceMode2D.Impulse);
+        // rb2d.AddForce(force, ForceMode2D.Impulse);
+        rb2d.velocity = new Vector2(force.x, rb2d.velocity.y);
+        // TODO: Experimenting with velocity pushback
     }
 
     public void HighLaunch() {

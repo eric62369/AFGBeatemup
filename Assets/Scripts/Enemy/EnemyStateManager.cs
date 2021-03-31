@@ -79,10 +79,11 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
     public void TurnCharacterAround()
     {
         p1Side = !p1Side;
+        Vector3 scale = this.gameObject.transform.localScale;
         if (p1Side) {
-            this.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+            this.gameObject.transform.localScale = new Vector3(-Math.Abs(scale.x), scale.y, scale.z);
         } else {
-            this.gameObject.transform.localScale = new Vector3(1, 1, 1);
+            this.gameObject.transform.localScale = new Vector3(Math.Abs(scale.x), scale.y, scale.z);
         }
     }
 
