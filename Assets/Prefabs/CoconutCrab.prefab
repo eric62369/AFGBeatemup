@@ -382,6 +382,7 @@ GameObject:
   - component: {fileID: 3344760547530301799}
   - component: {fileID: 6275196076379283787}
   - component: {fileID: 1210341414}
+  - component: {fileID: 4560155275329005894}
   m_Layer: 9
   m_Name: CoconutCrab
   m_TagString: Untagged
@@ -650,6 +651,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextboss: {fileID: 3022610254978246815, guid: 90159efe32cf43b9fbbdfd870b80540b, type: 3}
+--- !u!114 &4560155275329005894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8103845998288296121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d9c602b2e95dea10838d68ce30701c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
 --- !u!1 &9047798897518497611
 GameObject:
   m_ObjectHideFlags: 0

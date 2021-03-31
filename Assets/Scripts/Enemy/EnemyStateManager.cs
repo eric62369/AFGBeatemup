@@ -10,6 +10,7 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
     public bool isBeingThrown { get; private set; }
 
     private EnemyMovementController movementController;
+    private EnemyAttackController attackController;
 
     private bool p1Side;
 
@@ -17,6 +18,7 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
     void Start()
     {
         movementController = GetComponent<EnemyMovementController>();
+        attackController = GetComponent<EnemyAttackController>();
         p1Side = false;
         isBlocking = true;
     }
@@ -36,7 +38,7 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
 
     public IAttackController GetAttackController()
     {
-        throw new NotImplementedException();
+        return attackController;
     }
     public void ThrowHit()
     {
