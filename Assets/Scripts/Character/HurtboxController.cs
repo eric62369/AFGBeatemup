@@ -6,7 +6,8 @@ public class HurtboxController : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "PlayerHitbox")
+        // Check if the hitbox is opposite type of hitbox
+        if (isOtherOpponent(other))
         {
             HitBoxController hitbox = other.gameObject.GetComponent<HitBoxController>();
             Attack attack = hitbox.AttackData;
@@ -16,11 +17,16 @@ public class HurtboxController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "PlayerHitbox")
+        if (isOtherOpponent(other))
         {
             HitBoxController hitbox = other.gameObject.GetComponent<HitBoxController>();
             Attack attack = hitbox.AttackData;
             this.gameObject.transform.root.GetComponent<ParentHurtbox>().UnregisterAttack(attack);
         }
+    }
+
+    private bool isOtherOpponent(Collider2D other) {
+        return (other.gameObject.tag == "EnemyHitbox" && this.gameObject.tag == "PlayerHurtbox") ||
+        (other.gameObject.tag == "PlayerHitbox" && this.gameObject.tag == "EnemyHurtbox");
     }
 }

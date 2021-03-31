@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 1664710502506705147}
   m_Layer: 9
   m_Name: Hurtbox
-  m_TagString: PlayerHurtbox
+  m_TagString: EnemyHurtbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -231,7 +231,7 @@ GameObject:
   - component: {fileID: 8103845997067576769}
   - component: {fileID: 8103845997067576768}
   - component: {fileID: 8103845997067576771}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hurtbox
   m_TagString: EnemyHurtbox
   m_Icon: {fileID: 0}
@@ -301,7 +301,7 @@ GameObject:
   - component: {fileID: 8103845997996031812}
   - component: {fileID: 8103845997996031815}
   - component: {fileID: 8103845997996031814}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Hurtbox2
   m_TagString: EnemyHurtbox
   m_Icon: {fileID: 0}
@@ -385,11 +385,11 @@ GameObject:
   - component: {fileID: 4560155275329005894}
   m_Layer: 9
   m_Name: CoconutCrab
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8103845998288296125
 Transform:
   m_ObjectHideFlags: 0
@@ -663,7 +663,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9c602b2e95dea10838d68ce30701c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
 --- !u!1 &9047798897518497611
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,7 +676,7 @@ GameObject:
   - component: {fileID: 6003532162559706081}
   m_Layer: 9
   m_Name: Hitbox
-  m_TagString: PlayerHitbox
+  m_TagString: EnemyHitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -75,5 +75,9 @@ PrefabInstance:
       propertyPath: groundLayers.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 9047798897518497611, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
+      propertyPath: m_TagString
+      value: EnemyHitbox
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
