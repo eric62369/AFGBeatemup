@@ -15,7 +15,7 @@ public class ParentHurtbox : MonoBehaviour
 {
     private HealthManager HpManager;
     private IMovementController EnemyMovement;
-    private EnemyStateManager EnemyState;
+    private IStateManager EnemyState;
     private Rigidbody2D Rigidbody;
     private IDictionary<string, int> currRegisteredAttacks;
     private readonly object registerAttackLock = new object();
@@ -26,7 +26,7 @@ public class ParentHurtbox : MonoBehaviour
         HpManager = GetComponent<HealthManager>();
         Rigidbody = GetComponent<Rigidbody2D>();
         EnemyMovement = GetComponent<IMovementController>();
-        EnemyState = GetComponent<EnemyStateManager>();
+        EnemyState = GetComponent<IStateManager>();
         currRegisteredAttacks = new Dictionary<string, int>();
     }
 
@@ -39,13 +39,13 @@ public class ParentHurtbox : MonoBehaviour
                 // Attack landed!
                 if (attackData.Type == AttackType.Throw)
                 {
-                    if (EnemyState.isGrounded) {
+                    if (EnemyMovement.isGrounded) {
                         EnemyState.TakeThrow(attackData.playerState);
                         EnemyMovement.FreezeCharacter();
                         currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     }
                 } else if (attackData.Type == AttackType.AntiAirThrow) {
-                    if (!EnemyState.isGrounded) {
+                    if (!EnemyMovement.isGrounded) {
                         EnemyState.TakeThrow(attackData.playerState);
                         EnemyMovement.FreezeCharacter();
                         currRegisteredAttacks.Add(attackData.Id, attackData.Damage);

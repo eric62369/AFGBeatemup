@@ -12,17 +12,18 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
 
     public event GetHit GetHitEvent;
 
-    public bool isGrounded {
-        get {
-            return enemyState.isGrounded;
-        }
-    }
+
+    public bool isGrounded { get; private set; }
 
     public float xPosition {
         get {
             return gameObject.transform.position.x;
         }
     }
+
+    public Transform groundCheck;
+    public float groundCheckRadius;
+    public LayerMask groundLayers;
 
     // Use this for initialization
     void Start()
@@ -32,6 +33,27 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         animator = GetComponent<Animator>();
         enemyState = GetComponent<EnemyStateManager>();
     }
+
+    // Update is called once per frame
+    void Update()
+    {
+        bool newGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayers);
+
+        if (newGrounded != isGrounded && newGrounded == true)
+        {
+            // // Landed!
+            // animator.AnimationSetBool("IsJumping", false);
+            // hasDashMomentum = false;
+            // AirActionsLeft = MaxAirActions;
+
+            // if (isHoldingJump) {
+            //     isHoldingJump = false;
+            //     Jump(PrevJumpInput);
+            // }
+        }
+        isGrounded = newGrounded;
+    }
+    
 
     public void Pushback(Vector2 force) {
         rb2d.AddForce(force, ForceMode2D.Impulse);
@@ -59,7 +81,7 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         else
         {
             // normal attack
-            if (!enemyState.isGrounded) {
+            if (!isGrounded) {
                 enemyState.GetLaunched(attackData);
             } else {
                 // TODO: See if the overlap bug is caused by this
@@ -80,7 +102,7 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         UnFreezeCharacter();
 
         // normal attack
-        if (!enemyState.isGrounded) {
+        if (!isGrounded) {
             // rb2d.AddForce(new Vector2(
             //     attackData.GetPushback() * attackData.GetPushBackDirection(), 0),
             //     ForceMode2D.Force);

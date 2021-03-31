@@ -388,7 +388,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8103845998288296125
 Transform:
   m_ObjectHideFlags: 0
@@ -544,6 +544,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  groundCheck: {fileID: 8191669462005372795}
+  groundCheckRadius: 0.08
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!95 &8103845998288296097
 Animator:
   serializedVersion: 3
@@ -575,12 +580,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa97f2228b5af404bbd3de430823a6bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundCheck: {fileID: 8191669462005372795}
-  groundCheckRadius: 0.08
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 256
-  isGrounded: 0
 --- !u!251 &1038990548
 PlatformEffector2D:
   m_ObjectHideFlags: 0

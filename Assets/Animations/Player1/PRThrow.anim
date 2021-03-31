@@ -247,13 +247,13 @@ AnimationClip:
     intParameter: 0
     messageOptions: 0
   - time: 0.35
-    functionName: ExitThrowHit
+    functionName: SetCancel
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.4
+  - time: 0.78333336
     functionName: Recovery
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -262,6 +262,13 @@ AnimationClip:
     messageOptions: 0
   - time: 0.8
     functionName: MoveDone
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.8
+    functionName: ExitThrowHit
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

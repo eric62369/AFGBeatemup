@@ -126,6 +126,18 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
     //////////////////
     // THROW
     //////////////////
+    public void TakeThrow(IStateManager playerState)
+    {
+        throw new NotImplementedException("Throw not implemented yet");
+        // isBeingThrown = true;
+        // RemoveBlock();
+        // Vector3 playerPosition = playerState.GetCurrentPosition();
+        // float posOffset = playerState.GetThrowPositionOffset();
+        // playerState.ThrowHit();
+        // this.gameObject.transform.position = new Vector3(
+        //     playerPosition.x + posOffset, playerPosition.y, playerPosition.z);
+    }
+
     public void SetThrowDirection(bool isForward)
     {
         forwardThrowing = isForward;
