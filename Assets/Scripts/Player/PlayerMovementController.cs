@@ -55,6 +55,12 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
     private PlayerStateManager playerState;
     private CharacterAnimationController animator;
 
+    public float xPosition {
+        get {
+            return gameObject.transform.position.x;
+        } 
+    }
+
     // events
     public delegate void Land(object sender, LandEventArgs args);
     public event Land LandEvent;

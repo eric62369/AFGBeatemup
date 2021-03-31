@@ -89,7 +89,7 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
 
     public void UpdateFacingDirection()
     {
-        if (!animator.AnimationGetBool("IsRunning")) {
+        if (!animator.AnimationGetBool("IsRunning") && !animator.AnimationGetBool("ThrowHit") && !animator.AnimationGetBool("ThrowWhiff")) {
             Vector3 newScale = this.gameObject.transform.localScale;
             newScale.x = Math.Abs(newScale.x);
             bool oldDirection = isFacingRight;

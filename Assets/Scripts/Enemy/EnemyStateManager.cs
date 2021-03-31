@@ -113,16 +113,16 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
 
     public void GetLaunched(Attack attackData)
     {
-        movementController.LaunchEnemy(attackData.GetPushBackDirection());
+        movementController.LaunchEnemy(attackData.GetPushBackDirection(movementController.xPosition));
     }
 
     public void GetHeavyLaunched(Attack attackData)
     {
-        movementController.HeavyLaunchEnemy(attackData.GetPushBackDirection());
+        movementController.HeavyLaunchEnemy(attackData.GetPushBackDirection(movementController.xPosition));
     }
 
     public void GetDunked(Attack attackData)
     {
-        movementController.DunkEnemy(attackData.GetPushBackDirection());
+        movementController.DunkEnemy(attackData.GetPushBackDirection(movementController.xPosition));
     }
 }

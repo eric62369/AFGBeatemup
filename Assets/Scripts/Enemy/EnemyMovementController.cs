@@ -18,6 +18,12 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         }
     }
 
+    public float xPosition {
+        get {
+            return gameObject.transform.position.x;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {

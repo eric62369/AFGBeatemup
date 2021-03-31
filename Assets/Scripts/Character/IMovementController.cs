@@ -8,6 +8,8 @@ public delegate void GetHit(object sender, GetHitEventArgs args);
 public interface IMovementController
 {
     bool isGrounded { get; }
+    
+    float xPosition { get; }
 
     event GetHit GetHitEvent;
 
