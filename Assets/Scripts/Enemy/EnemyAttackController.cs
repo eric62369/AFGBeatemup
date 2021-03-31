@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 public class EnemyAttackController : MonoBehaviour, IAttackController
 {
     IMovementController movementController;
-    public CharacterAnimationController animator;
+    private CharacterAnimationController animator;
 
     public event SendHit SendHitEvent;
 
