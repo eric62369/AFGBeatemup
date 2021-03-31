@@ -111,6 +111,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8421469846634629445}
   - component: {fileID: 1664710502506705147}
+  - component: {fileID: 2367587113321026209}
   m_Layer: 9
   m_Name: Hurtbox
   m_TagString: EnemyHurtbox
@@ -145,7 +146,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.8048059, y: -1.0763956}
+  m_Offset: {x: -1.6889293, y: -1.3011819}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -156,8 +157,20 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.7196114, y: 2.5372088}
+  m_Size: {x: 3.4878583, y: 2.0876362}
   m_EdgeRadius: 0
+--- !u!114 &2367587113321026209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522101853626806246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55df8dbc4182db1d187e72eb9fd84d7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3648472422966673098
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,7 +721,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.46, y: -1.72}
+  m_Offset: {x: -2.0397122, y: -2.0157719}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -719,7 +732,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.9193585, y: 1.5467062}
+  m_Size: {x: 2.759934, y: 0.955163}
   m_EdgeRadius: 0
 --- !u!114 &6003532162559706081
 MonoBehaviour:
