@@ -66,7 +66,7 @@ public class ParentHurtbox : MonoBehaviour
                         HpManager.DealDamage(attackData.Damage);
                         EnemyMovement.TriggerHitStun(attackData);
                     }
-                    attackData.playerState.GetAttackController().TriggerHitStop(attackData);
+                    attackData.playerState.GetAttackController().TriggerHitStop(attackData, EnemyMovement.xPosition);
                     currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     
                 }

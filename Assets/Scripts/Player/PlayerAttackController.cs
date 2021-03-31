@@ -228,7 +228,7 @@ public class PlayerAttackController : MonoBehaviour {
     }
 
     // Must always be called before Recovery frames
-    public async Task TriggerHitStop(Attack AttackData)
+    public async Task TriggerHitStop(Attack AttackData, float victimXPosition)
     {
         SetCancel();
         Vector2 oldVelocity = FreezePlayer();
@@ -236,7 +236,7 @@ public class PlayerAttackController : MonoBehaviour {
         await Task.Delay(AttackData.GetHitStop());
         // TODO: Raise SendHit event
         UnFreezePlayer(oldVelocity);
-        RaiseSendHitEvent(new SendHitEventArgs(AttackData));
+        RaiseSendHitEvent(new SendHitEventArgs(AttackData, victimXPosition));
         UseCancelAction();
     }
     protected virtual void RaiseSendHitEvent(SendHitEventArgs e) {
