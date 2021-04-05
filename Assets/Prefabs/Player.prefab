@@ -1767,8 +1767,8 @@ MonoBehaviour:
   BackDashUpSpeed: 8
   HorizontalJumpSpeed: 3.5
   JumpForce: 1000
-  RunForce: 40
-  MaxRunSpeed: 12
+  RunForce: 48
+  MaxRunSpeed: 20
   SkidSpeed: 10
   IsWalking: 0
   isAirDashing: 0
