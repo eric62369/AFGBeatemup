@@ -1759,7 +1759,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WalkSpeed: 3
   InitialDashSpeed: 5
-  AirDashSpeed: 10
+  AirDashSpeed: 15
   ForwardAirDashDuration: 18
   BackwardAirDashDuration: 8
   BackDashDuration: 0.4

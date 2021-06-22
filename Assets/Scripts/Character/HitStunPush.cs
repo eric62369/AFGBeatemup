@@ -21,7 +21,8 @@ public class HitStunPush : MonoBehaviour
         if (!self.isGrounded) {
             pushbackVector = new Vector2 (-pushback * direction / 2.0f, 0f);
         }
-        self.Pushback(pushbackVector);
+        // self.Pushback(pushbackVector);
+        // TODO: No pushback currently
     }
 
     private void PushbackGetHit(object sender, GetHitEventArgs e) {

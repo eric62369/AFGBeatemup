@@ -12,7 +12,6 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
 
     public event GetHit GetHitEvent;
 
-
     public bool isGrounded { get; private set; }
 
     public float xPosition {
