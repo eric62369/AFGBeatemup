@@ -199,6 +199,7 @@ public class PlayerAttackController : MonoBehaviour, IAttackController {
         if (!animator.AnimationGetBool("ThrowHit") || animator.AnimationGetBool("CanCancel")) {
             ResetAttackStateToNeutral();
             movementController.RC();
+            playerState.canAct = true;
             animator.AnimationSetTrigger("InputBufferCancel");
         }
     }

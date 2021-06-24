@@ -264,6 +264,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
     private void WalkUpdate() {
         bool canWalk =
             isGrounded &&
+            playerState.canAct &&
             !inHitStop &&
             !attackController.isAttacking &&
             !isBackDashing &&
@@ -282,18 +283,22 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
     }
 
     public void StartForwardDash() {
-        if (isGrounded) {
-            Dash(Numpad.N6);
-        } else {
-            AirDash(true);
+        if (playerState.canAct) {
+            if (isGrounded) {
+                Dash(Numpad.N6);
+            } else {
+                AirDash(true);
+            }
         }
     }
 
     public void StartBackwardDash() {
-        if (isGrounded) {
-            BackDash(Numpad.N4);
-        } else {
-            AirDash(false);
+        if (playerState.canAct) {
+            if (isGrounded) {
+                BackDash(Numpad.N4);
+            } else {
+                AirDash(false);
+            }
         }
     }
 
@@ -307,7 +312,9 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         {
             throw new InvalidProgramException("Tried to Dash while airborne!");
         }
-        if (isGrounded && !inHitStop && !attackController.isAttacking && !isBackDashing && !animator.AnimationGetBool("IsJumping")) {
+        if (isGrounded && playerState.canAct && 
+                !inHitStop && !attackController.isAttacking &&
+                !isBackDashing && !animator.AnimationGetBool("IsJumping")) {
             float horizontalVelocity = InitialDashSpeed;
             if (!playerState.GetCurrentFacingDirection())
             {
@@ -329,7 +336,9 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         {
             throw new InvalidProgramException("Tried to Backdash while airborne!");
         }
-        if (isGrounded && !isBackDashing && !inHitStop && !attackController.isAttacking && !animator.AnimationGetBool("IsJumping")) {
+        if (isGrounded && playerState.canAct &&
+                !isBackDashing && !inHitStop &&
+                !attackController.isAttacking && !animator.AnimationGetBool("IsJumping")) {
             StopRun();
             float horizontalVelocity = -BackDashBackSpeed;
             if (!playerState.GetCurrentFacingDirection())
@@ -350,7 +359,8 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         {
             throw new InvalidProgramException("Tried to Airdash while grounded!");
         }
-        if (AirActionsLeft > 0 && !isBackDashing && !inHitStop && !attackController.isAttacking)
+        if (AirActionsLeft > 0 && playerState.canAct &&
+                !isBackDashing && !inHitStop && !attackController.isAttacking)
         {
             isAirDashing = true;
             rb2d.gravityScale = 0f;
@@ -385,8 +395,9 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
             throw new ArgumentException(direction + " is not a horizontal direction");
         }
         if (animator.AnimationGetBool("IsRunning") &&
-            !animator.AnimationGetBool("IsSkidding") &&
-            isGrounded && !attackController.isAttacking && !inHitStop && !isBackDashing) {
+                !animator.AnimationGetBool("IsSkidding") &&
+                isGrounded && playerState.canAct && 
+                !attackController.isAttacking && !inHitStop && !isBackDashing) {
             float horizontalVelocity = Math.Abs(rb2d.velocity.x);
             float horizontalForce = RunForce;
             if (horizontalVelocity > MaxRunSpeed)
@@ -434,8 +445,8 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         }
         PrevJumpInput = direction;
         // TODO: can you fix this later?
-        bool canJump = isGrounded && !attackController.isAttacking && !inHitStop && AirActionsLeft == MaxAirActions && !isBackDashing;
-        bool canDoubleJump = !isGrounded && !attackController.isAttacking && !inHitStop && AirActionsLeft > 0  && !isBackDashing;
+        bool canJump = isGrounded && playerState.canAct && !attackController.isAttacking && !inHitStop && AirActionsLeft == MaxAirActions && !isBackDashing;
+        bool canDoubleJump = !isGrounded && playerState.canAct && !attackController.isAttacking && !inHitStop && AirActionsLeft > 0  && !isBackDashing;
         if (hasNotUsedJump && (canJump || canDoubleJump)) {
             JumpMove(direction);
         }

@@ -8,6 +8,11 @@ public interface IStateManager
         get;
     }
 
+    bool canAct {
+        get;
+        set; // TODO: Probably not a great idea
+    }
+
     int GetPlayerIndex();
     Vector3 GetCurrentPosition();
     IAttackController GetAttackController();

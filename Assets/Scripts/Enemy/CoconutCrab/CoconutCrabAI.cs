@@ -44,6 +44,7 @@ public class CoconutCrabAI : MonoBehaviour
             animator.AnimationSetFloat("StunAnimationSpeed", 0f);
         } else {
             animator.AnimationSetFloat("StunAnimationSpeed", e.attackData.GetStunSpeed());
+            // TODO: Overlap with the hitblock controller
         }
     }
 }

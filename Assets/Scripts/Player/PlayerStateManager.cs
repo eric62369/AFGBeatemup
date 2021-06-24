@@ -21,15 +21,11 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
             animator.AnimationSetBool("isBlocking", value);
         }
     }
+    
     public bool canAct {
-        get {
-            return canAct;
-        }
-        set {
-            canAct = value;
-        }
+        get;
+        set;
     }
-
 
     private GameObject boss;
     /// i.e. I jumped and crossed up, I airdash forward (the direction I'm facing)
@@ -55,6 +51,7 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
         attackController = GetComponent<PlayerAttackController>();
         animator = GetComponent<CharacterAnimationController>();
         isBlocking = false;
+        canAct = true;
     }
     
     public int GetPlayerIndex()

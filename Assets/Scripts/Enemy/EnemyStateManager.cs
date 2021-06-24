@@ -14,6 +14,15 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
         }
     }
 
+    public bool canAct {
+        get {
+            throw new NotImplementedException("canAct for enemy not used yet");
+        }
+        set {
+            throw new NotImplementedException("canAct for enemy not used yet");
+        }
+    }
+
     public bool isBeingThrown { get; private set; }
 
     private EnemyMovementController movementController;

@@ -1758,8 +1758,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ad4181cb7bf2816a95d3242b4c3f28b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkSpeed: 3
-  InitialDashSpeed: 5
+  WalkSpeed: 5
+  InitialDashSpeed: 7
   AirDashSpeed: 15
   ForwardAirDashDuration: 18
   BackwardAirDashDuration: 8
