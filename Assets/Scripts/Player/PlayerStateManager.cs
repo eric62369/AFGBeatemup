@@ -21,6 +21,14 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
             animator.AnimationSetBool("isBlocking", value);
         }
     }
+    public bool canAct {
+        get {
+            return canAct;
+        }
+        set {
+            canAct = value;
+        }
+    }
 
 
     private GameObject boss;

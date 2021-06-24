@@ -16,18 +16,7 @@ public class OnHitBlockController : MonoBehaviour
     }
 
     private void OnHitOrBlock(object sender, GetHitEventArgs e) {
-        // if (animator.AnimationGetBool("isBlocking")) {
-        //     animator.AnimationSetTrigger("EnterBlocking");
-        // } else {
-            // animator.AnimationSetTrigger("GotHit");
-        // }
         animator.AnimationSetTrigger("GotHit");
-        
-        // Infinite stun on overkill
-        // if (defeat.isDefeated) {
-        //     animator.AnimationSetFloat("StunAnimationSpeed", 0f);
-        // } else {
-        //     animator.AnimationSetFloat("StunAnimationSpeed", e.attackData.GetStunSpeed());
-        // }
+        animator.AnimationSetFloat("StunAnimationSpeed", e.attackData.GetStunSpeed());
     }
 }
