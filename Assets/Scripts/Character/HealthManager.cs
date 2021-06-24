@@ -14,7 +14,6 @@ public class DefeatedEventArgs
 }
 public class HealthManager : MonoBehaviour
 {
-    // event Defeated GetHitEvent;/
     public event Defeated DefeatedEvent;
     
     public int MaxHealth;

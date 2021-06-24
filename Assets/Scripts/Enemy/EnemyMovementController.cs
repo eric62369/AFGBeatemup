@@ -120,7 +120,6 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
     protected virtual void RaiseGetHitEvent(GetHitEventArgs e) {
         GetHit raiseEvent = GetHitEvent;
         if (raiseEvent != null) {
-            Debug.Log("Event");
             raiseEvent(this, e);
         }
     }

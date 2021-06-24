@@ -207,7 +207,6 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
 
     protected virtual void RaiseGetHitEvent(GetHitEventArgs e) {
         GetHit raiseEvent = GetHitEvent;
-
         if (raiseEvent != null) {
             raiseEvent(this, e);
         }
