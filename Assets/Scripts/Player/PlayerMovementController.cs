@@ -155,6 +155,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         //         rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
         //     }
         // }
+        RaiseGetHitEvent(new GetHitEventArgs(attackData));
         await Task.Delay(attackData.GetHitStop());
     }
 
@@ -182,6 +183,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         //         rb2d.AddForce(new Vector2(pushback * direction, 0), ForceMode2D.Force);
         //     }
         // }
+        RaiseGetHitEvent(new GetHitEventArgs(attackData));
         await Task.Delay(attackData.GetHitStop());
     }
 
