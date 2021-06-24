@@ -5,12 +5,20 @@ using UnityEngine;
 
 public class EnemyStateManager : MonoBehaviour, IStateManager
 {
-    public bool isBlocking { get; private set; }
+    public bool isBlocking {
+        get {
+            return animator.AnimationGetBool("isBlocking");
+        }
+        private set {
+            animator.AnimationSetBool("isBlocking", value);
+        }
+    }
 
     public bool isBeingThrown { get; private set; }
 
     private EnemyMovementController movementController;
     private EnemyAttackController attackController;
+    private CharacterAnimationController animator;
 
     private bool p1Side;
 
@@ -19,8 +27,8 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
     {
         movementController = GetComponent<EnemyMovementController>();
         attackController = GetComponent<EnemyAttackController>();
+        animator = GetComponent<CharacterAnimationController>();
         p1Side = false;
-        isBlocking = true;
     }
 
     

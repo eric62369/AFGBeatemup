@@ -39,12 +39,6 @@ public class CoconutCrabAI : MonoBehaviour
     }
 
     private void CoconutCrabOnHit(object sender, GetHitEventArgs e) {
-        if (stateManager.isBlocking) {
-            animator.AnimationSetTrigger("EnterBlocking");
-        } else {
-            animator.AnimationSetTrigger("GotHit");
-        }
-        
         // Infinite stun on overkill
         if (defeat.isDefeated) {
             animator.AnimationSetFloat("StunAnimationSpeed", 0f);

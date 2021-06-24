@@ -13,7 +13,15 @@ public class PlayerStateManager : MonoBehaviour, IStateManager
     [SerializeField]  // TODO: What's this?
     private int playerIndex; // 0 is P1, 1 is P2
 
-    public bool isBlocking { get; private set; }
+    public bool isBlocking {
+        get {
+            return animator.AnimationGetBool("isBlocking");
+        }
+        private set {
+            animator.AnimationSetBool("isBlocking", value);
+        }
+    }
+
 
     private GameObject boss;
     /// i.e. I jumped and crossed up, I airdash forward (the direction I'm facing)
