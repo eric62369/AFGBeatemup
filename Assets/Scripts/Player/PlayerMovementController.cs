@@ -156,7 +156,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         //     }
         // }
         RaiseGetHitEvent(new GetHitEventArgs(attackData));
-        await Task.Delay(attackData.GetHitStop());
+        // await Task.Delay(attackData.GetHitStop());
     }
 
     // NOTE: Not used yet
@@ -184,7 +184,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         //     }
         // }
         RaiseGetHitEvent(new GetHitEventArgs(attackData));
-        await Task.Delay(attackData.GetHitStop());
+        // await Task.Delay(attackData.GetHitStop());
     }
 
     public void Pushback(Vector2 force) {

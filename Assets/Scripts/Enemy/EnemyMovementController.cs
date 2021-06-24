@@ -63,7 +63,7 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         // Trigger animation's hitstun 
         FreezeCharacter();
         // TODO: Do we need to be able to interrupt hitstop? Probably
-        await Task.Delay(attackData.GetHitStop());
+        // await Task.Delay(attackData.GetHitStop());
         UnFreezeCharacter();
         if (attackData.Type == AttackType.Launcher)
         {
@@ -97,7 +97,7 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         // Trigger animation's hitstun 
         FreezeCharacter();
         // TODO: Do we need to be able to interrupt hitstop? Probably
-        await Task.Delay(attackData.GetHitStop());
+        // await Task.Delay(attackData.GetHitStop());
         UnFreezeCharacter();
 
         // normal attack
@@ -119,8 +119,8 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
 
     protected virtual void RaiseGetHitEvent(GetHitEventArgs e) {
         GetHit raiseEvent = GetHitEvent;
-
         if (raiseEvent != null) {
+            Debug.Log("Event");
             raiseEvent(this, e);
         }
     }

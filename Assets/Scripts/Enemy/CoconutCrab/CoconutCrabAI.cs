@@ -19,7 +19,7 @@ public class CoconutCrabAI : MonoBehaviour
         stateManager = GetComponent<IStateManager>();
         animator = GetComponent<CharacterAnimationController>();
         defeat = GetComponent<DefeatProcess>();
-        movementController.GetHitEvent += CoconutCrabOnHit;
+        // movementController.GetHitEvent += CoconutCrabOnHit;
     }
     
     void StepForward() {
@@ -38,13 +38,13 @@ public class CoconutCrabAI : MonoBehaviour
         }
     }
 
-    private void CoconutCrabOnHit(object sender, GetHitEventArgs e) {
+    // private void CoconutCrabOnHit(object sender, GetHitEventArgs e) {
         // Infinite stun on overkill
-        if (defeat.isDefeated) {
-            animator.AnimationSetFloat("StunAnimationSpeed", 0f);
-        } else {
-            animator.AnimationSetFloat("StunAnimationSpeed", e.attackData.GetStunSpeed());
-            // TODO: Overlap with the hitblock controller
-        }
-    }
+        // if (defeat.isDefeated) {
+        //     animator.AnimationSetFloat("StunAnimationSpeed", 0f);
+        // } else {
+        //     animator.AnimationSetFloat("StunAnimationSpeed", e.attackData.GetStunSpeed());
+        //     // TODO: Overlap with the hitblock controller
+        // }
+    // }
 }

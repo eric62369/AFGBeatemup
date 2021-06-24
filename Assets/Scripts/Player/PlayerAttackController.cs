@@ -222,7 +222,7 @@ public class PlayerAttackController : MonoBehaviour, IAttackController {
         SetCancel();
         Vector2 oldVelocity = FreezePlayer();
         // TODO: Do we need to be able to interrupt hitstop? Probably
-        await Task.Delay(AttackData.GetHitStop());
+        // await Task.Delay(AttackData.GetHitStop());
         // TODO: Raise SendHit event
         UnFreezePlayer(oldVelocity);
         RaiseSendHitEvent(new SendHitEventArgs(AttackData, victimXPosition));
