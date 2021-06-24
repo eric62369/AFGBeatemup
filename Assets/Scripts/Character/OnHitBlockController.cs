@@ -19,7 +19,13 @@ public class OnHitBlockController : MonoBehaviour
 
     private void OnHitOrBlock(object sender, GetHitEventArgs e) {
         animator.AnimationSetTrigger("GotHit");
-        animator.AnimationSetFloat("StunAnimationSpeed", e.attackData.GetStunSpeed());
+        
+        if (!movementController.isGrounded) {
+            animator.AnimationSetFloat("StunAnimationSpeed", 0f);
+        } else {
+            animator.AnimationSetFloat("StunAnimationSpeed", e.attackData.GetStunSpeed());
+        }
+
         state.canAct = false;
     }
 
