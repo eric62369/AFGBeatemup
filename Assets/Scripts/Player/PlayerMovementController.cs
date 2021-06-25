@@ -16,9 +16,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
     private int maxAirDashFrames;
     private int framesIntoAirdash;
 
-    public float BackDashDuration;
     public float BackDashBackSpeed;
-    public float BackDashUpSpeed;
     public float HorizontalJumpSpeed;
     public float JumpForce;
     public float RunForce;
@@ -27,7 +25,6 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
     // 4 for back, 6 for forward, 5 for no walk
     public Numpad IsWalking;
     public bool isAirDashing;
-    public bool isBackDashing { get; private set; }
     public int MaxAirActions;
     public int AirActionsLeft { get; private set; }
     public float GravityScale;
@@ -104,7 +101,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
             }
             isGrounded = newGrounded;
 
-            bool isIdling = isGrounded && !attackController.isAttacking && !isBackDashing;
+            bool isIdling = isGrounded && !attackController.isAttacking;
             if (isIdling)
             {
                 UpdateFacingDirection();
@@ -227,13 +224,13 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
     public void ResetMovementStateToNeutral()
     {
         isAirDashing = false;
-        isBackDashing = false;
         if (isGrounded) {
             hasDashMomentum = false;
         }
         animator.AnimationSetBool("IsJumping", false);
         animator.AnimationSetBool("IsRunning", false);
         animator.AnimationSetBool("IsSkidding", false);
+        animator.AnimationResetTrigger("Backdash");
         rb2d.gravityScale = GravityScale;
         // stop potential airdash coroutine
         framesIntoAirdash = maxAirDashFrames + 1;
@@ -281,7 +278,6 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
             playerState.canAct &&
             !inHitStop &&
             !attackController.isAttacking &&
-            !isBackDashing &&
             !animator.AnimationGetBool("IsJumping") &&
             !animator.AnimationGetBool("IsSkidding") && 
             !animator.AnimationGetBool("IsRunning");
@@ -307,9 +303,17 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
     }
 
     public void StartBackwardDash() {
+        if (isGrounded && !inHitStop &&
+                !attackController.isAttacking && !animator.AnimationGetBool("IsJumping")) {
+            animator.AnimationSetTrigger("Backdash");
+            playerState.canAct = false;
+        }
+
         if (playerState.canAct) {
             if (isGrounded) {
-                BackDash(Numpad.N4);
+                // animator.AnimationSetTrigger("Backdash");
+                // playerState.canAct = false;
+                // // BackDash(Numpad.N4);
             } else {
                 AirDash(false);
             }
@@ -327,8 +331,8 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
             throw new InvalidProgramException("Tried to Dash while airborne!");
         }
         if (isGrounded && playerState.canAct && 
-                !inHitStop && !attackController.isAttacking &&
-                !isBackDashing && !animator.AnimationGetBool("IsJumping")) {
+                !inHitStop && !attackController.isAttacking && 
+                !animator.AnimationGetBool("IsJumping")) {
             float horizontalVelocity = InitialDashSpeed;
             if (!playerState.GetCurrentFacingDirection())
             {
@@ -340,31 +344,26 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
             animator.AnimationSetBool("IsSkidding", false);
         }
     }
-    public void BackDash(Numpad direction)
+    public void BackDash()
     {
-        if (direction != Numpad.N4)
-        {
-            throw new ArgumentException(direction + " is not the backward direction");
-        }
+        // if (direction != Numpad.N4)
+        // {
+        //     throw new ArgumentException(direction + " is not the backward direction");
+        // }
         if (!isGrounded)
         {
             throw new InvalidProgramException("Tried to Backdash while airborne!");
         }
-        if (isGrounded && playerState.canAct &&
-                !isBackDashing && !inHitStop &&
-                !attackController.isAttacking && !animator.AnimationGetBool("IsJumping")) {
-            StopRun();
-            float horizontalVelocity = -BackDashBackSpeed;
-            if (!playerState.GetCurrentFacingDirection())
-            {
-                horizontalVelocity *= -1;
-            }
-            rb2d.velocity = new Vector2(horizontalVelocity, BackDashUpSpeed);
-            isBackDashing = true;
-            IEnumerator coroutine = StopBackDashCoroutine();
-            StartCoroutine(coroutine);
+        // if (isGrounded && playerState.canAct && !inHitStop &&
+        //         !attackController.isAttacking && !animator.AnimationGetBool("IsJumping")) {
+        StopRun();
+        float horizontalVelocity = -BackDashBackSpeed;
+        if (!playerState.GetCurrentFacingDirection())
+        {
+            horizontalVelocity *= -1;
         }
-        // animator.AnimationSetBool("IsRunning", true);
+        rb2d.velocity = new Vector2(horizontalVelocity, 9f);
+        // }
     }
 
     public void AirDash(bool isForward)
@@ -374,7 +373,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
             throw new InvalidProgramException("Tried to Airdash while grounded!");
         }
         if (AirActionsLeft > 0 && playerState.canAct &&
-                !isBackDashing && !inHitStop && !attackController.isAttacking)
+                !inHitStop && !attackController.isAttacking)
         {
             isAirDashing = true;
             rb2d.gravityScale = 0f;
@@ -397,11 +396,6 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         }
     }
 
-    private IEnumerator StopBackDashCoroutine()
-    {
-        yield return new WaitForSeconds(BackDashDuration);
-        isBackDashing = false;
-    }
     public void Run(Numpad direction)
     {
         if (direction != Numpad.N6)
@@ -411,7 +405,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         if (animator.AnimationGetBool("IsRunning") &&
                 !animator.AnimationGetBool("IsSkidding") &&
                 isGrounded && playerState.canAct && 
-                !attackController.isAttacking && !inHitStop && !isBackDashing) {
+                !attackController.isAttacking && !inHitStop) {
             float horizontalVelocity = Math.Abs(rb2d.velocity.x);
             float horizontalForce = RunForce;
             if (horizontalVelocity > MaxRunSpeed)
@@ -459,8 +453,8 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         }
         PrevJumpInput = direction;
         // TODO: can you fix this later?
-        bool canJump = isGrounded && playerState.canAct && !attackController.isAttacking && !inHitStop && AirActionsLeft == MaxAirActions && !isBackDashing;
-        bool canDoubleJump = !isGrounded && playerState.canAct && !attackController.isAttacking && !inHitStop && AirActionsLeft > 0  && !isBackDashing;
+        bool canJump = isGrounded && playerState.canAct && !attackController.isAttacking && !inHitStop && AirActionsLeft == MaxAirActions;
+        bool canDoubleJump = !isGrounded && playerState.canAct && !attackController.isAttacking && !inHitStop && AirActionsLeft > 0;
         if (hasNotUsedJump && (canJump || canDoubleJump)) {
             JumpMove(direction);
         }

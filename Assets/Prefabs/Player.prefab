@@ -1764,9 +1764,7 @@ MonoBehaviour:
   AirDashSpeed: 15
   ForwardAirDashDuration: 18
   BackwardAirDashDuration: 8
-  BackDashDuration: 0.4
-  BackDashBackSpeed: 6
-  BackDashUpSpeed: 8
+  BackDashBackSpeed: 10
   HorizontalJumpSpeed: 3.5
   JumpForce: 1000
   RunForce: 48
