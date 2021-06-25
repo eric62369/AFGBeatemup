@@ -397,6 +397,7 @@ GameObject:
   - component: {fileID: 4560155275329005894}
   - component: {fileID: 1324170472}
   - component: {fileID: 4903257098246257932}
+  - component: {fileID: 8854938421883102275}
   m_Layer: 9
   m_Name: CoconutCrab
   m_TagString: Enemy
@@ -689,6 +690,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 106e1e7451804bf3ea84e52a3f7eba9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8854938421883102275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8103845998288296121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54ba8bb8823fa36a5914b24121803ce1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9047798897518497611
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +747,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -2.0397122, y: -2.0157719}
+  m_Offset: {x: -2.0397122, y: -1.6844692}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -745,7 +758,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.759934, y: 0.955163}
+  m_Size: {x: 2.759934, y: 1.6177683}
   m_EdgeRadius: 0
 --- !u!114 &6003532162559706081
 MonoBehaviour:

@@ -15,12 +15,8 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
     }
 
     public bool canAct {
-        get {
-            throw new NotImplementedException("canAct for enemy not used yet");
-        }
-        set {
-            throw new NotImplementedException("canAct for enemy not used yet");
-        }
+        get;
+        set;
     }
 
     public bool isBeingThrown { get; private set; }
@@ -38,6 +34,7 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
         attackController = GetComponent<EnemyAttackController>();
         animator = GetComponent<CharacterAnimationController>();
         p1Side = false;
+        canAct = true;
     }
 
     

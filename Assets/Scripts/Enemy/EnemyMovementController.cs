@@ -114,7 +114,6 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
     protected virtual void RaiseLandEvent(LandEventArgs e) {
         Land raiseEvent = LandEvent;
         if (raiseEvent != null) {
-            Debug.Log("Land");
             raiseEvent(this, e);
         }
     }
