@@ -8,7 +8,7 @@ public class AttackConstants
 
     /// AttackLevel to Hit / Block stun time (ms),  animation version in animation speed (f)
     // public static readonly int[] AttackLevelHitStun = { 150, 250, 350, 500, 700 };
-    public static readonly float[] AttackLevelStunSpeed = { 1f, 0.8f, 0.6f, 0.5f, 0.1f };
+    public static readonly float[] AttackLevelStunSpeed = { 1f, 0.8f, 0.6f, 0.55f, 0.5f };
 
     /// AttackLevel to HitStop in (ms)
     public static readonly int[] AttackLevelHitStop = { 116, 116, 133, 150, 166 };
@@ -18,10 +18,10 @@ public class AttackConstants
     public static readonly int CHHitstopModifier = 2;
 
     /// {X, Y} Force in ForceMode
-    public static readonly int[] LightLaunchForce = { 1, 15 }; // 200 500
+    public static readonly int[] LightLaunchForce = { 0, 15 }; // 200 500
 
     /// {X, Y} Force in ForceMode
-    public static readonly int[] HeavyLaunchForce = { 8, 15 }; // 200 500
+    public static readonly int[] HeavyLaunchForce = { 5, 15 }; // 200 500
 
     public static readonly int[] HighLaunchForce = { 0, 40 }; // 200 500
 

@@ -187,6 +187,7 @@ public class PlayerAttackController : MonoBehaviour, IAttackController {
     public void InputBufferCancel(int frameLimit) {
         if (
             framesIntoAttack <= frameLimit &&
+            playerState.canAct && 
             !animator.AnimationGetBool("ThrowHit") &&
             !animator.AnimationGetBool("ThrowWhiff")
         ) {

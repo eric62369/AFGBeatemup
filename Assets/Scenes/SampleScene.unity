@@ -785,6 +785,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3054636551207433228, guid: d80ecf64b1e70b3c4b7abc15fa33a9de, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3054636551207433228, guid: d80ecf64b1e70b3c4b7abc15fa33a9de, type: 3}
+      propertyPath: m_Color.g
+      value: 0.39651266
+      objectReference: {fileID: 0}
+    - target: {fileID: 3054636551207433228, guid: d80ecf64b1e70b3c4b7abc15fa33a9de, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3054636551207433231, guid: d80ecf64b1e70b3c4b7abc15fa33a9de, type: 3}
       propertyPath: m_Name
       value: BossCoconutCrab
@@ -855,6 +867,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7043545756156067943, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
+      propertyPath: m_Offset.y
+      value: -1.6844692
+      objectReference: {fileID: 0}
+    - target: {fileID: 7043545756156067943, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
+      propertyPath: m_Size.y
+      value: 1.6177683
+      objectReference: {fileID: 0}
     - target: {fileID: 8103845998288296121, guid: ec38ae96d25e297528555ab307856eaa, type: 3}
       propertyPath: m_Name
       value: CoconutCrab

@@ -4,10 +4,6 @@ using System.Collections;
 using BattleInput;
 using System.Threading.Tasks;
 
-public class LandEventArgs {
-
-}
-
 public class PlayerMovementController : MonoBehaviour, IMovementController {
 
     public float WalkSpeed;
@@ -48,8 +44,6 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
 
     private bool inHitStop;
 
-    public event GetHit GetHitEvent;
-
     private Rigidbody2D rb2d;
     private PlayerAttackController attackController;
     private PlayerStateManager playerState;
@@ -62,8 +56,8 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
     }
 
     // events
-    public delegate void Land(object sender, LandEventArgs args);
     public event Land LandEvent;
+    public event GetHit GetHitEvent;
 
     // Use this for initialization
     void Start()

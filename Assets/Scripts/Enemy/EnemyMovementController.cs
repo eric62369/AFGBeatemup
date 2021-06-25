@@ -11,6 +11,7 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
     private EnemyStateManager enemyState;
 
     public event GetHit GetHitEvent;
+    public event Land LandEvent;
 
     public bool isGrounded { get; private set; }
 
@@ -40,15 +41,8 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
 
         if (newGrounded != isGrounded && newGrounded == true)
         {
-            // // Landed!
-            // animator.AnimationSetBool("IsJumping", false);
-            // hasDashMomentum = false;
-            // AirActionsLeft = MaxAirActions;
-
-            // if (isHoldingJump) {
-            //     isHoldingJump = false;
-            //     Jump(PrevJumpInput);
-            // }
+            // Landed!
+            RaiseLandEvent(new LandEventArgs());
         }
         isGrounded = newGrounded;
     }
@@ -115,6 +109,14 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
 
     public void HighLaunch() {
         rb2d.AddForce(new Vector2(AttackConstants.HighLaunchForce[0], AttackConstants.HighLaunchForce[1]), ForceMode2D.Impulse);
+    }
+
+    protected virtual void RaiseLandEvent(LandEventArgs e) {
+        Land raiseEvent = LandEvent;
+        if (raiseEvent != null) {
+            Debug.Log("Land");
+            raiseEvent(this, e);
+        }
     }
 
     protected virtual void RaiseGetHitEvent(GetHitEventArgs e) {
