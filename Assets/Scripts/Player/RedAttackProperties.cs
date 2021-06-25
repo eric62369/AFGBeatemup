@@ -18,6 +18,7 @@ public class RedAttackProperties : ScriptableObject {
         JumpCancellable.Add("5B");
         JumpCancellable.Add("J5A");
         JumpCancellable.Add("J5B");
+        JumpCancellable.Add("J5C");
     }
 
     public bool CanJumpCancel(string move) {

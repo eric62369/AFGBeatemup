@@ -42,23 +42,17 @@ public class HitStunPush : MonoBehaviour
         }
         else
         {
-            Vector2 pushbackVector = new Vector2 (pushback * direction, 0f);
-            if (!self.isGrounded) {
-                pushbackVector = new Vector2 (pushback * direction / 2.0f, 0f);
-            }
-            self.Pushback(pushbackVector);
-
-
             // normal attack
             if (!self.isGrounded) {
                 GetLaunched(e.attackData);
-            } else {
-                // TODO: See if the overlap bug is caused by this
-                // rb2d.AddForce(new Vector2(
-                //     attackData.GetPushback() * attackData.GetPushBackDirection(), 0),
-                //     ForceMode2D.Force);
             }
         }
+
+        Vector2 pushbackVector = new Vector2 (pushback * direction, 0f);
+        if (!self.isGrounded) {
+            pushbackVector = new Vector2 (pushback * direction / 2.0f, 0f);
+        }
+        self.Pushback(pushbackVector);
     }
 
     private void GetLaunched(Attack attackData)

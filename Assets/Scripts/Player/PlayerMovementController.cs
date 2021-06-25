@@ -234,13 +234,16 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
         animator.AnimationSetBool("IsJumping", false);
         animator.AnimationSetBool("IsRunning", false);
         animator.AnimationSetBool("IsSkidding", false);
+        rb2d.gravityScale = GravityScale;
+        // stop potential airdash coroutine
+        framesIntoAirdash = maxAirDashFrames + 1;
     }
 
     public void RC() {
         ResetMovementStateToNeutral();
-        rb2d.gravityScale = GravityScale;
-        // stop potential airdash coroutine
-        framesIntoAirdash = maxAirDashFrames + 1;
+        // rb2d.gravityScale = GravityScale;
+        // // stop potential airdash coroutine
+        // framesIntoAirdash = maxAirDashFrames + 1;
     }
 
     public void Walk(Numpad direction)
