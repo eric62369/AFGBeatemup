@@ -28,10 +28,51 @@ public class HitStunPush : MonoBehaviour
     private void PushbackGetHit(object sender, GetHitEventArgs e) {
         int pushback = e.attackData.GetPushback();
         int direction = e.attackData.GetPushBackDirection(self.xPosition);
-        Vector2 pushbackVector = new Vector2 (pushback * direction, 0f);
-        if (!self.isGrounded) {
-            pushbackVector = new Vector2 (pushback * direction / 2.0f, 0f);
+        if (e.attackData.Type == AttackType.Launcher)
+        {
+            // Launch enemy uP!
+            GetLaunched(e.attackData);
         }
-        self.Pushback(pushbackVector);
+        else if (e.attackData.Type == AttackType.Dunk) {
+            // Launch enemy Down!
+            GetDunked(e.attackData);
+        }
+        else if (e.attackData.Type == AttackType.HeavyLauncher) {
+            GetHeavyLaunched(e.attackData);
+        }
+        else
+        {
+            Vector2 pushbackVector = new Vector2 (pushback * direction, 0f);
+            if (!self.isGrounded) {
+                pushbackVector = new Vector2 (pushback * direction / 2.0f, 0f);
+            }
+            self.Pushback(pushbackVector);
+
+
+            // normal attack
+            if (!self.isGrounded) {
+                GetLaunched(e.attackData);
+            } else {
+                // TODO: See if the overlap bug is caused by this
+                // rb2d.AddForce(new Vector2(
+                //     attackData.GetPushback() * attackData.GetPushBackDirection(), 0),
+                //     ForceMode2D.Force);
+            }
+        }
+    }
+
+    private void GetLaunched(Attack attackData)
+    {
+        self.Launch(attackData.GetPushBackDirection(self.xPosition));
+    }
+
+    private void GetHeavyLaunched(Attack attackData)
+    {
+        self.HeavyLaunch(attackData.GetPushBackDirection(self.xPosition));
+    }
+
+    private void GetDunked(Attack attackData)
+    {
+        self.Dunk(attackData.GetPushBackDirection(self.xPosition));
     }
 }

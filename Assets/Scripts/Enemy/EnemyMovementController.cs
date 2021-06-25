@@ -59,30 +59,6 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         // TODO: Do we need to be able to interrupt hitstop? Probably
         // await Task.Delay(attackData.GetHitStop());
         UnFreezeCharacter();
-        if (attackData.Type == AttackType.Launcher)
-        {
-            // Launch enemy uP!
-            enemyState.GetLaunched(attackData);
-        }
-        else if (attackData.Type == AttackType.Dunk) {
-            // Launch enemy Down!
-            enemyState.GetDunked(attackData);
-        }
-        else if (attackData.Type == AttackType.HeavyLauncher) {
-            enemyState.GetHeavyLaunched(attackData);
-        }
-        else
-        {
-            // normal attack
-            if (!isGrounded) {
-                enemyState.GetLaunched(attackData);
-            } else {
-                // TODO: See if the overlap bug is caused by this
-                // rb2d.AddForce(new Vector2(
-                //     attackData.GetPushback() * attackData.GetPushBackDirection(), 0),
-                //     ForceMode2D.Force);
-            }
-        }
         RaiseGetHitEvent(new GetHitEventArgs(attackData));
     }
 
@@ -93,22 +69,7 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         // TODO: Do we need to be able to interrupt hitstop? Probably
         // await Task.Delay(attackData.GetHitStop());
         UnFreezeCharacter();
-
-        // normal attack
-        if (!isGrounded) {
-            // rb2d.AddForce(new Vector2(
-            //     attackData.GetPushback() * attackData.GetPushBackDirection(), 0),
-            //     ForceMode2D.Force);
-        } else {
-            // rb2d.AddForce(new Vector2(
-            //     attackData.GetPushback() * attackData.GetPushBackDirection(), 0),
-            //     ForceMode2D.Force);
-        }
         RaiseGetHitEvent(new GetHitEventArgs(attackData));
-    }
-
-    public void HighLaunch() {
-        rb2d.AddForce(new Vector2(AttackConstants.HighLaunchForce[0], AttackConstants.HighLaunchForce[1]), ForceMode2D.Impulse);
     }
 
     protected virtual void RaiseLandEvent(LandEventArgs e) {
@@ -148,21 +109,25 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
         rb2d.velocity = new Vector2(0f, 0f);
     }
 
-    public void LaunchEnemy(int direction)
+    public void Launch(int direction)
     {
         rb2d.velocity = new Vector2(
             AttackConstants.LightLaunchForce[0] * direction,
             AttackConstants.LightLaunchForce[1]);
     }
 
-    public void HeavyLaunchEnemy(int direction)
+    public void HeavyLaunch(int direction)
     {
         rb2d.velocity = new Vector2(
             AttackConstants.HeavyLaunchForce[0] * direction,
             AttackConstants.HeavyLaunchForce[1]);
     }
 
-    public void DunkEnemy(int direction)
+    public void HighLaunch() {
+        rb2d.AddForce(new Vector2(AttackConstants.HighLaunchForce[0], AttackConstants.HighLaunchForce[1]), ForceMode2D.Impulse);
+    }
+
+    public void Dunk(int direction)
     {
         rb2d.velocity = new Vector2(
             AttackConstants.DunkForce[0] * direction,

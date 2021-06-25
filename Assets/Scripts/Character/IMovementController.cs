@@ -30,4 +30,8 @@ public interface IMovementController
 
     // Useful for defeat animation
     void HighLaunch();
+    void Launch(int direction);
+
+    void HeavyLaunch(int direction);
+    void Dunk(int direction);
 }

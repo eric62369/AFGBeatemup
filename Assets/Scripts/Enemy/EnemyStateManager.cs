@@ -102,19 +102,4 @@ public class EnemyStateManager : MonoBehaviour, IStateManager
     {
         isBeingThrown = false;
     }
-
-    public void GetLaunched(Attack attackData)
-    {
-        movementController.LaunchEnemy(attackData.GetPushBackDirection(movementController.xPosition));
-    }
-
-    public void GetHeavyLaunched(Attack attackData)
-    {
-        movementController.HeavyLaunchEnemy(attackData.GetPushBackDirection(movementController.xPosition));
-    }
-
-    public void GetDunked(Attack attackData)
-    {
-        movementController.DunkEnemy(attackData.GetPushBackDirection(movementController.xPosition));
-    }
 }

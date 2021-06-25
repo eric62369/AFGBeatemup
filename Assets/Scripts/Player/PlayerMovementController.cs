@@ -190,6 +190,24 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
     public void HighLaunch() {
         rb2d.AddForce(new Vector2(AttackConstants.HighLaunchForce[0], AttackConstants.HighLaunchForce[1]), ForceMode2D.Impulse);
     }
+    public void Launch(int direction)
+    {
+        rb2d.velocity = new Vector2(
+            AttackConstants.LightLaunchForce[0] * direction,
+            AttackConstants.LightLaunchForce[1]);
+    }
+    public void HeavyLaunch(int direction)
+    {
+        rb2d.velocity = new Vector2(
+            AttackConstants.HeavyLaunchForce[0] * direction,
+            AttackConstants.HeavyLaunchForce[1]);
+    }
+    public void Dunk(int direction)
+    {
+        rb2d.velocity = new Vector2(
+            AttackConstants.DunkForce[0] * direction,
+            AttackConstants.DunkForce[1]);
+    }
 
     protected virtual void RaiseLandEvent(LandEventArgs e) {
         Land raiseEvent = LandEvent;
