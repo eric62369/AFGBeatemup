@@ -2,13 +2,7 @@
 using System.Collections;
 using System.Threading.Tasks;
 
-public enum CancelAction
-{
-    Jump,
-    Attack
-}
-
-public class PlayerAttackController : MonoBehaviour, IAttackController {
+public class PlayerAttackController : UniversalAttackController {
     public bool isAttacking { get; private set; }
     public RedAttackProperties attackProperties;
     private PlayerMovementController movementController;
@@ -18,16 +12,18 @@ public class PlayerAttackController : MonoBehaviour, IAttackController {
 
     private CharacterAnimationController animator;
 
-    public event SendHit SendHitEvent;
-
     // How many frames since the player attacked?
     private int framesIntoAttack;
 
     void Start()
     {
-        movementController = GetComponent<PlayerMovementController>();
-        playerState = GetComponent<PlayerStateManager>();
-        animator = GetComponent<CharacterAnimationController>();
+        // movementController = GetComponent<PlayerMovementController>();
+        // playerState = GetComponent<PlayerStateManager>();
+        // animator = GetComponent<CharacterAnimationController>();
+        movementController = null;
+        playerState = null;
+        animator = null;
+
         isAttacking = false;
         currentCancelAction = null;
         currentActiveAttack = null;
@@ -217,25 +213,26 @@ public class PlayerAttackController : MonoBehaviour, IAttackController {
         movementController.UnFreezeCharacter(oldVelocity);
     }
 
-    // Must always be called before Recovery frames
-    public async Task TriggerHitStop(Attack AttackData, float victimXPosition)
-    {
-        SetCancel();
-        Vector2 oldVelocity = FreezePlayer();
-        // TODO: Do we need to be able to interrupt hitstop? Probably
-        // await Task.Delay(AttackData.GetHitStop());
-        // TODO: Raise SendHit event
-        UnFreezePlayer(oldVelocity);
-        RaiseSendHitEvent(new SendHitEventArgs(AttackData, victimXPosition));
-        UseCancelAction();
-    }
-    protected virtual void RaiseSendHitEvent(SendHitEventArgs e) {
-        SendHit raiseEvent = SendHitEvent;
+    // // Must always be called before Recovery frames
+    // public async Task TriggerHitStop(Attack AttackData, float victimXPosition)
+    // {
+    //     SetCancel();
+    //     Vector2 oldVelocity = FreezePlayer();
+    //     // TODO: Do we need to be able to interrupt hitstop? Probably
+    //     // await Task.Delay(AttackData.GetHitStop());
+    //     // TODO: Raise SendHit event
+    //     UnFreezePlayer(oldVelocity);
+    //     RaiseSendHitEvent(new SendHitEventArgs(AttackData, victimXPosition));
+    //     UseCancelAction();
+    // }
+    
+    // protected virtual void RaiseSendHitEvent(SendHitEventArgs e) {
+    //     SendHit raiseEvent = SendHitEvent;
 
-        if (raiseEvent != null) {
-            raiseEvent(this, e);
-        }
-    }
+    //     if (raiseEvent != null) {
+    //         raiseEvent(this, e);
+    //     }
+    // }
 
     public void SetCancelAction(CancelAction action)
     {

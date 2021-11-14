@@ -19,8 +19,7 @@ public delegate void SendHit(object sender, SendHitEventArgs args);
 
 public interface IAttackController
 {
-
     event SendHit SendHitEvent;
-    Task TriggerHitStop(Attack AttackData, float victimXPosition);
+    void TriggerHitStop(Attack AttackData, float victimXPosition);
     
 }
