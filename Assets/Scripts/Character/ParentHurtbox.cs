@@ -2,15 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GetHitEventArgs
-{
-    public Attack attackData { get; private set; }
-
-    public GetHitEventArgs(Attack attackData_) {
-        attackData = attackData_;
-    }
-}
-
 public class ParentHurtbox : MonoBehaviour
 {
     private HealthManager HpManager;
@@ -66,7 +57,8 @@ public class ParentHurtbox : MonoBehaviour
                         HpManager.DealDamage(attackData.Damage);
                         Movement.TriggerHitStun(attackData);
                     }
-                    attackData.playerState.GetAttackController().TriggerHitStop(attackData, Movement.xPosition);
+                    attackData.fighterComms.OnOtherFighterStrike(attackData, Movement.xPosition);
+                    // attackData.playerState.GetAttackController().TriggerHitStop(attackData, Movement.xPosition);
                     currRegisteredAttacks.Add(attackData.Id, attackData.Damage);
                     
                 }

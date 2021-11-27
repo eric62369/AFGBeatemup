@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using BattleInput;
 using System.Threading.Tasks;
+using animeFGBeatEmUp.Assets.Scripts.Character.Fighter;
 
 public class PlayerMovementController : MonoBehaviour, IMovementController {
 
@@ -54,7 +55,6 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
 
     // events
     public event Land LandEvent;
-    public event GetHit GetHitEvent;
 
     // Use this for initialization
     void Start()
@@ -213,14 +213,7 @@ public class PlayerMovementController : MonoBehaviour, IMovementController {
             raiseEvent(this, e);
         }
     }
-
-    protected virtual void RaiseGetHitEvent(GetHitEventArgs e) {
-        GetHit raiseEvent = GetHitEvent;
-        if (raiseEvent != null) {
-            raiseEvent(this, e);
-        }
-    }
-
+    
     public void ResetMovementStateToNeutral()
     {
         isAirDashing = false;

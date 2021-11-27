@@ -22,23 +22,6 @@ public class EnemyAttackController : UniversalAttackController
     {
         
     }
-    // public async Task TriggerHitStop(Attack AttackData, float victimXPosition)
-    // {
-    //     Vector2 oldVelocity = FreezePlayer();
-    //     // TODO: Do we need to be able to interrupt hitstop? Probably
-    //     // await Task.Delay(AttackData.GetHitStop());
-    //     // TODO: Raise SendHit event
-    //     UnFreezePlayer(oldVelocity);
-    //     RaiseSendHitEvent(new SendHitEventArgs(AttackData, victimXPosition));
-    // }
-    // protected virtual void RaiseSendHitEvent(SendHitEventArgs e) {
-    //     SendHit raiseEvent = SendHitEvent;
-
-    //     if (raiseEvent != null) {
-    //         raiseEvent(this, e);
-    //     }
-    // }
-
 
     public Vector2 FreezePlayer()
     {

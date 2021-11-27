@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using animeFGBeatEmUp.Assets.Scripts.Character.Fighter;
 using UnityEngine;
 
 public class OnHitBlockController : MonoBehaviour
@@ -14,7 +15,7 @@ public class OnHitBlockController : MonoBehaviour
         movementController = GetComponent<IMovementController>();
         state = GetComponent<IStateManager>();
         animator = GetComponent<CharacterAnimationController>();
-        movementController.GetHitEvent += OnHitOrBlock;
+        GetHitEvent += OnHitOrBlock;
     }
 
     private void OnHitOrBlock(object sender, GetHitEventArgs e) {

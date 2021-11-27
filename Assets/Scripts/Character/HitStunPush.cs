@@ -1,17 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using animeFGBeatEmUp.Assets.Scripts.Character.Fighter;
 
-public class HitStunPush : MonoBehaviour
+public class HitStunPush // : MonoBehaviour
 {
-    IMovementController self;
+    // IMovementController self;
 
     void Start() {
-        self = GetComponent<IMovementController>();
+        // self = GetComponent<IMovementController>();
         // ParentHurtbox parentHurtbox = GetComponent<ParentHurtbox>();
-        IAttackController selfAttackSender = GetComponent<IAttackController>();
-        selfAttackSender.SendHitEvent += PushbackSendHit;
-        self.GetHitEvent += PushbackGetHit;
+        // IAttackController selfAttackSender = GetComponent<IAttackController>();
+        // selfAttackSender.SendHitEvent += PushbackSendHit;
+        // self.GetHitEvent += PushbackGetHit;
     }
 
     private void PushbackSendHit(object sender, SendHitEventArgs e) {

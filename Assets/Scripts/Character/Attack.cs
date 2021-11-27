@@ -18,8 +18,8 @@ public class Attack
     /// Example: P1-5B
     public string Id { get; private set; }
     public AttackType Type { get; private set; }
-    public IMovementController movement;
-    public IStateManager playerState;
+    private IMovementController movement;
+    private IStateManager playerState;
 
     /// Defaults to strike attack type
     public Attack(string attackId, int attackLevel, int attackDamage, IMovementController _movement, IStateManager _playerState)

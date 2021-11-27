@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using animeFGBeatEmUp.Assets.Scripts.Character.Fighter;
 
 public class EnemyMovementController : MonoBehaviour, IMovementController
 {
@@ -10,7 +11,6 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
 
     private EnemyStateManager enemyState;
 
-    public event GetHit GetHitEvent;
     public event Land LandEvent;
 
     public bool isGrounded { get; private set; }
@@ -74,13 +74,6 @@ public class EnemyMovementController : MonoBehaviour, IMovementController
 
     protected virtual void RaiseLandEvent(LandEventArgs e) {
         Land raiseEvent = LandEvent;
-        if (raiseEvent != null) {
-            raiseEvent(this, e);
-        }
-    }
-
-    protected virtual void RaiseGetHitEvent(GetHitEventArgs e) {
-        GetHit raiseEvent = GetHitEvent;
         if (raiseEvent != null) {
             raiseEvent(this, e);
         }
