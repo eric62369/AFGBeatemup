@@ -15,9 +15,8 @@ namespace animeFGBeatEmUp.Assets.Scripts.Character.Fighter
         void Start()
         {
             IFighterFactory fighterFactory = new FighterFactory();
-            fighterFactory.
-            fighterFactory.build();
-            attackController = fighterFactory.getAttackController();
+            IFighterData fighterData = fighterFactory.build();
+            attackController = fighterData.GetAttackController();
         }
 
 

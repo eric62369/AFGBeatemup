@@ -9,15 +9,15 @@ namespace animeFGBeatEmUp.Assets.Scripts.Character.Fighter
         }
 
         // Call from someone who needs to raise this event
-        public void OnOtherFighterStrike(Attack AttackData, float victimXPosition) {
-            RaiseSendHitEvent(new SendHitEventArgs(AttackData, victimXPosition));
+        public void OnFighterSendHit(Attack AttackData, float victimXPosition, bool isGrounded) {
+            RaiseSendHitEvent(new SendHitEventArgs(AttackData, victimXPosition, isGrounded));
         }
-
         // Call from someone who needs to raise this event
-        public void OnFighterGetHit(Attack AttackData) {
-            RaiseGetHitEvent(new GetHitEventArgs(AttackData));
+        public void OnFighterGetHit(Attack AttackData, float senderXPosition, bool isGrounded) {
+            RaiseGetHitEvent(new GetHitEventArgs(AttackData, senderXPosition, isGrounded));
         }
 
+        // 
         protected virtual void RaiseSendHitEvent(SendHitEventArgs e) {
             SendHit raiseEvent = SendHitEvent;
             if (raiseEvent != null) {

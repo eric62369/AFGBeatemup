@@ -1,105 +1,105 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿// using System;
+// using System.Collections;
+// using System.Collections.Generic;
+// using UnityEngine;
 
-public class EnemyStateManager : MonoBehaviour, IStateManager
-{
-    public bool isBlocking {
-        get {
-            return animator.AnimationGetBool("isBlocking");
-        }
-        private set {
-            animator.AnimationSetBool("isBlocking", value);
-        }
-    }
+// public class EnemyStateManager : MonoBehaviour, IStateManager
+// {
+//     public bool isBlocking {
+//         get {
+//             return animator.AnimationGetBool("isBlocking");
+//         }
+//         private set {
+//             animator.AnimationSetBool("isBlocking", value);
+//         }
+//     }
 
-    public bool canAct {
-        get;
-        set;
-    }
+//     public bool canAct {
+//         get;
+//         set;
+//     }
 
-    public bool isBeingThrown { get; private set; }
+//     public bool isBeingThrown { get; private set; }
 
-    private EnemyMovementController movementController;
-    private EnemyAttackController attackController;
-    private CharacterAnimationController animator;
+//     // private EnemyMovementController movementController;
+//     private EnemyAttackController attackController;
+//     private CharacterAnimationController animator;
 
-    private bool p1Side;
+//     private bool p1Side;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        movementController = GetComponent<EnemyMovementController>();
-        attackController = GetComponent<EnemyAttackController>();
-        animator = GetComponent<CharacterAnimationController>();
-        p1Side = false;
-        canAct = true;
-    }
+//     // Start is called before the first frame update
+//     void Start()
+//     {
+//         movementController = GetComponent<EnemyMovementController>();
+//         attackController = GetComponent<EnemyAttackController>();
+//         animator = GetComponent<CharacterAnimationController>();
+//         p1Side = false;
+//         canAct = true;
+//     }
 
     
-    // Interface functions
+//     // Interface functions
 
-    public int GetPlayerIndex()
-    {
-        // TODO: Make unique enemy Ids
-        return 1;
-    }
-    public Vector3 GetCurrentPosition()
-    {
-        return this.gameObject.transform.position;
-    }
+//     public int GetPlayerIndex()
+//     {
+//         // TODO: Make unique enemy Ids
+//         return 1;
+//     }
+//     public Vector3 GetCurrentPosition()
+//     {
+//         return this.gameObject.transform.position;
+//     }
 
-    public IAttackController GetAttackController()
-    {
-        return attackController;
-    }
-    public void ThrowHit()
-    {
-        throw new NotImplementedException();
-        // animator.AnimationSetBool("ThrowHit", true);
-        // attackController.ThrowFreeze();
-    }
-    public float GetThrowPositionOffset()
-    {
-        throw new NotImplementedException();
-    }
-    public bool GetIsP1Side()
-    {
-        return p1Side;
-    }
-    public void TurnCharacterAround()
-    {
-        p1Side = !p1Side;
-        Vector3 scale = this.gameObject.transform.localScale;
-        if (p1Side) {
-            this.gameObject.transform.localScale = new Vector3(-Math.Abs(scale.x), scale.y, scale.z);
-        } else {
-            this.gameObject.transform.localScale = new Vector3(Math.Abs(scale.x), scale.y, scale.z);
-        }
-    }
+//     public IAttackController GetAttackController()
+//     {
+//         return attackController;
+//     }
+//     public void ThrowHit()
+//     {
+//         throw new NotImplementedException();
+//         // animator.AnimationSetBool("ThrowHit", true);
+//         // attackController.ThrowFreeze();
+//     }
+//     public float GetThrowPositionOffset()
+//     {
+//         throw new NotImplementedException();
+//     }
+//     public bool GetIsP1Side()
+//     {
+//         return p1Side;
+//     }
+//     public void TurnCharacterAround()
+//     {
+//         p1Side = !p1Side;
+//         Vector3 scale = this.gameObject.transform.localScale;
+//         if (p1Side) {
+//             this.gameObject.transform.localScale = new Vector3(-Math.Abs(scale.x), scale.y, scale.z);
+//         } else {
+//             this.gameObject.transform.localScale = new Vector3(Math.Abs(scale.x), scale.y, scale.z);
+//         }
+//     }
 
-    public void Block() {
-        isBlocking = true;
-    }
+//     public void Block() {
+//         isBlocking = true;
+//     }
 
-    public void RemoveBlock() {
-        isBlocking = false;
-    }
+//     public void RemoveBlock() {
+//         isBlocking = false;
+//     }
 
-    public void TakeThrow(IStateManager playerState)
-    {
-        isBeingThrown = true;
-        RemoveBlock();
-        Vector3 playerPosition = playerState.GetCurrentPosition();
-        float posOffset = playerState.GetThrowPositionOffset();
-        playerState.ThrowHit();
-        this.gameObject.transform.position = new Vector3(
-            playerPosition.x + posOffset, playerPosition.y, playerPosition.z);
-    }
+//     public void TakeThrow(IStateManager playerState)
+//     {
+//         isBeingThrown = true;
+//         RemoveBlock();
+//         Vector3 playerPosition = playerState.GetCurrentPosition();
+//         float posOffset = playerState.GetThrowPositionOffset();
+//         playerState.ThrowHit();
+//         this.gameObject.transform.position = new Vector3(
+//             playerPosition.x + posOffset, playerPosition.y, playerPosition.z);
+//     }
 
-    public void GetHitOutOfThrow()
-    {
-        isBeingThrown = false;
-    }
-}
+//     public void GetHitOutOfThrow()
+//     {
+//         isBeingThrown = false;
+//     }
+// }

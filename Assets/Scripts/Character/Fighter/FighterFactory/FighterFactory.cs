@@ -16,7 +16,7 @@ namespace animeFGBeatEmUp.Assets.Scripts.Character.Fighter
         private ICrossFighterCommunication fighterComms;
         private IMovementModule movementModule;
 
-        public void FighterFactory()
+        public FighterFactory()
         {
             attackController = new UniversalAttackController();
             fighterComms = new CrossFighterCommunication();
@@ -25,12 +25,12 @@ namespace animeFGBeatEmUp.Assets.Scripts.Character.Fighter
 
         private void getHitEvents() {
             fighterComms.GetHitEvent += movementModule.PushBackGetHit;
-            fighterComms.HitEvent += movementModule.PushBackGetHit;
+            fighterComms.SendHitEvent += movementModule.PushBackSendHit;
         }
 
         public IFighterData build() {
             // a
-            IFighterData compile = new FighterData(attackController, fighterComms);
+            IFighterData compile = new FighterData(attackController, fighterComms, movementModule);
             return compile;
         }
     }

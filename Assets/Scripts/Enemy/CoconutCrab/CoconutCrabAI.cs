@@ -7,7 +7,7 @@ public class CoconutCrabAI : MonoBehaviour
     public float StepForce;
     public int StepsInOneDirection;
     private int StepsTakenInOneDirection;
-    private EnemyMovementController movementController;
+    // private EnemyMovementController movementController;
     private IStateManager stateManager;
     private CharacterAnimationController animator;
     private DefeatProcess defeat;
