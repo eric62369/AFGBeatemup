@@ -30,7 +30,7 @@ namespace BattleInput {
         public float DeadZone; // square for no input detection
 
         private PlayerInput playerUnityInput;
-        private PlayerStateManager playerStateManager;
+        private IStateManager playerStateManager;
         // private PlayerInputManager playerInputManager;
         private BattleInputScanner scanner;
         // public StickVisualizerController stickVisualizer;
@@ -39,10 +39,14 @@ namespace BattleInput {
         private void Awake () {
             playerUnityInput = GetComponent<PlayerInput> ();
             int playerIndex = playerUnityInput.playerIndex;
-            IEnumerable<PlayerStateManager> stateManagers =
-                (IEnumerable<PlayerStateManager>) FindObjectsOfType<PlayerStateManager> ();
-            playerStateManager = stateManagers.FirstOrDefault (s => s.GetPlayerIndex () == playerIndex);
-            scanner = playerStateManager.GetInputScanner ();
+            // IEnumerable<IStateManager> stateManagers =
+            //     (IEnumerable<IStateManager>) FindObjectsOfType<IStateManager> ();
+            // playerStateManager = stateManagers.FirstOrDefault (s => s.GetPlayerIndex () == playerIndex);
+            // scanner = playerStateManager.GetInputScanner ();
+
+            IEnumerable<BattleInputScanner> scanners =
+                (IEnumerable<BattleInputScanner>) FindObjectsOfType<BattleInputScanner>();
+            scanner = scanners.First();
         }
 
         //////////////////
@@ -78,7 +82,7 @@ namespace BattleInput {
             x = DeadZoneInput (x);
             y = DeadZoneInput (y);
             // TODO: There's a better way, pls fix this
-            if (playerStateManager.GetCurrentFacingDirection ()) {
+            if (true){//playerStateManager.GetCurrentFacingDirection ()) {
                 if (x == -1) {
                     if (y == -1) {
                         return Numpad.N1;

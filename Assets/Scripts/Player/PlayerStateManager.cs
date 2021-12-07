@@ -4,9 +4,9 @@
 // using UnityEngine;
 // using BattleInput;
 
-// public class PlayerChangeDirectionEventArgs {
+public class PlayerChangeDirectionEventArgs {
 
-// }
+}
 
 // public class PlayerStateManager : MonoBehaviour, IStateManager
 // {

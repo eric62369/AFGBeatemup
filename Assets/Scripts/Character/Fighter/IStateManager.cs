@@ -2,8 +2,8 @@
 // using System.Collections.Generic;
 // using UnityEngine;
 
-// public interface IStateManager
-// {
+public interface IStateManager
+{
 //     bool isBlocking {
 //         get;
 //     }
@@ -21,4 +21,4 @@
 //     float GetThrowPositionOffset();
 //     bool GetIsP1Side();
 //     void TurnCharacterAround();
-// }
+}

@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace BattleInput {
     public class RedBattleInputActions : MonoBehaviour, IBattleInputActions {
-        private PlayerAttackController playerAttack;
-        private PlayerMovementController playerMovement;
-        private PlayerStateManager playerState;
+        // private IAttackController playerAttack;
+        private IMovementController playerMovement;
+        // private IStateManager playerState;
         private CharacterAnimationController playerAnimator;
 
         void Start () {
-            playerAttack = GetComponent<PlayerAttackController> ();
-            playerMovement = GetComponent<PlayerMovementController>();
-            playerState = GetComponent<PlayerStateManager>();
-            playerAnimator = GetComponent<CharacterAnimationController>();
+            // playerAttack = GetComponent<IAttackController> ();
+            playerMovement = GetComponent<IMovementController>();
+            // playerState = GetComponent<IStateManager>();
+            // playerAnimator = GetComponent<CharacterAnimationController>();
         }
 
         // Universal Movement
@@ -27,9 +27,9 @@ namespace BattleInput {
             Walk(Numpad.N4);
         }
         public void StopRun () {
-            if (playerAnimator.AnimationGetBool("IsRunning")) {
-                playerMovement.Skid();
-            }
+            // if (playerAnimator.AnimationGetBool("IsRunning")) {
+            //     playerMovement.Skid();
+            // }
         } 
         public void Walk (Numpad direction) {
             playerMovement.Walk(direction);
@@ -38,65 +38,65 @@ namespace BattleInput {
             playerMovement.StopWalk();
         }
         public void Jump (Numpad direction) {
-            if (!playerMovement.isHoldingJump) {
-                playerState.SetCancelAction(CancelAction.Jump, direction);
-            }
+            // // if (!playerMovement.isHoldingJump) {
+            //     playerState.SetCancelAction(CancelAction.Jump, direction);
+            // // }
             playerMovement.PrevJumpInput = direction;
-            playerMovement.setIsHoldingJump(true);
+            // playerMovement.setIsHoldingJump(true);
         }
         public void ReleaseJump () {
-            playerMovement.setIsHoldingJump(false);
+            // playerMovement.setIsHoldingJump(false);
             playerMovement.hasNotUsedJump = true;
         }
 
         // Universal Actions
         public void Throw (bool direction) {
-            playerAttack.Throw(direction);
+            // playerAttack.Throw(direction);
         }
         public void InputBufferCancel(int frameLimit) {
-            playerAttack.InputBufferCancel(frameLimit);
+            // playerAttack.InputBufferCancel(frameLimit);
         }
         public void RC(int frameLimit) {
-            playerAttack.RC(frameLimit);
+            // playerAttack.RC(frameLimit);
         }
 
-        // Normals
-        public void N5 (Button button) {
-            if (playerMovement.isGrounded) {
-                switch (button) {
-                    case Button.A:
-                        playerAttack.Attack5A ();
-                        break;
-                    case Button.B:
-                        playerAttack.Attack5B ();
-                        break;
-                    case Button.C:
-                        playerAttack.Attack5C ();
-                        break;
-                    case Button.D:
-                        break;
-                    default:
-                        throw new InvalidOperationException (button + " was not an expected normal button!");
-                }
-            } else {
-                switch (button) {
-                    case Button.A:
-                        playerAttack.AttackJ5A ();
-                        break;
-                    case Button.B:
-                        playerAttack.AttackJ5B ();
-                        break;
-                    case Button.C:
-                        playerAttack.AttackJ5C ();
-                        break;
-                    case Button.D:
-                        break;
-                    default:
-                        throw new InvalidOperationException (button + " was not an expected normal button!");
-                }
-            }
+        // // Normals
+        // public void N5 (Button button) {
+        //     if (playerMovement.isGrounded) {
+        //         switch (button) {
+        //             case Button.A:
+        //                 playerAttack.Attack5A ();
+        //                 break;
+        //             case Button.B:
+        //                 playerAttack.Attack5B ();
+        //                 break;
+        //             case Button.C:
+        //                 playerAttack.Attack5C ();
+        //                 break;
+        //             case Button.D:
+        //                 break;
+        //             default:
+        //                 throw new InvalidOperationException (button + " was not an expected normal button!");
+        //         }
+        //     } else {
+        //         switch (button) {
+        //             case Button.A:
+        //                 playerAttack.AttackJ5A ();
+        //                 break;
+        //             case Button.B:
+        //                 playerAttack.AttackJ5B ();
+        //                 break;
+        //             case Button.C:
+        //                 playerAttack.AttackJ5C ();
+        //                 break;
+        //             case Button.D:
+        //                 break;
+        //             default:
+        //                 throw new InvalidOperationException (button + " was not an expected normal button!");
+        //         }
+        //     }
 
-        }
+        // }
 
         // Command Normals
 

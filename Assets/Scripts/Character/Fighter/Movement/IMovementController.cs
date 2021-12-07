@@ -1,18 +1,25 @@
 ﻿// using System.Collections;
 // using System.Collections.Generic;
 // using UnityEngine;
+using BattleInput;
 // using System.Threading.Tasks;
 
+public class LandEventArgs {
 
-// public delegate void Land(object sender, LandEventArgs args);
-
-// public class LandEventArgs {
-
-// }
+}
 
 
-// public interface IMovementController
-// {
+public interface IMovementController
+{
+    void StartForwardDash();
+    void StartBackwardDash();
+    void Skid();
+    void Walk(Numpad direction);
+    void StopWalk();
+    Numpad PrevJumpInput { get; set; }
+    bool isGrounded { get; }
+    // bool isHoldingJump { get; private set; }
+    bool hasNotUsedJump { get; set; }
 //     bool isGrounded { get; }
     
 //     float xPosition { get; }
@@ -33,4 +40,4 @@
 
 //     void HeavyLaunch(int direction);
 //     void Dunk(int direction);
-// }
+}

@@ -34,7 +34,7 @@ namespace BattleInput {
         private int runningFrames; // How much time (in frames) since last input?
 
         private BattleInputParser parser;
-        private PlayerStateManager ChangeDirectionEventSource; // TODO: Change this out for a module later
+        private IStateManager ChangeDirectionEventSource; // TODO: Change this out for a module later
 
         // Input history data
         private InputHistory inputHistory;
@@ -49,8 +49,8 @@ namespace BattleInput {
             runningFrames = 0; // Frame 1 will be first update frame
 
             parser = GetComponent<BattleInputParser> ();
-            ChangeDirectionEventSource = GetComponent<PlayerStateManager>();
-            ChangeDirectionEventSource.ChangeDirectionEvent += ChangeDirectionEventHandler;
+            // ChangeDirectionEventSource = GetComponent<IStateManager>();
+            // ChangeDirectionEventSource.ChangeDirectionEvent += ChangeDirectionEventHandler;
 
             nextDirection = Numpad.N5;
             nextButtons = new List<ButtonStatus> ();

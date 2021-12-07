@@ -24,12 +24,12 @@ namespace BattleInput {
         void RC(int frameLimit);
 
         // Normals
-        void N5 (Button button);
+        // void N5 (Button button);
 
         // Command Normals
 
         // Specials
-        void S236 (Button button);
+        // void S236 (Button button);
     }
 
 }

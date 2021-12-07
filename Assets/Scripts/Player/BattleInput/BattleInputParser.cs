@@ -152,54 +152,54 @@ namespace BattleInput {
         /// <param name="inputHistory"></param>
         /// <returns>true if interpreted to something</returns>
         private bool InterpretAttack (InputHistory inputHistory) {
-            // invul moves
+            // // invul moves
 
-            // button combos
-            if (InterpretUtil.InterpretTapButtonCombo(inputHistory, RC)) {
-                DebugMessage(RC.ToString());
-                inputActions.RC(RC.frameLimit);
-                return true;
-            }
+            // // button combos
+            // if (InterpretUtil.InterpretTapButtonCombo(inputHistory, RC)) {
+            //     DebugMessage(RC.ToString());
+            //     inputActions.RC(RC.frameLimit);
+            //     return true;
+            // }
 
-            if (InterpretUtil.InterpretTapButtonCombo(inputHistory, ForwardThrow)) {
-                DebugMessage(ForwardThrow.ToString());
-                inputActions.InputBufferCancel(ForwardThrow.frameLimit);
-                inputActions.Throw(true);
-                return true;
-            }
+            // if (InterpretUtil.InterpretTapButtonCombo(inputHistory, ForwardThrow)) {
+            //     DebugMessage(ForwardThrow.ToString());
+            //     inputActions.InputBufferCancel(ForwardThrow.frameLimit);
+            //     inputActions.Throw(true);
+            //     return true;
+            // }
 
-            if (InterpretUtil.InterpretTapButtonCombo(inputHistory, BackwardThrow)) {
-                DebugMessage(BackwardThrow.ToString());
-                inputActions.InputBufferCancel(BackwardThrow.frameLimit);
-                inputActions.Throw(false);
-                return true;
-            }
+            // if (InterpretUtil.InterpretTapButtonCombo(inputHistory, BackwardThrow)) {
+            //     DebugMessage(BackwardThrow.ToString());
+            //     inputActions.InputBufferCancel(BackwardThrow.frameLimit);
+            //     inputActions.Throw(false);
+            //     return true;
+            // }
 
-            // specials
-            if (InterpretUtil.InterpretSpecialAttackInput (inputHistory, S236B)) {
-                DebugMessage(S236B.ToString());
-                inputActions.S236 (Button.B);
-                return true;
-            }
+            // // specials
+            // if (InterpretUtil.InterpretSpecialAttackInput (inputHistory, S236B)) {
+            //     DebugMessage(S236B.ToString());
+            //     inputActions.S236 (Button.B);
+            //     return true;
+            // }
 
             // command normals
 
             // normals
-            if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5A)) {
-                DebugMessage(N5A.ToString());
-                inputActions.N5(Button.A);
-                return true;
-            }
-            if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5B)) {
-                DebugMessage(N5B.ToString());
-                inputActions.N5(Button.B);
-                return true;
-            }
-            if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5C)) {
-                DebugMessage(N5C.ToString());
-                inputActions.N5(Button.C);
-                return true;
-            }
+            // if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5A)) {
+            //     DebugMessage(N5A.ToString());
+            //     inputActions.N5(Button.A);
+            //     return true;
+            // }
+            // if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5B)) {
+            //     DebugMessage(N5B.ToString());
+            //     inputActions.N5(Button.B);
+            //     return true;
+            // }
+            // if (InterpretUtil.InterpretNormalAttackInput(inputHistory, N5C)) {
+            //     DebugMessage(N5C.ToString());
+            //     inputActions.N5(Button.C);
+            //     return true;
+            // }
 
             return false;
         }
