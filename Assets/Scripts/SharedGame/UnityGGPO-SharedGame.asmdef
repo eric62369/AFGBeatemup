@@ -1,14 +1,11 @@
 {
-    "name": "Scripts",
-    "rootNamespace": "",
+    "name": "UnityGGPO-SharedGame",
     "references": [
-        "Unity.InputSystem",
-        "UnityGGPO-Plugin",
-        "UnityGGPO-SharedGame"
+        "GUID:0c0029a6e6a29384bb13962f99bfd024"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

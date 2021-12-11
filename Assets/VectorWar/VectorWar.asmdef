@@ -1,10 +1,8 @@
 {
-    "name": "Scripts",
-    "rootNamespace": "",
+    "name": "UnityGGPO-VectorWar",
     "references": [
-        "Unity.InputSystem",
-        "UnityGGPO-Plugin",
-        "UnityGGPO-SharedGame"
+        "GUID:0c0029a6e6a29384bb13962f99bfd024",
+        "GUID:18e4a392e225ae14786f1b25084eda15"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

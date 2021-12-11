@@ -34,7 +34,7 @@ namespace BattleInput {
         private int runningFrames; // How much time (in frames) since last input?
 
         private BattleInputParser parser;
-        private IStateManager ChangeDirectionEventSource; // TODO: Change this out for a module later
+        // private IStateManager ChangeDirectionEventSource; // TODO: Change this out for a module later
 
         // Input history data
         private InputHistory inputHistory;
@@ -134,9 +134,9 @@ namespace BattleInput {
             newInputs = true;
         }
 
-        private void ChangeDirectionEventHandler(object sender, PlayerChangeDirectionEventArgs e) {
-            FacingDirectionChanged();
-        }
+        // private void ChangeDirectionEventHandler(object sender, PlayerChangeDirectionEventArgs e) {
+        //     FacingDirectionChanged();
+        // }
 
         private void FacingDirectionChanged()
         {

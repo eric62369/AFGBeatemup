@@ -30,7 +30,7 @@ namespace BattleInput {
         public float DeadZone; // square for no input detection
 
         private PlayerInput playerUnityInput;
-        private IStateManager playerStateManager;
+        // private IStateManager playerStateManager;
         // private PlayerInputManager playerInputManager;
         private BattleInputScanner scanner;
         // public StickVisualizerController stickVisualizer;

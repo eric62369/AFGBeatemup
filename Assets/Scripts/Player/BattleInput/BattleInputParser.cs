@@ -13,7 +13,8 @@ namespace BattleInput {
 
         public bool DEBUG; // Print Debug Messages
 
-        public IBattleInputActions inputActions;
+        // public IBattleInputActions inputActions;
+        public PlayerMovementController inputActions;
         public BattleInputScanner scanner; // TODO: try to remove this if possible
 
         // TODO: Move initialization for these inputs somewhere else (these are universal inputs)
@@ -33,7 +34,7 @@ namespace BattleInput {
 
         void Start () {
             // Might not work, interface might need to be a component
-            inputActions = GetComponent<IBattleInputActions> ();
+            inputActions = GetComponent<PlayerMovementController> ();
             scanner = GetComponent<BattleInputScanner>();
             initMotionInputs ();
         }
@@ -205,32 +206,34 @@ namespace BattleInput {
         }
 
         private bool InterpretMovement (InputHistory inputHistory) {
-            inputActions.StopWalk();
-            if (InterpretUtil.InterpretMotionInput(inputHistory, M66))
-            {
-                DebugMessage(M66.ToString());
-                inputActions.Dash();
-                return true;
-            } else {
-                inputActions.StopRun();
-            }
+            // inputActions.StopWalk();
+            // if (InterpretUtil.InterpretMotionInput(inputHistory, M66))
+            // {
+            //     DebugMessage(M66.ToString());
+            //     inputActions.Dash();
+            //     return true;
+            // } else {
+            //     inputActions.StopRun();
+            // }
 
-            if (InterpretUtil.InterpretMotionInput(inputHistory, M44))
-            {
-                DebugMessage(M44.ToString());
-                inputActions.BackDash();
-                return true;
-            }
+            // if (InterpretUtil.InterpretMotionInput(inputHistory, M44))
+            // {
+            //     DebugMessage(M44.ToString());
+            //     inputActions.BackDash();
+            //     return true;
+            // }
 
 
-            if (InterpretUtil.InterpretMotionInput(inputHistory, MJump))
-            {
-                DebugMessage(MJump.ToString());
-                inputActions.Jump(inputHistory.GetEntry(0).direction);
-                return true;
-            } else {
-                inputActions.ReleaseJump();
-            }
+            // if (InterpretUtil.InterpretMotionInput(inputHistory, MJump))
+            // {
+            //     DebugMessage(MJump.ToString());
+            //     inputActions.Jump(inputHistory.GetEntry(0).direction);
+            //     return true;
+            // } else {
+            //     inputActions.ReleaseJump();
+            // }
+
+            inputActions.Walk(Numpad.N5);
 
             if (InterpretUtil.InterpretMotionInput(inputHistory, M6))
             {

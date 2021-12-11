@@ -9,18 +9,14 @@ public class NonMonoBehaviourTest : MonoBehaviour
 
     // Start is called before the first frame update
 
-
-    private RefillClock clock;
     void Start()
     {
-        clock = new RefillClock();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (frameCount >= frameWait) {
-            clock.ResetClock(100);
             frameCount = 0;
         }
         frameCount++;
