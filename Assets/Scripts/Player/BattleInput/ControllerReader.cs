@@ -13,7 +13,7 @@ namespace BattleInput {
         C, // Heavy
         D // Unique
     }
-    public class ControllerReader : MonoBehaviour {
+    public class ControllerReader : MonoBehaviour, IController {
         /*
          New module for directly interfacing with:
         - Player N instance (Hooks via PlayerStateManager interface)
@@ -36,6 +36,10 @@ namespace BattleInput {
         // public StickVisualizerController stickVisualizer;
 
         // Start is called before the first frame update
+
+        // Follows the pattern that IGame needs inputs in
+        private long currentInputs;
+
         private void Awake () {
             playerUnityInput = GetComponent<PlayerInput> ();
             int playerIndex = playerUnityInput.playerIndex;
@@ -47,6 +51,10 @@ namespace BattleInput {
             IEnumerable<BattleInputScanner> scanners =
                 (IEnumerable<BattleInputScanner>) FindObjectsOfType<BattleInputScanner>();
             scanner = scanners.First();
+        }
+
+        public long GetCurrentInput() {
+            return currentInputs;
         }
 
         //////////////////
@@ -78,7 +86,7 @@ namespace BattleInput {
 
         // Will always return P1 side style inputs
         // (i.e. P2 side 4 input is translated to -> 6)
-        public Numpad GetInputToNumpad (float x, float y) {
+        private Numpad GetInputToNumpad (float x, float y) {
             x = DeadZoneInput (x);
             y = DeadZoneInput (y);
             // TODO: There's a better way, pls fix this

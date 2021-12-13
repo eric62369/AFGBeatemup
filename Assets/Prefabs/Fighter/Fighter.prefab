@@ -157,6 +157,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1873923bc6bbb0345844a5683e08d4f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  txtStatus: {fileID: 0}
-  imgProgress: {fileID: 0}
-  model: {fileID: 0}
+  model: {fileID: 1334002882}

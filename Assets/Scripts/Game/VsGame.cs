@@ -249,79 +249,68 @@ namespace PlayerVsGameSpace {
             fighter.position.x += thrust;
         }
 
-        // public void MoveShip(int index, float heading, float thrust, int fire) {                                
-        //     var ship = _ships[index];                                                                           
-                                                                                                                
-        //     GGPORunner.LogGame($"calculation of new ship coordinates: (thrust:{thrust} heading:{heading}).");   
-                                                                                                                
-        //     ship.heading = heading;                                                                             
-                                                                                                                
-        //     if (ship.cooldown == 0) {                                                                           
-        //         if (fire != 0) {                                                                                
-        //             GGPORunner.LogGame("firing bullet.");                                                       
-        //             for (int i = 0; i < ship.bullets.Length; i++) {                                             
-        //                 float dx = Mathf.Cos(DegToRad(ship.heading));                                           
-        //                 float dy = Mathf.Sin(DegToRad(ship.heading));                                           
-        //                 if (!ship.bullets[i].active) {                                                          
-        //                     ship.bullets[i].active = true;                                                      
-        //                     ship.bullets[i].position.x = ship.position.x + (ship.radius * dx);                  
-        //                     ship.bullets[i].position.y = ship.position.y + (ship.radius * dy);                  
-        //                     ship.bullets[i].velocity.x = ship.velocity.x + (BULLET_SPEED * dx);                 
-        //                     ship.bullets[i].velocity.y = ship.velocity.y + (BULLET_SPEED * dy);                 
-        //                     ship.cooldown = BULLET_COOLDOWN;                                                    
-        //                     break;                                                                              
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
-
         public long ReadInputs(int id) {
             long input = 0;
-
             if (id == 0) {
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.UpArrow)) {
-                    input |= INPUT_THRUST;
-                }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.DownArrow)) {
-                    input |= INPUT_BREAK;
-                }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.LeftArrow)) {
-                    input |= INPUT_ROTATE_LEFT;
-                }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.RightArrow)) {
-                    input |= INPUT_ROTATE_RIGHT;
-                }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.RightControl)) {
-                    input |= INPUT_FIRE;
-                }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.RightShift)) {
-                    input |= INPUT_BOMB;
-                }
-            }
-            else if (id == 1) {
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.W)) {
-                    input |= INPUT_THRUST;
-                }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.S)) {
-                    input |= INPUT_BREAK;
-                }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.A)) {
-                    input |= INPUT_ROTATE_LEFT;
-                }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.D)) {
-                    input |= INPUT_ROTATE_RIGHT;
-                }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.F)) {
-                    input |= INPUT_FIRE;
-                }
-                if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.G)) {
-                    input |= INPUT_BOMB;
-                }
-            }
 
-            return input;
+            } else if (id == 1) {
+
+            } else {
+                throw new ArgumentException("reading non existent player id");
+            }
+            return 0;
         }
+
+        private IController GetController() {
+            //
+        }
+
+        // public long ReadInputs(int id) {
+        //     long input = 0;
+
+        //     if (id == 0) {
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.UpArrow)) {
+        //             input |= INPUT_THRUST;
+        //         }
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.DownArrow)) {
+        //             input |= INPUT_BREAK;
+        //         }
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.LeftArrow)) {
+        //             input |= INPUT_ROTATE_LEFT;
+        //         }
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.RightArrow)) {
+        //             input |= INPUT_ROTATE_RIGHT;
+        //         }
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.RightControl)) {
+        //             input |= INPUT_FIRE;
+        //         }
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.RightShift)) {
+        //             input |= INPUT_BOMB;
+        //         }
+        //     }
+        //     else if (id == 1) {
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.W)) {
+        //             input |= INPUT_THRUST;
+        //         }
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.S)) {
+        //             input |= INPUT_BREAK;
+        //         }
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.A)) {
+        //             input |= INPUT_ROTATE_LEFT;
+        //         }
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.D)) {
+        //             input |= INPUT_ROTATE_RIGHT;
+        //         }
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.F)) {
+        //             input |= INPUT_FIRE;
+        //         }
+        //         if (UnityEngine.Input.GetKey(UnityEngine.KeyCode.G)) {
+        //             input |= INPUT_BOMB;
+        //         }
+        //     }
+
+        //     return input;
+        // }
 
         public void FreeBytes(NativeArray<byte> data) {
             if (data.IsCreated) {

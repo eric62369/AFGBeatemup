@@ -6,8 +6,8 @@ using UnityGGPO;
 namespace PlayerVsGameSpace {
 
     public class VsFighterView : MonoBehaviour {
-        public Text txtStatus;
-        public Image imgProgress;
+        // public Text txtStatus;
+        // public Image imgProgress;
         public Transform model;
 
         public void Populate(Fighter fighter, PlayerConnectionInfo info) {
@@ -33,22 +33,6 @@ namespace PlayerVsGameSpace {
                     status = "Waiting for player...";
                     progress = (Utils.TimeGetTime() - info.disconnect_start) * 100 / info.disconnect_timeout;
                     break;
-            }
-
-            if (progress > 0) {
-                imgProgress.gameObject.SetActive(true);
-                imgProgress.fillAmount = progress / 100f;
-            }
-            else {
-                imgProgress.gameObject.SetActive(false);
-            }
-
-            if (status.Length > 0) {
-                txtStatus.gameObject.SetActive(true);
-                txtStatus.text = status;
-            }
-            else {
-                txtStatus.gameObject.SetActive(false);
             }
         }
     }
