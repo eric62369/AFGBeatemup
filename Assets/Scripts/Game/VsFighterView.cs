@@ -5,14 +5,14 @@ using UnityGGPO;
 
 namespace PlayerVsGameSpace {
 
-    public class VsShipView : MonoBehaviour {
+    public class VsFighterView : MonoBehaviour {
         public Text txtStatus;
         public Image imgProgress;
         public Transform model;
 
-        public void Populate(Ship shipGs, PlayerConnectionInfo info) {
-            transform.position = shipGs.position;
-            model.rotation = Quaternion.Euler(0, 0, shipGs.heading);
+        public void Populate(Fighter fighter, PlayerConnectionInfo info) {
+            transform.position = fighter.position;
+            model.rotation = Quaternion.Euler(0, 0, fighter.heading);
             string status = "";
             int progress = -1;
             switch (info.state) {
