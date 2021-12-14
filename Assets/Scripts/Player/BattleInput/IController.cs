@@ -6,13 +6,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace BattleInput {
-    public enum Button {
-        None,
-        A, // Light
-        B, // Medium
-        C, // Heavy
-        D // Unique
-    }
     public interface IController {
         long GetCurrentInput();
     }

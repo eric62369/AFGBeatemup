@@ -1,6 +1,8 @@
 using SharedGame;
+using BattleInput;
 using System;
 using System.IO;
+using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 
@@ -90,6 +92,8 @@ namespace PlayerVsGameSpace {
 
         public static Rect _bounds = new Rect(0, 0, 640, 480);
 
+        private IList<IController> _controllers; // TODO: Make more general
+
         public void Serialize(BinaryWriter bw) {
             bw.Write(Framenumber);
             bw.Write(_fighters.Length);
@@ -148,6 +152,7 @@ namespace PlayerVsGameSpace {
             var r = h / 4;
             Framenumber = 0;
             _fighters = new Fighter[num_players];
+            _controllers = new List<IController>();
             for (int i = 0; i < _fighters.Length; i++) {
                 _fighters[i] = new Fighter();
                 int heading = i * 360 / num_players;
@@ -251,18 +256,22 @@ namespace PlayerVsGameSpace {
 
         public long ReadInputs(int id) {
             long input = 0;
-            if (id == 0) {
-
-            } else if (id == 1) {
-
+            if (id == 0 || id == 1) {
+                return GetControllerInput(id);
             } else {
                 throw new ArgumentException("reading non existent player id");
             }
-            return 0;
         }
 
-        private IController GetController() {
-            //
+        private long GetControllerInput(int id) {
+            if (id >= _controllers.Count) {
+                ControllerReader[] controllers = GameObject.FindObjectsOfType<ControllerReader>();
+                if (id >= controllers.Length) {
+                    throw new ArgumentException("Controller out of range");
+                }
+                _controllers = new List<IController>(controllers);
+            }
+            return _controllers[id].GetCurrentInput();
         }
 
         // public long ReadInputs(int id) {
