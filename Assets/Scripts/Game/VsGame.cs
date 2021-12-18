@@ -204,6 +204,7 @@ namespace PlayerVsGameSpace {
         }
 
         public void LogInfo(string filename) {
+            Debug.Log(filename);
         }
 
         // public void LogInfo(string filename) {
@@ -255,7 +256,6 @@ namespace PlayerVsGameSpace {
         }
 
         public long ReadInputs(int id) {
-            long input = 0;
             if (id == 0 || id == 1) {
                 return GetControllerInput(id);
             } else {
@@ -267,11 +267,13 @@ namespace PlayerVsGameSpace {
             if (id >= _controllers.Count) {
                 ControllerReader[] controllers = GameObject.FindObjectsOfType<ControllerReader>();
                 if (id >= controllers.Length) {
-                    throw new ArgumentException("Controller out of range");
+                    LogInfo("Controller out of range");
                 }
                 _controllers = new List<IController>(controllers);
+                return 0;
+            } else {
+                return _controllers[id].GetCurrentInput();
             }
-            return _controllers[id].GetCurrentInput();
         }
 
         // public long ReadInputs(int id) {
