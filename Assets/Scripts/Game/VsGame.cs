@@ -92,7 +92,7 @@ namespace PlayerVsGameSpace {
 
         public static Rect _bounds = new Rect(0, 0, 640, 480);
 
-        private IList<IController> _controllers; // TODO: Make more general
+        private IList<IController> _controllers;
 
         public void Serialize(BinaryWriter bw) {
             bw.Write(Framenumber);
@@ -155,7 +155,7 @@ namespace PlayerVsGameSpace {
             _controllers = new List<IController>();
             for (int i = 0; i < _fighters.Length; i++) {
                 _fighters[i] = new Fighter();
-                int heading = i * 360 / num_players;
+                int heading = 0;
                 float cost, sint, theta;
 
                 theta = (float)heading * PI / 180;
@@ -164,14 +164,14 @@ namespace PlayerVsGameSpace {
 
                 _fighters[i].position.x = (w / 2) + r * cost;
                 _fighters[i].position.y = (h / 2) + r * sint;
-                _fighters[i].heading = (heading + 180) % 360;
+                _fighters[i].heading = heading;
                 _fighters[i].health = STARTING_HEALTH;
                 _fighters[i].radius = SHIP_RADIUS;
             }
         }
 
         public void GetShipAI(int i, out float heading, out float thrust, out int fire) {
-            heading = (_fighters[i].heading + 5) % 360;
+            heading = 0.1f;
             thrust = 0;
             fire = 0;
         }
@@ -182,24 +182,27 @@ namespace PlayerVsGameSpace {
             GGPORunner.LogGame($"parsing ship {i} inputs: {inputs}.");
 
             if ((inputs & INPUT_ROTATE_RIGHT) != 0) {
-                heading = (ship.heading - ROTATE_INCREMENT) % 360;
+                // heading = (ship.heading - ROTATE_INCREMENT) % 360;
+                heading = SHIP_MAX_THRUST;
             }
             else if ((inputs & INPUT_ROTATE_LEFT) != 0) {
-                heading = (ship.heading + ROTATE_INCREMENT + 360) % 360;
+                // heading = (ship.heading + ROTATE_INCREMENT + 360) % 360;
+                heading = -SHIP_MAX_THRUST;
             }
             else {
-                heading = ship.heading;
+                heading = 0;
             }
 
             if ((inputs & INPUT_THRUST) != 0) {
-                thrust = SHIP_THRUST;
+                thrust = -SHIP_MAX_THRUST;
             }
             else if ((inputs & INPUT_BREAK) != 0) {
-                thrust = -SHIP_THRUST;
+                thrust = SHIP_MAX_THRUST;
             }
             else {
                 thrust = 0;
             }
+
             fire = (int)(inputs & INPUT_FIRE);
         }
 
@@ -252,7 +255,10 @@ namespace PlayerVsGameSpace {
 
         public void MoveFighter(int index, float heading, float thrust, int fire) {
             var fighter = _fighters[index];
-            fighter.position.x += thrust;
+            fighter.velocity.x = heading;
+            fighter.velocity.y = thrust;
+            fighter.position.x += fighter.velocity.x;
+            fighter.position.y += fighter.velocity.y;
         }
 
         public long ReadInputs(int id) {

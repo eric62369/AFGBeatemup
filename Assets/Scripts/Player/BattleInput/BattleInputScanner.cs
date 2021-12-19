@@ -27,8 +27,8 @@ namespace BattleInput {
     }
 
     /// Mainly responsible for managing input history
-    public class BattleInputScanner : MonoBehaviour {
-        public bool DEBUG;
+    public class BattleInputScanner {
+        private bool DEBUG;
         private static readonly int ButtonCount = 4; // A B C D
         public static readonly int InputHistorySize = 18; // size for input history
         private int runningFrames; // How much time (in frames) since last input?
@@ -45,10 +45,10 @@ namespace BattleInput {
         // new inputs must be added to the input history on the next frame!
         private bool newInputs;
 
-        void Start () {
+        public BattleInputScanner() {
             runningFrames = 0; // Frame 1 will be first update frame
 
-            parser = GetComponent<BattleInputParser> ();
+            parser = new BattleInputParser();
             // ChangeDirectionEventSource = GetComponent<IStateManager>();
             // ChangeDirectionEventSource.ChangeDirectionEvent += ChangeDirectionEventHandler;
 
@@ -63,43 +63,43 @@ namespace BattleInput {
             inputHistory = new InputHistory (InputHistorySize, ButtonCount);
         }
 
-        // every frame update
-        void Update () {
-            runningFrames++;
+        // // every frame update
+        // public void Update () {
+        //     runningFrames++;
 
-            if (newInputs) {
-                // Add all received inputs to input history
-                IList<ButtonStatus> copyButtons = new List<ButtonStatus> ();
-                for (int i = 0; i < ButtonCount; i++) {
-                    copyButtons.Add (nextButtons[i]);
-                }
-                inputHistory.AddNewEntry (
-                    nextDirection,
-                    copyButtons,
-                    runningFrames
-                );
+        //     if (newInputs) {
+        //         // Add all received inputs to input history
+        //         IList<ButtonStatus> copyButtons = new List<ButtonStatus> ();
+        //         for (int i = 0; i < ButtonCount; i++) {
+        //             copyButtons.Add (nextButtons[i]);
+        //         }
+        //         inputHistory.AddNewEntry (
+        //             nextDirection,
+        //             copyButtons,
+        //             runningFrames
+        //         );
 
-                // pass data to input parser
-                parser.ParseNewInput (inputHistory);
+        //         // pass data to input parser
+        //         parser.ParseNewInput (inputHistory);
 
-                // // print input history to console
-                if (DEBUG) {
-                    Debug.Log (inputHistory.ToString ());
-                }
+        //         // // print input history to console
+        //         if (DEBUG) {
+        //             Debug.Log (inputHistory.ToString ());
+        //         }
 
-                // reset flags and running state
-                newInputs = false;
-                runningFrames = 0; // Frame 1 will be the next new update frame
-                for (int i = 0; i < ButtonCount; i++) {
-                    ButtonStatus status = nextButtons[i];
-                    if (status == ButtonStatus.Down) {
-                        nextButtons[i] = ButtonStatus.Hold;
-                    } else if (status == ButtonStatus.Release) {
-                        nextButtons[i] = ButtonStatus.Up;
-                    }
-                }
-            }
-        }
+        //         // reset flags and running state
+        //         newInputs = false;
+        //         runningFrames = 0; // Frame 1 will be the next new update frame
+        //         for (int i = 0; i < ButtonCount; i++) {
+        //             ButtonStatus status = nextButtons[i];
+        //             if (status == ButtonStatus.Down) {
+        //                 nextButtons[i] = ButtonStatus.Hold;
+        //             } else if (status == ButtonStatus.Release) {
+        //                 nextButtons[i] = ButtonStatus.Up;
+        //             }
+        //         }
+        //     }
+        // }
 
         /// Called when new input received
         /// takes a numpad direction

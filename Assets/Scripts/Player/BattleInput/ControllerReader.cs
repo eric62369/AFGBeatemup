@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using PlayerVsGameSpace;
 
 namespace BattleInput {
     public enum Button {
@@ -43,14 +44,8 @@ namespace BattleInput {
         private void Awake () {
             playerUnityInput = GetComponent<PlayerInput> ();
             int playerIndex = playerUnityInput.playerIndex;
-            // IEnumerable<IStateManager> stateManagers =
-            //     (IEnumerable<IStateManager>) FindObjectsOfType<IStateManager> ();
-            // playerStateManager = stateManagers.FirstOrDefault (s => s.GetPlayerIndex () == playerIndex);
-            // scanner = playerStateManager.GetInputScanner ();
-
-            IEnumerable<BattleInputScanner> scanners =
-                (IEnumerable<BattleInputScanner>) FindObjectsOfType<BattleInputScanner>();
-            scanner = scanners.First();
+            this.scanner = new BattleInputScanner();
+            currentInputs = 0;
         }
 
         public long GetCurrentInput() {
@@ -62,23 +57,61 @@ namespace BattleInput {
         //////////////////
         private void OnMove (InputValue value) {
             Vector2 input = value.Get<Vector2> ();
-            Numpad newInput = GetInputToNumpad (input.x, input.y);
+            int x = DeadZoneInput(input.x);
+            int y = DeadZoneInput(input.y);
+            currentInputs = 0;
+            if (x == -1) {
+                currentInputs |= (1 << 2);
+            } else if (x == 1) {
+                currentInputs |= (1 << 3);
+            }
+
+            if (y == -1) {
+                currentInputs |= (1 << 0);
+            } else if (y == 1) {
+                currentInputs |= (1 << 1);
+            }
+            // Numpad newInput = GetInputToNumpad (input.x, input.y);
             // playerInputManager.InterpretNewStickInput(newInput);
-            scanner.InterpretNewStickInput (newInput);
+            // scanner.InterpretNewStickInput (newInput);
             // TODO: stickVisualizer.UpdateStickUI(newInput);
         }
         private void OnA (InputValue value) {
-            scanner.InterpretNewButtonInput (Button.A, value.isPressed);
+            Debug.Log("Temp A");
+            // scanner.InterpretNewButtonInput (Button.A, value.isPressed);
         }
         private void OnB (InputValue value) {
-            scanner.InterpretNewButtonInput (Button.B, value.isPressed);
+            Debug.Log("Temp B");
+            // scanner.InterpretNewButtonInput (Button.B, value.isPressed);
         }
         private void OnC (InputValue value) {
-            scanner.InterpretNewButtonInput (Button.C, value.isPressed);
+            Debug.Log("Temp C");
+            // scanner.InterpretNewButtonInput (Button.C, value.isPressed);
         }
         private void OnD (InputValue value) {
-            scanner.InterpretNewButtonInput (Button.D, value.isPressed);
+            Debug.Log("Temp D");
+            // scanner.InterpretNewButtonInput (Button.D, value.isPressed);
         }
+
+        // private void OnMove (InputValue value) {
+        //     Vector2 input = value.Get<Vector2> ();
+        //     Numpad newInput = GetInputToNumpad (input.x, input.y);
+        //     // playerInputManager.InterpretNewStickInput(newInput);
+        //     scanner.InterpretNewStickInput (newInput);
+        //     // TODO: stickVisualizer.UpdateStickUI(newInput);
+        // }
+        // private void OnA (InputValue value) {
+        //     scanner.InterpretNewButtonInput (Button.A, value.isPressed);
+        // }
+        // private void OnB (InputValue value) {
+        //     scanner.InterpretNewButtonInput (Button.B, value.isPressed);
+        // }
+        // private void OnC (InputValue value) {
+        //     scanner.InterpretNewButtonInput (Button.C, value.isPressed);
+        // }
+        // private void OnD (InputValue value) {
+        //     scanner.InterpretNewButtonInput (Button.D, value.isPressed);
+        // }
         private void OnStart () {
             MenuController menu = (MenuController) FindObjectOfType (typeof (MenuController));
             menu.PauseGame ();
@@ -153,14 +186,13 @@ namespace BattleInput {
         }
 
         // Apply the deadzone to the given input
-        private float DeadZoneInput (float x) {
-            float absx = System.Math.Abs (x);
+        private int DeadZoneInput (float x) {
+            float absx = System.Math.Abs(x);
+            int outX = (int)Math.Round(x / absx);
             if (absx < DeadZone) {
-                x = 0;
-            } else {
-                x /= absx;
+                outX = 0;
             }
-            return x;
+            return outX;
         }
     }
 
