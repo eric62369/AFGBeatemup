@@ -271,6 +271,7 @@ namespace PlayerVsGameSpace {
 
         private long GetControllerInput(int id) {
             if (id >= _controllers.Count) {
+                // Move this out to local runners later
                 ControllerReader[] controllers = GameObject.FindObjectsOfType<ControllerReader>();
                 if (id >= controllers.Length) {
                     LogInfo("Controller out of range");

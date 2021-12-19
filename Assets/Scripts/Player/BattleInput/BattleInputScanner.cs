@@ -48,7 +48,7 @@ namespace BattleInput {
         public BattleInputScanner() {
             runningFrames = 0; // Frame 1 will be first update frame
 
-            parser = new BattleInputParser();
+            // parser = new BattleInputParser();
             // ChangeDirectionEventSource = GetComponent<IStateManager>();
             // ChangeDirectionEventSource.ChangeDirectionEvent += ChangeDirectionEventHandler;
 

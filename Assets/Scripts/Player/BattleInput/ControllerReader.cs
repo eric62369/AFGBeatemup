@@ -43,13 +43,16 @@ namespace BattleInput {
 
         private void Awake () {
             playerUnityInput = GetComponent<PlayerInput> ();
-            int playerIndex = playerUnityInput.playerIndex;
             this.scanner = new BattleInputScanner();
             currentInputs = 0;
         }
 
         public long GetCurrentInput() {
             return currentInputs;
+        }
+
+        public int GetControllerIndex() {
+            return playerUnityInput.playerIndex;
         }
 
         //////////////////

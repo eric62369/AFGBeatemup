@@ -8,5 +8,6 @@ using UnityEngine.InputSystem;
 namespace BattleInput {
     public interface IController {
         long GetCurrentInput();
+        int GetControllerIndex();
     }
 }
