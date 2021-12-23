@@ -1472,18 +1472,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8624460056686372996, guid: 64d590a797cbd171b8cfd74b1fba6548, type: 3}
-      propertyPath: far clip plane
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8624460056686372996, guid: 64d590a797cbd171b8cfd74b1fba6548, type: 3}
-      propertyPath: near clip plane
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 8624460056686372996, guid: 64d590a797cbd171b8cfd74b1fba6548, type: 3}
-      propertyPath: orthographic size
-      value: 240
-      objectReference: {fileID: 0}
     - target: {fileID: 8624460056686372999, guid: 64d590a797cbd171b8cfd74b1fba6548, type: 3}
       propertyPath: m_Name
       value: Main Camera (1)

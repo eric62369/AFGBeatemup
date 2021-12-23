@@ -155,36 +155,6 @@ namespace BattleInput {
                     throw new InvalidOperationException (x + " is not -1, 0, 1 for input");
                 }
                 throw new InvalidOperationException (y + " is not -1, 0, 1 for input");
-            } else // Left facing (P2 side)
-            {
-                if (x == -1) {
-                    if (y == -1) {
-                        return Numpad.N3;
-                    } else if (y == 1) {
-                        return Numpad.N9;
-                    } else if (y == 0) {
-                        return Numpad.N6;
-                    }
-                } else if (x == 1) {
-                    if (y == -1) {
-                        return Numpad.N1;
-                    } else if (y == 1) {
-                        return Numpad.N7;
-                    } else if (y == 0) {
-                        return Numpad.N4;
-                    }
-                } else if (x == 0) {
-                    if (y == -1) {
-                        return Numpad.N2;
-                    } else if (y == 1) {
-                        return Numpad.N8;
-                    } else if (y == 0) {
-                        return Numpad.N5;
-                    }
-                } else {
-                    throw new InvalidOperationException (x + " is not -1, 0, 1 for input");
-                }
-                throw new InvalidOperationException (y + " is not -1, 0, 1 for input");
             }
         }
 
